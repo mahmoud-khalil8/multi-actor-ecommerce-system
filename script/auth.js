@@ -16,17 +16,24 @@ if (signupForm) {
 }
 const loginForm = document.getElementById('loginForm');
 if (loginForm) {
+
   loginForm.addEventListener('submit', (e) => {
     e.preventDefault();
     const email = document.getElementById('loginEmail').value;
     const password = document.getElementById('loginPassword').value;
 
+    const adminEmails=[ "mahmoud@gmail.com" ] ;
     // Retrieve user data from local storage
     const user = JSON.parse(localStorage.getItem('user'));
 
     if (user && user.email === email && user.password === password) {
       window.location.href = 'profile.html';
-    } else {
+    }else if(adminEmails.includes(email) && password === "123456"){
+      const user = { firstName: "Admin", lastName: "Admin", email: email, password: password, userType : "admin" };
+      localStorage.setItem('user', JSON.stringify(user));
+      window.location.href = 'profile.html';
+    }
+    else {
       alert('Invalid email or password.');
     }
   });

@@ -1,14 +1,10 @@
 const userInfo = document.getElementById('userInfo');
 const userSpecificContent = document.getElementById('userSpecificContent');
+
 if (userInfo && userSpecificContent) {
-  const user = JSON.parse(localStorage.getItem('user')); // Retrieve user data
+  const user = JSON.parse(localStorage.getItem('user')); 
   if (user) {
-    userInfo.innerHTML = `
-      <p><strong>First Name:</strong> ${user.firstName}</p>
-      <p><strong>Last Name:</strong> ${user.lastName}</p>
-      <p><strong>Email:</strong> ${user.email}</p>
-      <p><strong>User Type:</strong> ${user.userType}</p>
-    `;
+    userInfo.innerHTML = `<h3>Welcome, ${user.name || 'User'}!</h3>`;
 
     if (user.userType === 'customer') {
       userSpecificContent.innerHTML = `
@@ -17,6 +13,15 @@ if (userInfo && userSpecificContent) {
         <ul>
           <li>Deal 1</li>
           <li>Deal 2</li>
+        </ul>
+      `;
+    } else if (user.userType === 'admin') {
+      userSpecificContent.innerHTML = `
+        <h4>Welcome, Admin!</h4>
+        <p>Manage the platform and users:</p>
+        <ul>
+          <li>User Management</li>
+          <li>Platform Settings</li>
         </ul>
       `;
     } else if (user.userType === 'seller') {
@@ -28,10 +33,12 @@ if (userInfo && userSpecificContent) {
           <li>Product 2</li>
         </ul>
       `;
+    } else {
+      userSpecificContent.innerHTML = `<p>Invalid user type. Please contact support.</p>`;
     }
   } else {
     userInfo.innerHTML = '<p>No user data found. Please log in.</p>';
-    window.location.href = 'index.html';
+    window.location.href = 'index.html'; 
   }
 }
 
@@ -41,6 +48,6 @@ if (logoutButton) {
   logoutButton.addEventListener('click', () => {
     localStorage.removeItem('user'); 
     alert('Logged out successfully!');
-    window.location.href = 'index.html'; 
+    window.location.href = 'login.html'; 
   });
 }
