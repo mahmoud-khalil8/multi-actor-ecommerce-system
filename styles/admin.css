@@ -1,0 +1,119 @@
+body {
+  font-family: Arial, sans-serif;
+}
+
+.sidebar {
+  height: 100vh;
+  border-right: 1px solid #ddd;
+}
+
+.sidebar .nav-link {
+  color: #555;
+}
+
+.sidebar .nav-link.active {
+  font-weight: bold;
+  color: #000;
+}
+/* Table Container */
+.table-container {
+  padding: 20px;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Table Styling */
+.table {
+  margin-bottom: 0;
+}
+
+.table thead th {
+  background-color:cornsilk;
+  color: rgb(27, 27, 23);
+  font-weight: bold;
+  border-bottom: 2px solid #505545;
+}
+
+.table tbody tr:hover {
+  background-color: #f1f1f1;
+}
+
+/* Avatar Styling */
+.customer-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+/* Status Indicators */
+.status-active {
+  color: green;
+  font-weight: bold;
+}
+
+.status-inactive {
+  color: gray;
+  font-weight: bold;
+}
+
+.status-suspended {
+  color: red;
+  font-weight: bold;
+}
+
+/* Button Styling */
+.btn-sm {
+  padding: 5px 10px;
+  font-size: 12px;
+  margin: 2px;
+}
+
+
+
+/* Custom CSS for Mobile View */
+@media (max-width: 767.98px) {
+    .table-responsive {
+    overflow-x: auto;
+  }
+    .table {
+        font-size: 14px;
+      }
+  #sidebar {
+    position: fixed;
+    top: 0;
+    left: -100%; /* Hide the sidebar by default */
+    bottom: 0;
+    z-index: 1000;
+    width: 250px; /* Set a fixed width for the sidebar */
+    transition: left 0.3s ease-in-out; /* Smooth transition */
+  }
+
+  #sidebar.collapse.show {
+    left: 0; /* Show the sidebar when toggled */
+  }
+
+  .navbar-toggler {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1001;
+    margin: 0.75rem; /* Adjust spacing */
+    background-color: white; /* Add background for visibility */
+    border: 1px solid rgba(0, 0, 0, 0.1); /* Add border for better visibility */
+  }
+
+  main {
+    margin-top: 60px; /* Add margin to prevent content from overlapping the burger menu */
+  }
+}
+.navbar-toggler {
+  background-color: transparent !important; /* Remove background */
+  border: none !important; /* Remove border */
+}
+
+/* Ensure the burger menu icon is visible */
+.navbar-toggler-icon {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%280, 0, 0, 0.55%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+}

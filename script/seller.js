@@ -1,10 +1,22 @@
+
+//nada 
+function loadCSS(fileName) {
+  const existingLink = document.getElementById('user-specific-style');
+  if (existingLink) {
+    existingLink.remove();
+  }
+
+  const link = document.createElement('link');
+  link.rel = 'stylesheet';
+  link.type = 'text/css';
+  link.id = 'user-specific-style';
+  link.href = fileName; 
+  document.head.appendChild(link);
+}
 export const renderSellerContent = () => {
+  loadCSS('../styles/seller.css');
   return `
-    <h4>Welcome, Seller!</h4>
-    <p>Manage your products and sales:</p>
-    <ul>
-      <li>Product 1</li>
-      <li>Product 2</li>
-    </ul>
+    HTML
   `;
 };
+//js 
