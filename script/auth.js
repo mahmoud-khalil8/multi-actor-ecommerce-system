@@ -1,57 +1,8 @@
+import { initializeLocalStorage } from "./utils/localStorage.js";
 // Function to display messages on the page
 document.addEventListener('DOMContentLoaded', () => {
   console.log('DOM loaded');
-  // async function fetchCountries() {
-
-  //   try {
-  //       const response = await fetch('https://restcountries.com/v3.1/all');
-  //       const countries = await response.json();
-  //       const countrySelect = document.getElementById('country');
-  //       countries
-  //       .sort((a, b) => a.name.common.localeCompare(b.name.common)) // Sort alphabetically
-  //         .forEach(country => {
-  //           const option = document.createElement('option');
-  //           option.value = country.cca2; // Country code
-  //           option.textContent = country.name.common; // Country name
-  //           countrySelect.appendChild(option);
-  //         });
-  //       } catch (error) {
-  //         console.error('Error fetching countries:', error);
-  //       }
-  //     }
-
-  //   // Fetch and populate cities based on the selected country
-  //   async function fetchCities(countryCode) {
-  //     try {
-  //       const response = await fetch(`https://countriesnow.space/api/v0.1/countries/cities`, {
-  //         method: 'POST',
-  //         headers: {
-  //           'Content-Type': 'application/json',
-  //         },
-  //         body: JSON.stringify({ country: countryCode }),
-  //       });
-  //       const data = await response.json();
-  //       const citySelect = document.getElementById('city');
-  //       citySelect.innerHTML = '<option value="">Select a city</option>'; // Reset cities
-  //       if (data.data) {
-  //         data.data.forEach(city => {
-  //           const option = document.createElement('option');
-  //           option.value = city;
-  //           option.textContent = city;
-  //           citySelect.appendChild(option);
-  //         });
-  //       }
-  //     } catch (error) {
-  //       console.error('Error fetching cities:', error);
-  //     }
-  //   }
-
-  //   // Event listeners
-  //   document.addEventListener('DOMContentLoaded', fetchCountries);
-  //   document.getElementById('country').addEventListener('change', function () {
-  //     const countryName = this.options[this.selectedIndex].text;
-  //     if (countryName) fetchCities(countryName);
-  //   });
+ 
     
     function showMessage(elementId, message, type = 'danger') {
   const messageElement = document.getElementById(elementId);
@@ -67,9 +18,14 @@ if (signupForm) {
       e.preventDefault();
       const firstName = document.getElementById('firstName').value;
       const lastName = document.getElementById('lastName').value;
+      const country = document.getElementById('country').value;
+      const city = document.getElementById('city').value;
+      const address = country + ', ' + city;
+      const phoneNumber = document.getElementById('tel').value;
       const email = document.getElementById('signupEmail').value;
       const password = document.getElementById('signupPassword').value;
       const userType = document.getElementById('userType').value;
+
       
     const users = JSON.parse(localStorage.getItem('users')) || [];
     const emailExists = users.some(user => user.email === email);
@@ -78,9 +34,9 @@ if (signupForm) {
       return;
     }
     
-    const newUser = { firstName, lastName, email, password, userType };
-    users.push(newUser);
-    localStorage.setItem('users', JSON.stringify(users));
+    const newUser = { firstName, lastName,address,phoneNumber,email, password, userType };
+    //users.push(newUser);
+    localStorage.setItem('users', JSON.stringify(newUser));
     window.location.href = 'login.html';
   });
 }
@@ -99,9 +55,10 @@ if (loginForm) {
     const users = JSON.parse(localStorage.getItem('users')) || [];
     
     if (adminEmails.includes(email) && password === "123456") {
-      console.log("hi")
+      initializeLocalStorage();
       const adminUser = { firstName: "Admin", lastName: "Admin", email: email, password: password, userType: "admin" };
-      localStorage.setItem('user', JSON.stringify(adminUser));
+      
+      localStorage.setItem('users', JSON.stringify(adminUser));
       window.location.href = 'profile.html';
       return;
     }
@@ -109,6 +66,7 @@ if (loginForm) {
     const user = users.find(user => user.email === email && user.password === password);
     if (user) {
       localStorage.setItem('user', JSON.stringify(user));
+      initializeLocalStorage();
       window.location.href = 'profile.html';
     } else {
       showMessage('loginMessage', 'Invalid email or password.', 'danger');

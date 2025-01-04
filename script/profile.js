@@ -6,7 +6,7 @@ const mainWrapper = document.getElementById('mainWrapper');
 
 if (mainWrapper) {
   console.log('Profile page loaded!');
-  const user = JSON.parse(localStorage.getItem('user'));
+  const user = JSON.parse(localStorage.getItem('users'));
   if (user) {
 
     switch (user.userType) {
@@ -23,7 +23,7 @@ if (mainWrapper) {
         mainWrapper.innerHTML = `<p>Invalid user type. Please contact support.</p>`;
     }
   } else {
-    window.location.href = 'index.html';
+    // window.location.href = 'index.html';
   }
 }
 
