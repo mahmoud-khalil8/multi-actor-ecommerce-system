@@ -27,10 +27,12 @@
               <div class="mb-3">
                 <label for="firstName" class="form-label">First Name</label>
                 <input type="text" class="form-control" id="firstName" required>
+                    <span id="firstNameError" class="text-danger"></span>
               </div>
               <div class="mb-3">
                 <label for="lastName" class="form-label">Last Name</label>
                 <input type="text" class="form-control" id="lastName" required>
+                    <span id="lastNameError" class="text-danger"></span>
               </div>
 
             </div>
@@ -38,6 +40,7 @@
             <div class="mb-3">
               <label for="tel" class="form-label">Phone number</label>
               <input type="tel" class="form-control" id="tel" required>
+                 <span id="telError" class="text-danger"></span>                  
             </div>
 
             <div class="address">
@@ -47,6 +50,7 @@
                 <select  class="form-control" id="country" name="country" required>
                   <option value="">Select a country</option>
                 </select>
+                    <span id="countryError" class="text-danger"></span>
               </div>
 
               <div class="mb-3">
@@ -54,6 +58,7 @@
                 <select class="form-control" id="city" name="city" required>
                   <option value="">Select a city</option>
                 </select>
+                    <span id="cityError" class="text-danger"></span>
                 
               </div>
               
@@ -62,10 +67,12 @@
             <div class="mb-3">
               <label for="signupEmail" class="form-label">Email</label>
               <input type="email" class="form-control" id="signupEmail" required>
+                <span id="signupEmailError" class="text-danger"></span>
             </div>
             <div class="mb-3">
               <label for="signupPassword" class="form-label">Password</label>
               <input type="password" class="form-control" id="signupPassword" required>
+                <span id="signupPasswordError" class="text-danger"></span>
             </div>
             <div class="mb-3">
               <label for="userType" class="form-label">User Type</label>
@@ -73,6 +80,7 @@
                 <option value="customer">Customer</option>
                 <option value="Seller">Seller</option>
               </select>
+                  <span id="userTypeError" class="text-danger"></span>
             </div>
             <button type="submit" class="btn btn-primary w-100">Sign Up</button>
           </form>
@@ -81,7 +89,7 @@
       </div>
     </div>
   </div>
-  <script src="./script/auth.js"></script>
+  <script type="module" src="./script/auth.js"></script>
   <script src="./script/utils/countriesAndCities.js"></script>
 </body>
 </html>

@@ -1,13 +1,16 @@
+import { validateUserType,validateEmail,validateLocation,validateName,validatePassword,validatePhoneNumber } from "./utils/validation.js";
 import { initializeLocalStorage } from "./utils/localStorage.js";
 // Function to display messages on the page
 document.addEventListener('DOMContentLoaded', () => {
   console.log('DOM loaded');
  
     
-    function showMessage(elementId, message, type = 'danger') {
+function showMessage(elementId, message, type = "danger") {
   const messageElement = document.getElementById(elementId);
-  messageElement.textContent = message;
-  messageElement.className = `text-${type}`; // Add class for text color
+  if (messageElement) {
+    messageElement.textContent = message;
+    messageElement.className = `text-${type}`; // Add class for text color
+  }
 }
 
 
@@ -16,6 +19,8 @@ const signupForm = document.getElementById('signupForm');
 if (signupForm) {
     signupForm.addEventListener('submit', (e) => {
       e.preventDefault();
+
+
       const firstName = document.getElementById('firstName').value;
       const lastName = document.getElementById('lastName').value;
       const country = document.getElementById('country').value;
@@ -26,18 +31,85 @@ if (signupForm) {
       const password = document.getElementById('signupPassword').value;
       const userType = document.getElementById('userType').value;
 
-      
-    const users = JSON.parse(localStorage.getItem('users')) || [];
-    const emailExists = users.some(user => user.email === email);
-    if (emailExists) {
-      showMessage('signupMessage', 'Email already exists. Please use a different email.', 'danger');
-      return;
+
+      const firstNameError = validateName(firstName, "First name");
+    const lastNameError = validateName(lastName, "Last name");
+    const countryError = validateLocation(country, "Country");
+    const cityError = validateLocation(city, "City");
+    const phoneNumberError = validatePhoneNumber(phoneNumber);
+    const emailError = validateEmail(email);
+    const passwordError = validatePassword(password);
+    const userTypeError = validateUserType(userType);
+if (firstNameError) {
+      showMessage("firstNameError", firstNameError, "danger");
+    } else {
+      showMessage("firstNameError", "", "danger");
     }
-    
-    const newUser = { firstName, lastName,address,phoneNumber,email, password, userType };
-    //users.push(newUser);
-    localStorage.setItem('users', JSON.stringify(newUser));
-    window.location.href = 'login.html';
+
+    if (lastNameError) {
+      showMessage("lastNameError", lastNameError, "danger");
+    } else {
+      showMessage("lastNameError", "", "danger");
+    }
+
+    if (countryError) {
+      showMessage("countryError", countryError, "danger");
+    } else {
+      showMessage("countryError", "", "danger");
+    }
+
+    if (cityError) {
+      showMessage("cityError", cityError, "danger");
+    } else {
+      showMessage("cityError", "", "danger");
+    }
+
+    if (phoneNumberError) {
+      showMessage("telError", phoneNumberError, "danger");
+    } else {
+      showMessage("telError", "", "danger");
+    }
+
+    if (emailError) {
+      showMessage("signupEmailError", emailError, "danger");
+    } else {
+      showMessage("signupEmailError", "", "danger");
+    }
+
+    if (passwordError) {
+      showMessage("signupPasswordError", passwordError, "danger");
+    } else {
+      showMessage("signupPasswordError", "", "danger");
+    }
+
+    if (userTypeError) {
+      showMessage("userTypeError", userTypeError, "danger");
+    } else {
+      showMessage("userTypeError", "", "danger");
+    }
+ // If no errors, proceed with form submission
+    if (
+      !firstNameError &&
+      !lastNameError &&
+      !countryError &&
+      !cityError &&
+      !phoneNumberError &&
+      !emailError &&
+      !passwordError &&
+      !userTypeError
+    ) {
+      const users = JSON.parse(localStorage.getItem("users")) || [];
+      const emailExists = users.some((user) => user.email === email);
+      if (emailExists) {
+        showMessage("signupMessage", "Email already exists. Please use a different email.", "danger");
+        return;
+      }
+
+      const newUser = { firstName, lastName, address, phoneNumber, email, password, userType };
+      users.push(newUser);
+      localStorage.setItem("users", JSON.stringify(users));
+      window.location.href = "login.html";
+    }
   });
 }
 
