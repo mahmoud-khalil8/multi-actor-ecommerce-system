@@ -6,10 +6,11 @@ const mainWrapper = document.getElementById('mainWrapper');
 
 if (mainWrapper) {
   console.log('Profile page loaded!');
-  const user = JSON.parse(localStorage.getItem('users'));
+  const user = JSON.parse(localStorage.getItem('currentUser'));
+  console.log(user)
   if (user) {
 
-    switch (user.userType) {
+    switch (user.role) {
       case 'customer':
         mainWrapper.innerHTML = renderCustomerContent();
         break;

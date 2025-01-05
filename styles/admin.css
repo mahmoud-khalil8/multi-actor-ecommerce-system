@@ -3,8 +3,13 @@ body {
 }
 
 .sidebar {
-  height: 100vh;
-  border-right: 1px solid #ddd;
+  height: 100vh; /* Full viewport height */
+  position: fixed; /* Keep it fixed in place */
+  top: 0;
+  left: 0;
+  overflow-y: auto; /* Enable scrolling if content overflows */
+  background-color: #f8f9fa; /* Background color for the sidebar */
+  width: 250px; /* Set sidebar width */
 }
 
 .sidebar .nav-link {
@@ -22,54 +27,64 @@ body {
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
+.nav-item{
+  margin-left: 10px;
+  margin-bottom: 20px;
+  font-size: 16px;
 
-/* Table Styling */
-.table {
-  margin-bottom: 0;
+}
+.nav-link:hover{
+  background-color: #FBEBB5;
+  border-radius: 8px;
+}
+.backToHomeBtn{
+  margin-left: 10px;
+  margin-bottom: 20px;
+  font-size: 16px;
+  background-color: #FBEBB5;
+  border-radius: 8px;
+}
+.backToHomeBtn a{
+  text-decoration: none;
+  color: black;
 }
 
+.logoImg{
+  width: 160px;
+  height: 160px;
+}
+
+
+
+.card1{
+  background-color: #f5fcfd;
+}
+.card2{
+  background-color: #f5fdf6;
+}
+.card3{
+  background-color: #f6f5fd;
+}
+
+.charts-and-lists .card {
+  margin-bottom: 1.5rem;
+}
+.card {
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+#polarAreaChart {
+  max-height: 300px;
+}
+/* Table styling */
 .table thead th {
-  background-color:cornsilk;
-  color: rgb(27, 27, 23);
-  font-weight: bold;
-  border-bottom: 2px solid #505545;
-}
-
-.table tbody tr:hover {
   background-color: #f1f1f1;
 }
-
-/* Avatar Styling */
-.customer-avatar {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  margin-right: 10px;
+.table tbody tr:nth-child(even) {
+  background-color: #f9f9f9;
 }
-
-/* Status Indicators */
-.status-active {
-  color: green;
-  font-weight: bold;
-}
-
-.status-inactive {
-  color: gray;
-  font-weight: bold;
-}
-
-.status-suspended {
-  color: red;
-  font-weight: bold;
-}
-
-/* Button Styling */
-.btn-sm {
-  padding: 5px 10px;
-  font-size: 12px;
-  margin: 2px;
-}
-
 
 
 /* Custom CSS for Mobile View */

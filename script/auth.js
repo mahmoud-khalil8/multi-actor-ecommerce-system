@@ -1,199 +1,234 @@
-import { validateUserType,validateEmail,validateLocation,validateName,validatePassword,validatePhoneNumber } from "./utils/validation.js";
-import { initializeLocalStorage } from "./utils/localStorage.js";
-// Function to display messages on the page
-document.addEventListener('DOMContentLoaded', () => {
-  console.log('DOM loaded');
- 
-    
+import { localStorageInitializer } from "./utils/localStorage.js";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js";
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  sendPasswordResetEmail,
+} from "https://www.gstatic.com/firebasejs/11.1.0/firebase-auth.js";
+import {
+  validateUserType,
+  validateEmail,
+  validateLocation,
+  validateName,
+  validatePassword,
+  validatePhoneNumber,
+} from "./utils/validation.js";
+
+// Initialize local storage (Singleton ensures it runs only once)
+localStorageInitializer;
+
+// Firebase configuration
+const firebaseConfig = {
+  apiKey: "AIzaSyAGLNwqUDP66mgoYzqvFaQ2YPuzADCCsLs",
+  authDomain: "ecommerce-c5d40.firebaseapp.com",
+  projectId: "ecommerce-c5d40",
+  storageBucket: "ecommerce-c5d40.firebasestorage.app",
+  messagingSenderId: "854550212095",
+  appId: "1:854550212095:web:890e6224b059ea66674bca",
+  measurementId: "G-7N198PN05F",
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+
+// Function to display messages
 function showMessage(elementId, message, type = "danger") {
   const messageElement = document.getElementById(elementId);
   if (messageElement) {
     messageElement.textContent = message;
-    messageElement.className = `text-${type}`; // Add class for text color
+    messageElement.className = `text-${type}`;
   }
 }
 
-
-// Signup Form Submission
-const signupForm = document.getElementById('signupForm');
+// Sign-Up Functionality
+const signupForm = document.getElementById("signupForm");
 if (signupForm) {
-    signupForm.addEventListener('submit', (e) => {
-      e.preventDefault();
+  signupForm.addEventListener("submit", (e) => {
+    e.preventDefault();
 
+    const firstName = document.getElementById("firstName").value;
+    const lastName = document.getElementById("lastName").value;
+    const email = document.getElementById("signupEmail").value;
+    const password = document.getElementById("signupPassword").value;
+    const country = document.getElementById("country").value;
+    const city = document.getElementById("city").value;
+    const phoneNumber = document.getElementById("tel").value;
+    const userType = document.getElementById("userType").value;
 
-      const firstName = document.getElementById('firstName').value;
-      const lastName = document.getElementById('lastName').value;
-      const country = document.getElementById('country').value;
-      const city = document.getElementById('city').value;
-      const address = country + ', ' + city;
-      const phoneNumber = document.getElementById('tel').value;
-      const email = document.getElementById('signupEmail').value;
-      const password = document.getElementById('signupPassword').value;
-      const userType = document.getElementById('userType').value;
+    const address = `${country}, ${city}`;
 
-
-      const firstNameError = validateName(firstName, "First name");
+    // Validate fields
+    const firstNameError = validateName(firstName, "First name");
     const lastNameError = validateName(lastName, "Last name");
-    const countryError = validateLocation(country, "Country");
-    const cityError = validateLocation(city, "City");
-    const phoneNumberError = validatePhoneNumber(phoneNumber);
     const emailError = validateEmail(email);
     const passwordError = validatePassword(password);
-    const userTypeError = validateUserType(userType);
-if (firstNameError) {
-      showMessage("firstNameError", firstNameError, "danger");
-    } else {
-      showMessage("firstNameError", "", "danger");
+    const addressError = validateLocation(address, "Address");
+    const phoneNumberError = validatePhoneNumber(phoneNumber);
+
+    if(firstNameError){
+      showMessage("signupMessage", firstNameError, "danger");
+      return;
+    }
+    if(lastNameError){
+      showMessage("signupMessage", lastNameError, "danger");
+      return;
+    }
+    if(emailError){
+      showMessage("signupMessage", emailError, "danger");
+      return;
+    }
+    if(passwordError){
+
+      showMessage("signupMessage", passwordError, "danger");
+      return;
+    }
+    if(addressError){
+      showMessage("signupMessage", addressError, "danger");
+      return;
+    }
+    if(phoneNumberError){
+      showMessage("signupMessage", phoneNumberError, "danger");
+      return;
     }
 
-    if (lastNameError) {
-      showMessage("lastNameError", lastNameError, "danger");
-    } else {
-      showMessage("lastNameError", "", "danger");
-    }
 
-    if (countryError) {
-      showMessage("countryError", countryError, "danger");
-    } else {
-      showMessage("countryError", "", "danger");
-    }
+   
+    // Create user with Firebase
+    createUserWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        const user = userCredential.user;
 
-    if (cityError) {
-      showMessage("cityError", cityError, "danger");
-    } else {
-      showMessage("cityError", "", "danger");
-    }
+        // Save user data to local storage
+        const newUser = {
+          id: Date.now(), // Unique ID
+          role: userType, // Role (e.g., customer, seller, admin)
+          name: `${firstName} ${lastName}`,
+          email: email,
+          password: password, // Note: In a real app, never store plain-text passwords
+          address: address, // Save address
+          phoneNumber: phoneNumber, // Save phone number
+          orders: [], // Initialize empty orders array
+          products: [], // Initialize empty products array (for sellers)
+          
+        };
 
-    if (phoneNumberError) {
-      showMessage("telError", phoneNumberError, "danger");
-    } else {
-      showMessage("telError", "", "danger");
-    }
+        // Get existing users from local storage
+        const users = JSON.parse(localStorage.getItem("users")) || [];
 
-    if (emailError) {
-      showMessage("signupEmailError", emailError, "danger");
-    } else {
-      showMessage("signupEmailError", "", "danger");
-    }
+        // Add the new user to the users array
+        users.push(newUser);
 
-    if (passwordError) {
-      showMessage("signupPasswordError", passwordError, "danger");
-    } else {
-      showMessage("signupPasswordError", "", "danger");
-    }
+        // Save the updated users array back to local storage
+        localStorage.setItem("users", JSON.stringify(users));
 
-    if (userTypeError) {
-      showMessage("userTypeError", userTypeError, "danger");
-    } else {
-      showMessage("userTypeError", "", "danger");
-    }
- // If no errors, proceed with form submission
-    if (
-      !firstNameError &&
-      !lastNameError &&
-      !countryError &&
-      !cityError &&
-      !phoneNumberError &&
-      !emailError &&
-      !passwordError &&
-      !userTypeError
-    ) {
-      const users = JSON.parse(localStorage.getItem("users")) || [];
-      const emailExists = users.some((user) => user.email === email);
-      if (emailExists) {
-        showMessage("signupMessage", "Email already exists. Please use a different email.", "danger");
-        return;
-      }
+        // Save the new user as the current user
+        localStorage.setItem("currentUser", JSON.stringify(newUser));
 
-      const newUser = { firstName, lastName, address, phoneNumber, email, password, userType };
-      users.push(newUser);
-      localStorage.setItem("users", JSON.stringify(users));
-      window.location.href = "login.html";
-    }
+        showMessage("signupMessage", "Sign-up successful! Redirecting...", "success");
+        setTimeout(() => {
+          window.location.href = "profile.html";
+        }, 2000);
+      })
+      .catch((error) => {
+        showMessage("signupMessage", error.message, "danger");
+      });
   });
 }
 
-const loginForm = document.getElementById('loginForm');
-console.log(loginForm)
+// Login Functionality
+const loginForm = document.getElementById("loginForm");
 if (loginForm) {
-  console.log('from login form')
-  loginForm.addEventListener('submit', (e) => {
+  loginForm.addEventListener("submit", (e) => {
     e.preventDefault();
-    console.log("hi")
-    const email = document.getElementById('loginEmail').value;
-    const password = document.getElementById('loginPassword').value;
-    
-    const adminEmails = ["mahmoud@gmail.com"];
-    const users = JSON.parse(localStorage.getItem('users')) || [];
-    
-    if (adminEmails.includes(email) && password === "123456") {
-      initializeLocalStorage();
-      const adminUser = { firstName: "Admin", lastName: "Admin", email: email, password: password, userType: "admin" };
-      
-      localStorage.setItem('users', JSON.stringify(adminUser));
-      window.location.href = 'profile.html';
+
+    const email = document.getElementById("loginEmail").value;
+    const password = document.getElementById("loginPassword").value;
+
+    // Hardcoded admin credentials (for demonstration purposes)
+    if (email === "mahmoud@gmail.com" && password === "123456") {
+      const adminUser = {
+        id: 0, // Unique ID for admin
+        role: "admin",
+        name: "Admin User",
+        email: email,
+        password: password, // Note: In a real app, never store plain-text passwords
+        address: "", // Add address if available
+        phoneNumber: "", // Add phone number if available
+        orders: [],
+        products: [],
+      };
+
+      // Save admin user to local storage
+      localStorage.setItem("currentUser", JSON.stringify(adminUser));
+      window.location.href = "profile.html";
       return;
     }
-    
-    const user = users.find(user => user.email === email && user.password === password);
-    if (user) {
-      localStorage.setItem('user', JSON.stringify(user));
-      initializeLocalStorage();
-      window.location.href = 'profile.html';
-    } else {
-      showMessage('loginMessage', 'Invalid email or password.', 'danger');
-    }
-  });
-}// Function to display messages on the page
 
-// Forgot Password Form Submission
-const forgotPasswordForm = document.getElementById('forgotPasswordForm');
+    // Sign in with Firebase
+    signInWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        const user = userCredential.user;
+
+        // Get existing users from local storage
+        const users = JSON.parse(localStorage.getItem("users")) || [];
+
+        // Find the user in the users array
+        const existingUser = users.find((u) => u.email === email);
+
+        if (existingUser) {
+          // Save the user data to local storage
+          localStorage.setItem("currentUser", JSON.stringify(existingUser));
+        } else {
+          // If the user doesn't exist in local storage, create a new entry
+          const newUser = {
+            id: Date.now(), // Unique ID
+            role: "customer", // Default role
+            name: "", // Add name if available
+            email: email,
+            password: password, // Note: In a real app, never store plain-text passwords
+            address: "", // Add address if available
+            phoneNumber: "", // Add phone number if available
+            orders: [], // Initialize empty orders array
+            products: [], // Initialize empty products array (for sellers)
+          };
+
+          // Add the new user to the users array
+          users.push(newUser);
+
+          // Save the updated users array back to local storage
+          localStorage.setItem("users", JSON.stringify(users));
+
+          // Save the new user as the current user
+          localStorage.setItem("currentUser", JSON.stringify(newUser));
+        }
+
+        showMessage("loginMessage", "Sign-in successful! Redirecting...", "success");
+        setTimeout(() => {
+          window.location.href = "profile.html";
+        }, 2000);
+      })
+      .catch((error) => {
+        showMessage("loginMessage", error.message, "danger");
+      });
+  });
+}
+
+// Forgot Password Functionality
+const forgotPasswordForm = document.getElementById("forgotPasswordForm");
 if (forgotPasswordForm) {
-  forgotPasswordForm.addEventListener('submit', (e) => {
+  forgotPasswordForm.addEventListener("submit", (e) => {
     e.preventDefault();
-    const email = document.getElementById('forgotPasswordEmail').value;
 
-    const users = JSON.parse(localStorage.getItem('users')) || [];
-    const user = users.find(user => user.email === email);
+    const email = document.getElementById("forgotPasswordEmail").value;
 
-    if (user) {
-      // Redirect to reset password page with email as a query parameter
-      window.location.href = `reset-password.html?email=${encodeURIComponent(email)}`;
-    } else {
-      showMessage('Email not found. Please check your email address.', 'danger');
-    }
+    sendPasswordResetEmail(auth, email)
+      .then(() => {
+        showMessage("resetPasswordMessage", "Password reset email sent. Check your inbox.", "success");
+      })
+      .catch((error) => {
+        showMessage("resetPasswordMessage", error.message, "danger");
+      });
   });
 }
-
-// Reset Password Form Submission
-const resetPasswordForm = document.getElementById('resetPasswordForm');
-if (resetPasswordForm) {
-  resetPasswordForm.addEventListener('submit', (e) => {
-    e.preventDefault();
-    const newPassword = document.getElementById('newPassword').value;
-    const confirmPassword = document.getElementById('confirmPassword').value;
-    
-    if (newPassword !== confirmPassword) {
-      showMessage('Passwords do not match.', 'danger');
-      return;
-    }
-    
-    const urlParams = new URLSearchParams(window.location.search);
-    const email = urlParams.get('email');
-    
-    const users = JSON.parse(localStorage.getItem('users')) || [];
-    const userIndex = users.findIndex(user => user.email === email);
-    
-    if (userIndex !== -1) {
-      users[userIndex].password = newPassword;
-      localStorage.setItem('users', JSON.stringify(users));
-      showMessage('Password reset successfully. You can now login with your new password.', 'success');
-      setTimeout(() => {
-        window.location.href = 'login.html';
-      }, 2000); // Redirect after 2 seconds
-    } else {
-      showMessage('User not found.', 'danger');
-    }
-  });
-}
-});

@@ -16,7 +16,7 @@ function loadCSS(fileName) {
 export const renderSellerContent = () => {
   loadCSS('../styles/seller.css');
   return `
-    HTML
+    <h1>Seller Dashboard</h1>
   `;
 };
 //js 
