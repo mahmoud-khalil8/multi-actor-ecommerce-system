@@ -1,0 +1,230 @@
+/* general */
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font-family: "League Spartan", serif;
+  }
+  body {
+    overflow-x: hidden;
+    margin: 0;
+  }
+  
+  h1,h2,h4{
+    color: #222;
+  }
+  p{
+    color: rgb(144, 143, 143);
+  }
+  /* header */
+  #header{
+  position: sticky;
+  left: 0;
+  top: 0;
+  z-index: 100;
+  }
+  nav{
+  background-color:rgba(255, 249, 229, 1);
+  
+  }
+  #searchForm {
+    position: relative;
+    max-width: 900px; /* Optional: Limit max width */
+  }
+  
+  #searchInput {
+    border: none;
+    background-color: #FFFFFF;
+    border-radius: 10px;
+  }
+  @media (max-width: 992px) {
+    .navbar-nav .nav-item:not(:last-child) {
+      border-bottom: 2px solid #FFFFFF !important;
+    }
+  
+  
+  }
+  #results {
+    margin-top: 20px;
+  }
+  .btn-close {
+    margin-left: 10px;
+  }
+  .navbar-toggler {
+    padding: var(--bs-navbar-toggler-padding-y) var(--bs-navbar-toggler-padding-x);
+    font-size: var(--bs-navbar-toggler-font-size);
+    line-height: 1;
+    color: transparent;
+    background-color: transparent;
+    border: none;
+    border-radius: var(--bs-navbar-toggler-border-radius);
+    transition: var(--bs-navbar-toggler-transition);
+    /* display: none; */
+}
+
+ /* header */
+
+  /* products-container */
+  #products-container {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+  }
+  
+  .category-container {
+    background-color: #FFFFFF;
+    /* border: 1px solid #ddd; */
+    border-radius: 10px;
+    padding: 20px;
+  }
+  
+  .category-title {
+    font-size: 1.8rem;
+    color: #333;
+    margin-bottom: 15px;
+    text-transform: capitalize;
+  font-weight: bold;
+  }
+  
+  .products-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+  }
+  
+  .product-item {
+    width: 200px;
+    padding: 10px;
+    background-color: #FFFFFF;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: 1px solid #eee;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    border-radius: 10px;
+    text-align: center;
+  }
+  
+  .product-item:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+  }
+  
+  .product-item img {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 5px;
+  }
+  
+  .product-item h5 {
+    margin: 10px 0;
+    font-size: 1rem;
+  }
+  
+  .star {
+    color: #f5c518;
+    margin: 10px 0;
+  }
+  #products-container .fa-cart-shopping{
+    background-color: #ddd;
+    padding: 8px;
+    border-radius: 50%;
+  }
+   /* products-container */
+   
+   /* pagination buttons */
+  .pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+    gap: 10px;
+  }
+  
+  .pagination-button {
+    padding: 10px 25px;
+    background-color: rgb(255, 244, 209);
+    color: #222;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-bottom: 10px;
+    transition: transform 0.3s ease; 
+  }
+  
+  .pagination-button:hover {
+    transform: scale(1.06);
+  }
+  
+  .pagination-button.active {
+    text-decoration: underline;
+  }
+ 
+   /* pagination buttons */
+  
+  
+    /* product display in search */
+    .card {
+      margin-left: 50px;
+      background-color: #ffffff;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    
+    .card:hover {
+      transform: translateY(-5px); /* Slight lift effect on hover */
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15); /* Enhanced shadow on hover */
+    }
+    
+    .card-body {
+      padding: 15px;
+    }
+    
+    .card-body .card-title {
+      font-size: 1.2rem;
+      font-weight: bold;
+      color: #333;
+      margin-bottom: 10px;
+    }
+    
+    .card-body .card-text {
+      font-size: 1rem;
+      color: #777;
+      margin-bottom: 10px;
+    }
+    
+    .add {
+      padding: 10px 15px;
+      background-color: #f8f9fa;
+    }
+    
+    .add .btn {
+      background-color: #ffc107;
+      color: white;
+      font-weight: bold;
+      border-radius: 8px;
+      padding: 10px;
+      font-size: 1rem;
+      transition: background-color 0.3s ease;
+    }
+    
+    .add .btn:hover {
+      background-color: #e0a800; /* Darker yellow on hover */
+    }
+    
+    .add .btn:focus {
+      outline: none; /* Remove button outline on focus */
+    }
+    
+    .card img {
+      border-radius: 10px;
+    }
+    
+    @media (max-width: 768px) {
+      .card {
+        margin: 10px; /* Smaller margins on smaller screens */
+      }
+    }
+    /* product display in search */
+    

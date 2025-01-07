@@ -1,3 +1,4 @@
+/* general */
 *{
     padding: 0;
     margin: 0;
@@ -15,6 +16,8 @@ body {
   p{
     color: rgb(144, 143, 143);
   }
+  /* general */
+  
   /* header */
 #header{
   position: sticky;
@@ -43,6 +46,10 @@ nav{
   }
 
 }
+
+/* header */
+
+
 /* landing */
 
 #landing {
@@ -88,10 +95,7 @@ nav{
   border: none;
   border: 1px solid transparent;
   border-radius: 15px;
-  /* background-color:#FBEBB5 ; */
-  /* background-color: rgba(255, 249, 229, 1); very important  */
   background-color: rgba(255, 249, 229, 1);
-
   padding: 4px;
 }
 #landing button a{
@@ -108,6 +112,7 @@ nav{
   background-color: #222;
   height: 1.5px;
 }
+/* landing */
 
 /* features */
 .main-feature {
@@ -134,14 +139,13 @@ nav{
   color: #222;
   background-color:#FBEBB5;
 }
+/* features */
+
 
 /* products */
 #products,#secondproducts{
   padding-top: 40px;
-  /* background-color: #f6f3f3; */
-  /* background-color: #ffefd9; */
   background-color: #FFFFFF;
-
   padding-bottom: 40px;
 }
 #products h2,#secondproducts h2 {
@@ -180,6 +184,9 @@ nav{
     padding: 8px;
     border-radius: 50%;
   }
+/* products */
+
+
   /* promotion  */
   .promotion .container{
     display: flex;
@@ -206,19 +213,19 @@ nav{
     color: #FFFFFF;
   }
   .promotion .one{
-    background-image: url(b17.jpg);
+    background-image: url(/assets/images/b17.jpg);
     background-repeat: no-repeat;
   }
   .promotion .two{
-    background-image: url(b7.jpg);
+    background-image: url(/assets/images/b7.jpg);
     background-repeat: no-repeat;
   }
   .promotion .three{
-    background-image: url(b10.jpg);
+    background-image: url(/assets/images/b10.jpg);
     background-repeat: no-repeat;
   }
   .promotion .four{
-    background-image: url(b18.jpg);
+    background-image: url(/assets/images/b18.jpg);
     background-repeat: no-repeat;
   }
   @media (max-width:570px) {
@@ -250,23 +257,8 @@ nav{
   }
   /* promotion */
 
-/* footer 
-#footer{
-  /* background-color: rgba(255, 249, 229, 1); very important  */
 
-  /* background-color: #FFFFFF; 
-  background-color: #fbf2d5;
-  padding: 15px;
-}
-#footer .row > div {
-  padding: 10px;
-}
-#footer .install a {
- text-decoration: none;
- margin-right: 10px;
- color:  rgb(144, 143, 143);
-}
- */
+/* footer */
  #footer {
   background-color: rgba(255, 249, 229, 1); /* Warm beige background */
   padding: 30px 15px;
