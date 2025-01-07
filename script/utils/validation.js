@@ -1,68 +1,42 @@
-export function validateName(name, fieldName) {
-  if (!name.trim()) {
-    return `${fieldName} is required.`;
+// utils.js
+export function showMessage(elementId, message, type = "danger") {
+  const messageElement = document.getElementById(elementId);
+  if (messageElement) {
+    messageElement.textContent = message;
+    messageElement.className = `text-${type}`;
   }
-  if (!/^[A-Za-z\s]+$/.test(name)) {
-    return `${fieldName} should contain only letters and spaces.`;
-  }
-  return null; // No error
 }
 
-// Function to validate country and city
-export function validateLocation(location, fieldName) {
-  if (!location.trim()) {
-    return `${fieldName} is required.`;
-  }
-  return null; // No error
+export function validateForm(data) {
+  const errors = [];
+  if (!validateName(data.firstName)) errors.push("Invalid first name.");
+  if (!validateName(data.lastName)) errors.push("Invalid last name.");
+  if (!validateEmail(data.email)) errors.push("Invalid email.");
+  if (!validatePassword(data.password)) errors.push("Invalid password.");
+  if (!validateLocation(data.address)) errors.push("Invalid address.");
+  if (!validatePhoneNumber(data.phoneNumber)) errors.push("Invalid phone number.");
+  return errors;
 }
 
-// Function to validate phone number
-export function validatePhoneNumber(phoneNumber) {
-  if (!phoneNumber.trim()) {
-    return "Phone number is required.";
-  }
-  if (!/^\d{3}-\d{3}-\d{4}$/.test(phoneNumber)) {
-    return "Phone number should be in the format 123-456-7890.";
-  }
-  return null; // No error
+// Validation functions
+function validateName(name) {
+  return name && name.length >= 2;
 }
 
-// Function to validate email
-export function validateEmail(email) {
-  if (!email.trim()) {
-    return "Email is required.";
-  }
-  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-    return "Invalid email format.";
-  }
-  return null; // No error
+function validateEmail(email) {
+  const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return regex.test(email);
 }
 
-// Function to validate password
-export function validatePassword(password) {
-  if (!password.trim()) {
-    return "Password is required.";
-  }
-  if (password.length < 8) {
-    return "Password must be at least 8 characters long.";
-  }
-  if (!/[A-Z]/.test(password)) {
-    return "Password must contain at least one uppercase letter.";
-  }
-  if (!/[a-z]/.test(password)) {
-    return "Password must contain at least one lowercase letter.";
-  }
-  if (!/[0-9]/.test(password)) {
-    return "Password must contain at least one number.";
-  }
-  if (!/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(password)) {
-    return "Password must contain at least one special character.";
-  }
-  return null; // No error
+function validatePassword(password) {
+  return password && password.length >= 6;
 }
-export function validateUserType(userType) {
-  if (!userType) {
-    return "User type is required.";
-  }
-  return null; // No error
+
+function validateLocation(location) {
+  return location && location.length >= 5;
+}
+
+function validatePhoneNumber(phoneNumber) {
+  const regex = /^\d{10}$/;
+  return regex.test(phoneNumber);
 }

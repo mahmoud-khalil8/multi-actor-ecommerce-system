@@ -1,0 +1,96 @@
+{
+  "initialized": "true", 
+  "data": {
+    "users": [
+      {
+        "id": "uid1",
+        "role": "customer",
+        "name": "John Doe",
+        "email": "john@example.com",
+        "address": "123 Main St, City, Country",
+        "phoneNumber": "123-456-7890",
+        "orders": ["order1"],
+        "products": [],
+        "createdAt": "2024-01-01T00:00:00Z"
+      },
+      {
+        "id": "uid2",
+        "role": "seller",
+        "name": "Jane Smith",
+        "email": "jane@example.com",
+        "address": "456 Elm St, Town, Country",
+        "phoneNumber": "987-654-3210",
+        "orders": [],
+        "products": ["product1", "product2"],
+        "createdAt": "2024-01-01T00:00:00Z"
+      }
+    ],
+    "products": [
+      {
+        "id": "product1",
+        "sellerId": "uid2",
+        "name": "Wireless Headphones",
+        "description": "Noise-cancelling wireless headphones.",
+        "price": 99.99,
+        "image": "headphones.jpg",
+        "category": "Electronics",
+        "stock": 50,
+        "status": "Approved",
+        "createdAt": "2024-01-01T00:00:00Z"
+      },
+      {
+        "id": "product2",
+        "sellerId": "uid2",
+        "name": "Smartwatch",
+        "description": "Fitness and health tracking smartwatch.",
+        "price": 149.99,
+        "image": "smartwatch.jpg",
+        "category": "Electronics",
+        "stock": 30,
+        "status": "Pending",
+        "createdAt": "2024-01-01T00:00:00Z"
+      }
+    ],
+    "orders": [
+      {
+        "id": "order1",
+        "userId": "uid1",
+        "sellerId": "uid2",
+        "items": [
+          {
+            "productId": "product1",
+            "quantity": 2,
+            "price": 99.99
+          }
+        ],
+        "total": 199.98,
+        "shippingAddress": "123 Main St, City, Country",
+        "paymentMethod": "Credit Card",
+        "status": "Delivered",
+        "createdAt": "2024-01-01T00:00:00Z"
+      }
+    ],
+    "cart": [
+      {
+        "userId": "uid1",
+        "items": [
+          {
+            "productId": "product2",
+            "quantity": 1,
+            "price": 149.99
+          }
+        ],
+        "total": 149.99
+      }
+    ]
+  },
+  "currentUser": {
+    "id": "uid1",
+    "role": "customer",
+    "name": "John Doe",
+    "email": "john@example.com",
+    "address": "123 Main St, City, Country",
+    "phoneNumber": "123-456-7890",
+    "createdAt": "2024-01-01T00:00:00Z"
+  }
+}
