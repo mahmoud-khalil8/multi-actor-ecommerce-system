@@ -1,6 +1,11 @@
 // best seller 
-fetch('https://dummyjson.com/products?limit=100')
-  .then(response => response.json()) // Convert response to JSON
+fetch('script/api.json')
+.then(response => {
+  if (!response.ok) {
+    throw new Error('Failed to fetch ' + response.statusText);
+  }
+  return response.json();
+})
   .then(data => {
     const products = data.products; // Get all products
 
@@ -50,6 +55,7 @@ fetch('https://dummyjson.com/products?limit=100')
       // Add cart symbol
       const link = document.createElement("a");
       link.href = "#"; // go to cart
+      link.className="addtocartsympol"
       const sympol = document.createElement("i");
       sympol.className = `fa-solid fa-cart-shopping`;
       sympol.style.color = `#323232`;
@@ -60,14 +66,22 @@ fetch('https://dummyjson.com/products?limit=100')
       // Append the product to the container
       container.appendChild(productDiv);
     });
+
+    // Redirect to login page for cart symbol if not logged in
+      checkLoginBeforeCart()
   })
   .catch(error => console.error('Error fetching products:', error)); // Handle errors
 
 
 
   // random 
-  fetch('https://dummyjson.com/products?limit=100')
-  .then(response => response.json()) // Convert response to JSON
+  fetch('script/api.json')
+  .then(response => {
+    if (!response.ok) {
+      throw new Error('Failed to fetch ' + response.statusText);
+    }
+    return response.json();
+  })
   .then(data => {
     const products = data.products; // Get all products
     const shuffledProducts = products.sort(() => 0.5 - Math.random()); // Shuffle the products array randomly
@@ -116,6 +130,7 @@ fetch('https://dummyjson.com/products?limit=100')
       // Add cart symbol
       const link = document.createElement("a");
       link.href = "#"; // go to cart
+      link.className="addtocartsympol";
       const sympol = document.createElement("i");
       sympol.className = `fa-solid fa-cart-shopping`;
       sympol.style.color = `#323232`;
@@ -126,5 +141,27 @@ fetch('https://dummyjson.com/products?limit=100')
       // Append the product to the container
       container.appendChild(productDiv);
     });
+
+    // Redirect to login page for cart symbol if not logged in
+     checkLoginBeforeCart();
   })
   .catch(error => console.error('Error fetching products:', error)); // Handle errors
+ 
+
+
+
+  // display login button if isn't in local storage 
+let loginbutton=document.getElementById("loginbutton")
+if(!(localStorage.getItem("currentUser"))){
+  loginbutton.style.display="block";
+}
+
+    // Redirect to login page for cart symbol if not logged in
+function checkLoginBeforeCart(){
+  if (!(localStorage.getItem("currentUser"))) {
+    const cartSymbols = document.getElementsByClassName("addtocartsympol");
+    for (let i = 0; i < cartSymbols.length; i++) {
+      cartSymbols[i].href = "login.html";
+    }
+  }
+}
