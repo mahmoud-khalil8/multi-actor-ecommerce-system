@@ -89,6 +89,8 @@ function displayPage(page) {
   
         const link = document.createElement("a");
         link.href = "#"; // Placeholder for cart functionality
+        link.className="addtocartsympol";
+
         const sympol = document.createElement("i");
         sympol.className = "fa-solid fa-cart-shopping";
         sympol.style.color = '#323232';
@@ -100,10 +102,14 @@ function displayPage(page) {
   
         productsDiv.appendChild(productDiv);
       });
+      
   
       categoryDiv.appendChild(productsDiv);
       container.appendChild(categoryDiv);
+    // Redirect to login page for cart symbol if not logged in
+    checkLoginBeforeCart();
     });
+  
   
     // Scroll the page to the top
     window.scrollTo(0, 0);
@@ -132,74 +138,86 @@ function createPaginationButtons() {
 }
 
 // Fetch and display products
-fetchAndDisplayProducts("https://dummyjson.com/products?limit=100");
+fetchAndDisplayProducts(`script/api.json`);
 
 
   // search
-      
- 
   // Attach event listener to the form
-  document.getElementById('searchForm').addEventListener('submit', async function (event) {
-    event.preventDefault(); // Prevent form submission
+document.getElementById('searchForm').addEventListener('submit', async function (event) {
+  event.preventDefault(); // Prevent form submission
 
-    const query = document.getElementById('searchInput').value.trim(); // Get search query
-    const resultsContainer = document.getElementById('results');
-    resultsContainer.innerHTML = ''; // Clear previous results
+  const query = document.getElementById('searchInput').value.trim().toLowerCase(); // Get search query
+  const resultsContainer = document.getElementById('results');
+  resultsContainer.innerHTML = ''; // Clear previous results
 
-    if (!query) {
-     
-      return 0;
+  if (!query) {
+    return; // Exit if the query is empty
+  }
+
+  try {
+    // Fetch data from the local JSON file
+    const response = await fetch('script/api.json');
+
+    // Check if response is OK
+    if (!response.ok) {
+      throw new Error(`Failed to fetch: ${response.statusText}`);
     }
 
-    try {
-      // Fetch data from the API
-      const response = await fetch(`https://dummyjson.com/products/search?q=${query}`);
-      
-      // Check if response is OK
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
+    const data = await response.json();
+    const products = data.products;
 
-      const data = await response.json();
-      const products = data.products;
+    // Filter products based on the search query
+    const filteredProducts = products.filter(product =>
+      product.title.toLowerCase().includes(query)
+    );
 
-      // Check if products are found
-      if (products.length === 0) {
-        resultsContainer.innerHTML = '<p class="text-danger" style="margin:20px auto;text-align:center;">No products found for your search.</p>';
-        
-        return;
-      }
-    
-      // Display results
-      products.forEach(product => {
-        const productHTML = `
+    // Check if products are found
+    if (filteredProducts.length === 0) {
+      resultsContainer.innerHTML = '<p class="text-danger" style="margin:20px auto;text-align:center;">No products found for your search.</p>';
+      return;
+    }
+
+    // Display results
+    filteredProducts.forEach(product => {
+      const productHTML = `
  <div class="card mb-3 shadow-lg rounded-lg text-center " style=" border-radius: 10px; transition: transform 0.3s ease, box-shadow 0.3s ease;">
-<div class="row g-0">
-<div class=" col-12 col-md-4 text-center">
-  <img src="${product.thumbnail}" class="img-fluid rounded-start" alt="${product.title}" style="object-fit: cover; height: 200px; border-radius: 10px;">
-</div>
-<div class="col-12 col-md-8">
-  <div class="card-body ">
-    <h5 class="card-title text-dark" style="font-size: 1.2rem; font-weight: bold; color: #333;">${product.title}</h5>
-    <p class="card-text" style="color: #777; font-size: 1rem;"><strong>Price:</strong> $${product.price}</p>
-  </div>
-  <div class="add text-center" style="padding: 10px 15px; background-color: white;">
-    <button class="btn btn-warning btn-sm w-100 rounded-3" style="font-size: 1rem; padding: 10px; transition: background-color 0.3s ease;">Add to Cart</button>
-  </div>
-</div>
-</div>
-</div>
-`
-        resultsContainer.innerHTML += productHTML;
-        const pro =document.getElementById("products-container")
-        pro.style.display="none"
+  <div class="row g-0">
+    <div class="col-12 col-md-4 text-center">
+      <img src="${product.thumbnail}" class="img-fluid rounded-start" alt="${product.title}" style="object-fit: cover; height: 200px; border-radius: 10px;">
+    </div>
+    <div class="col-12 col-md-8">
+      <div class="card-body ">
+        <h5 class="card-title text-dark" style="font-size: 1.2rem; font-weight: bold; color: #333;">${product.title}</h5>
+        <p class="card-text" style="color: #777; font-size: 1rem;"><strong>Price:</strong> $${product.price}</p>
+      </div>
+      <div class="add text-center" style="padding: 10px 15px; background-color: white;">
+      <div class="add text-center" style="padding: 10px 15px; background-color: white;">
+           <a class="btn btn-warning btn-sm w-100 rounded-3 addtocartsympol" 
+            style="font-size: 1rem; padding: 10px; transition: background-color 0.3s ease; color: white; text-decoration: none;" 
+             href="#">
+              Add to Cart
+             </a>
+      </div>
 
-      });
-    } catch (error) {
-      console.error('Error fetching data:', error);
-      resultsContainer.innerHTML = '<p class="text-danger">An error occurred while fetching the data.</p>';
-    }
-  });
+      </div>
+    </div>
+  </div>
+</div>
+      `;
+      resultsContainer.innerHTML += productHTML;
+
+      // Optionally hide the main product container
+      const pro = document.getElementById("products-container");
+      pro.style.display = "none";
+    });
+    // Redirect to login page for cart symbol if not logged in
+    checkLoginBeforeCart()
+  } catch (error) {
+    console.error('Error fetching data:', error);
+    resultsContainer.innerHTML = '<p class="text-danger">An error occurred while fetching the data.</p>';
+  }
+});
+
 
 // handle search clear
 
@@ -248,7 +266,15 @@ this.style.boxShadow = '0 0 8px rgba(0, 123, 255, 0.6)'; // Blue glow
 
 
 
-
+    // Redirect to login page for cart symbol if not logged in
+    function checkLoginBeforeCart(){
+      if (!(localStorage.getItem("currentUser"))) {
+        const cartSymbols = document.getElementsByClassName("addtocartsympol");
+        for (let i = 0; i < cartSymbols.length; i++) {
+          cartSymbols[i].href = "login.html";
+        }
+      }
+    }
 
 
 

@@ -46,6 +46,14 @@ nav{
   }
 
 }
+#header .login{
+  border: none;
+  background-color: transparent;
+}
+#header .login a{
+  color:black;
+  text-decoration: underline;
+}
 
 /* header */
 
@@ -91,7 +99,7 @@ nav{
   }
 }
 
-#landing button{
+#landing button {
   border: none;
   border: 1px solid transparent;
   border-radius: 15px;
@@ -107,7 +115,7 @@ nav{
   content: "";
   position: absolute;
   left:0;
-  top: 140%;
+  top: 150%;
   width: 100%;
   background-color: #222;
   height: 1.5px;
