@@ -1,127 +1,61 @@
-// fetch("product.json")
-// .then(function(response){
-//     return response.json();
-// })
-// .then(function(data){
-//     localStorage.setItem("products",JSON.stringify(data))
-//     if(!localStorage.getItem("cart")){
-//         localStorage.setItem("cart",JSON.stringify([]))
-//     }
-//     updateShopUI(); 
-//     updateCartUI();
-// });
-// let products = JSON.parse(localStorage.getItem("products"));
-// let cart = JSON.parse(localStorage.getItem("cart"))
+document.addEventListener("DOMContentLoaded", function () {
+    // Pre-fill the cart with sample products if it's empty
+    let cart = JSON.parse(localStorage.getItem("cart")) || { products: [] };
 
-// function addItemToCart(productId){
-//     let product = products.find(function(product){
-//         return product.id == productId;
-//     });
-//     if (cart.length == 0){
-//         cart.push(product)
-//     }else{
-//         let res = cart.find(item => item.id == productId)
-//         if (res === undefined){
-//             cart.push(product)
-//         }
-//     }
-//     localStorage.setItem("cart",JSON.stringify(cart));
-//     updateCartUI(); 
-// }
-// Retrieve the existing cart
-let storedCartString = localStorage.getItem('cart') || '[]'; // تأكد من أن القيمة هي مصفوفة
-let storedCart = JSON.parse(storedCartString); // تحويلها إلى مصفوفة كائنات
+    if (cart.products.length === 0) {
+        // Add sample products to the cart
+        cart.products = [
+            { name: "Product 1", price: 19.99, quantity: 2, image: "products/1.jpg" },
+            { name: "Product 2", price: 29.99, quantity: 1, image: "products/2.jpg" },
+            { name: "Product 3", price: 39.99, quantity: 3, image: "products/3.jpg" }
+        ];
 
-// إضافة منتجات جديدة
-storedCart.push({ name: "Product 1", price: 39.99, quantity: 3 });
-storedCart.push({ name: "Product 2", price: 39.99, quantity: 3 });
-storedCart.push({ name: "Product 3", price: 39.99, quantity: 3 });
-
-// تحديث localStorage
-localStorage.setItem('cart', JSON.stringify(storedCart));
-let cart = JSON.parse(localStorage.getItem("cart"))
-
-function removeItemfromCart(productId){
-    let temp = cart.filter(item => item.id !== productId)
-    localStorage.setItem("cart",JSON.stringify(temp))
-}
-
-function updateQuantity(productId,quantity){
-    for(let product of cart){
-        if(product.id == productId)
-            product.quantity = quantity;
+        // Save the updated cart to local storage
+        localStorage.setItem("cart", JSON.stringify(cart));
     }
-    localStorage.setItem("cart",JSON.stringify(cart))
-    updateCartUI();
-}
 
-function getTotal(){
-    let temp = cart.map(function(item){
-        return parseFloat(item.price)
-    })
-    let sum = temp.reduce(function(pre,next){
-        return pre + next;
-    },0)
-    return sum;
-}
+    // Fetch cart data from local storage
+    const shopSection = document.querySelector(".shop");
+    const subtotalElement = document.getElementById("subtotal");
+    const totalElement = document.getElementById("total");
 
-function updateShopUI(){
-    let shopDiv = document.querySelector('.shop')
-    shopDiv.innerHTML = "";
-    products.forEach(function(product) {
-        let productBox = document.createElement('div');
-        productBox.classList.add('box');
+    let subtotal = 0;
 
-        let img = document.createElement('img');
-        img.src = product.image;
-        img.alt = product.name;
-        productBox.appendChild(img);
+    // Clear the shop section before populating
+    shopSection.innerHTML = "";
 
-        let content = document.createElement('div');
-        content.classList.add('content'); 
+    // Loop through each product in the cart
+    cart.products.forEach((product) => {
+        // Calculate the total price for the product
+        const productTotal = product.price * product.quantity;
+        subtotal += productTotal;
 
-        let productName = document.createElement('h3');
-        productName.textContent = product.name;
-        content.appendChild(productName);
+        // Create the HTML for the product
+        const productHTML = `
+            <div class="box">
+                <img src="${product.image || "products/2.jpg"}" alt="${product.name}">
+                <div class="content">
+                    <h3>${product.name}</h3>
+                    <h4>Price: $${product.price.toFixed(2)}</h4>
+                    <p class="unit">Quantity: <input type="number" value="${product.quantity}" class="num" min="1"></p>
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
+                    </svg>
+                </div>
+            </div>
+        `;
 
-        let productPrice = document.createElement('h4');
-        productPrice.textContent = `Price: ${product.price}`;
-        content.appendChild(productPrice);
-
-        let quantityLabel = document.createElement('p');
-        quantityLabel.classList.add('unit');
-        quantityLabel.innerHTML = `Quantity: <input value="1" class="num" onchange="updateQuantity(${product.id}, this.value)">`;
-        content.appendChild(quantityLabel);
-           
-        let addButton = document.createElement('button');
-        addButton.textContent = "Add to Cart";
-        addButton.onclick = function() {
-            addItemToCart(product.id);
-        };
-        content.appendChild(addButton);
-        
-        productBox.appendChild(content);
-        shopDiv.appendChild(productBox); 
+        // Insert the product HTML into the shop section
+        shopSection.insertAdjacentHTML("beforeend", productHTML);
     });
-}
-// updateShopUI();
 
-function updateCartUI() {
-    let cartDiv = document.querySelector('.right-bar');
-    let subtotal = getTotal();
-    
-    cartDiv.innerHTML = `
-        <p class="total"><span>Subtotal</span> <span>${subtotal}</span></p>
-        <hr>
-        <p class="total"><span>Shipping</span> <span>10</span></p> 
-        <hr>
-        <p class="total"><span>Total</span> <span>${subtotal + 10}</span></p> 
-        <div class="button-position"><input type="button" value="Checkout" class="check"></div>
-    `;
-}
-updateCartUI();
+    // Calculate and display subtotal and total
+    const shipping = 10; // Example shipping cost
+    const total = subtotal + shipping;
 
-   
+    subtotalElement.textContent = `$${subtotal.toFixed(2)}`;
+    totalElement.textContent = `$${total.toFixed(2)}`;
+});
 
 
 
