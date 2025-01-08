@@ -5,20 +5,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
   </head>
+
   <body>
     <div class="container my-5">
       <div class="userProfile">
         <div class="profileHeader">
           <div class="p-1 position-relative">
-            <img src="" id="userImg" alt="" />
-            <button
-              class="position-absolute edit-btn m-2 top-50 end-0"
-              onclick="editFields('userImg')"
-            >
-              Edit
-            </button>
+            <input
+              type="file"
+              id="imageInput"
+              accept="image/*"
+              style="display: none"
+            />
+            <label for="imageInput"
+              ><img id="userImg" alt=" profile Image"
+            /></label>
           </div>
-
           <h3 id="headerName"></h3>
           <p id="emailHeader"></p>
         </div>
