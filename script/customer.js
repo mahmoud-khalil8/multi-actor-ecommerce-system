@@ -49,9 +49,12 @@ function loadUserData() {
         document.getElementById("email").innerText = updatedUser.email;
         document.getElementById("phone").innerText = updatedUser["phone number"];
         document.getElementById("userImg").src = updatedUser.userImg || "UP/userpic.png";
-        document.getElementById("Street").innerText ="";
-        document.getElementById("City").innerText = updatedUser.address.split(",")[1];
-        document.getElementById("Country").innerText = updatedUser.address.split(",")[0];
+        
+        let address = updatedUser.address.split(",");
+        document.getElementById("Street").innerText = address[0];
+        document.getElementById("City").innerText = address[1];
+        document.getElementById("Country").innerText = address[2];
+        
       }
     }
   }
@@ -281,9 +284,11 @@ document.getElementById("saveBtn").addEventListener("click", function () {
 
             if (field.id === "firstName" || field.id === "lastName") {
               user.name = `${document.getElementById("modal-firstName").value} ${document.getElementById("modal-lastName").value}`;
+              user.firstName = document.getElementById("modal-firstName").value;
+              user.lastName = document.getElementById("modal-lastName").value;
               document.getElementById("headerName").innerText = user.name;
             } else if (field.id === "phone") {
-              user["phone number"] = document.getElementById("modal-phone").value;
+              user["phoneNumber"] = document.getElementById("modal-phone").value;
             } else if (field.id === "email") {
               user.email = document.getElementById("modal-email").value;
             } else if (field.id === "userImg") {
@@ -293,6 +298,7 @@ document.getElementById("saveBtn").addEventListener("click", function () {
               field.id === "City" ||
               field.id === "Country"
             ) {
+              
               user.address = `${document.getElementById("modal-Street").value}, ${document.getElementById("modal-City").value}, ${document.getElementById("modal-Country").value}`;
             }
           });
