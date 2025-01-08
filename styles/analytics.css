@@ -1,0 +1,81 @@
+/* ================google font===================== */
+@import url('https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap');
+
+
+.analyticsContainer{
+    width: 65%;
+    position:absolute;
+    width: calc(100%-300px);
+    min-height:100vh ;
+    left: 350px;
+    background-color: white;
+    transition: 2s;
+}
+.analyticsContainer.active{
+    width: calc(100%-60px);  
+    left: 62px;
+}
+.chartBox{
+    position: relative;
+    width: 100%;
+    padding:20px;
+    margin: 10px;
+    margin-top: 80px;
+    border-radius: 10px;
+    background-color: #fbf2d5;
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    grid-gap: 30px;
+}
+.chartBox .chart{
+    position: relative;
+    background-color: white;
+    padding: 30px;
+    box-shadow: 0Px 7px 15px rgba(233, 181, 164, 0.95);
+    border-radius: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+}
+.chart .rate{
+    position: relative;
+    font-weight: 500;
+    font-size: 2.5rem;
+    color: brown;
+}
+.chart .type{
+    color: rgba(231, 134, 102, 0.95) ;
+    font-size: 1.1rem;
+    margin-top: 5px;
+}
+.chartBox .chart .chartIcons{
+    font-size: 3rem;
+    color: rgba(236, 137, 104, 0.95);
+}
+.chartBox .chart:hover{
+    background-color: brown;
+}
+.chartBox .chart:hover .rate,
+.chartBox .chart:hover .type,
+.chartBox .chart:hover .chartIcons{
+    color: white;
+}
+
+.graphBox {
+    position: relative;
+    width: 100%;
+    padding: 20px;
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    grid-gap: 30px;
+    min-height: 200px;
+}
+.graphBox .box{
+    position: relative;
+    background-color: white;
+    box-shadow: 0Px 7px 25px rgba(233, 181, 164, 0.95);
+    border-radius: 20px;
+    padding: 20px;
+   
+}

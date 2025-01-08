@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SellerDashboard</title>
+    <link rel="stylesheet" href="./styles/sellerProducts.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+
+</head>
+<body>
+     <!--Nav Bar-->
+    <div class="container">
+        <!-- <div class="navigation" >
+            <ul>
+                <li>
+                    <a href="#">
+                        <span class="icon"><ion-icon name="logo-apple"></ion-icon></span>
+                        <span class="title">Brand</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <span class="icon"><ion-icon name="home-outline"></ion-icon></span>
+                        <span class="title">Home</span>
+                    </a>
+                </li>
+                <li id="Products">
+                    <a href="#"  onclick="loadFrame('seller')">
+                        <span class="icon"><i class="bi bi-minecart-loaded"></i></ion-icon></span>
+                        <span class="title">Products</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#" onclick="loadFrame('orders')">
+                        <span class="icon"><ion-icon name="receipt-outline"></ion-icon></span>
+                        <span class="title">Orders</span>
+                    </a>
+                </li> 
+                <li>
+                    <a href="#" onclick="loadFrame('analytics')">
+                        <span class="icon"><ion-icon name="analytics-outline"></ion-icon></span>
+                        <span class="title">Analytics</span>
+                    </a>
+                </li>               
+                 <li>
+                    <a href="#">
+                        <span class="icon"><ion-icon name="lock-closed-outline"></ion-icon></ion-icon></span>
+                        <span class="title">Password</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <span class="icon"><ion-icon name="log-out-outline"></ion-icon></span>
+                        <span class="title">Log Out</span>
+                    </a>
+                </li>
+                <button id="backButton">Back</button> 
+            </ul>
+        </div> -->
+<!-- ===========================main wrapper================================= -->
+        <div class="mainwrapper">
+
+            <div class="productBody">
+                <header>
+                    <h2>Products</h2>
+                </header>
+
+                <table>
+                    <thead>
+                        <tr class="heading">
+                            <th>Num</th>
+                            <th>Image</th>
+                            <th>Name</th>
+                            <th>Category</th>
+                            <th>Price</th>
+                            <th>Description</th>
+                            <th>Stock</th>
+                            <th>Action</th>    
+                        </tr>
+                    </thead>
+                    <tbody class="productInfo"> 
+                        <tr>
+                            <!-- <td class="empty" colspan="6" align = "center">No Data Avilable</td> -->
+                        </tr>
+                        <!-- <tr>
+                            <td>P001</td>
+                            <td><img src="./flowers/1.jpg" alt=""></td>
+                            <td>Oil</td>
+                            <td>$60</td>
+                            <td>2</td>
+                            <td>
+                                <button><i class="bi bi-eye-fill"></i></button>
+                                <button><i class="bi bi-pencil-square"></i></button>
+                                <button><i class="bi bi-trash-fill"></i></button>    
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>P002</td>
+                            <td><img src="./flowers/2.jpg" alt=""></td>
+                            <td>Oil</td>
+                            <td>$60</td>
+                            <td>2</td>
+                            <td>
+                                <button><i class="bi bi-eye-fill"></i></button>
+                                <button><i class="bi bi-pencil-square"></i></button>
+                                <button><i class="bi bi-trash-fill"></i></button>    
+                            </td>
+                        </tr> -->
+                    </tbody>
+                </table>
+
+                <footer>
+                    <div class="addProduct">
+                        <button id="addButton">Add</button>
+                    </div>                    
+                </footer>
+            </div>
+            <!-- =============================popUp============================ -->
+
+            <div class="popUp">
+                <div class="formPopUp">
+                    <header>
+                        <h2 class="formTitle">Product Details</h2>
+                        <button class="closeBtn">&times</button>
+                    </header>
+
+                    <div class="formBody"  id="myForm">
+                        <form action="#">
+                            <div class="uploadImg">
+                                <label for="uploading" class="upload">
+                                    <input type="file" name="" id="uploading" class="picture">
+                                    <i class="bi bi-plus"></i>
+                                </label>
+                                <img src="./assets/flowers/17.PNG" alt="" width="150" height="150" class="img">
+                            </div>
+                            <div class="inputFeild">
+                                <div class="productName">
+                                    <div class="formController">
+                                        <label for="Product Code">Name</label>
+                                        <input type="text" name="" id="PName" required> 
+                                    </div>
+                                </div>
+                                <div class="productCategory">
+                                    <div class="formController">
+                                        <label for="Product Category" >Category</label>
+                                        <input type="text" name="" id="PCategory" required>
+                                    </div>
+                                </div>
+                                <div class="productPrice">
+                                    <div class="formController">
+                                        <label for="Product Price">Price</label>
+                                        <input type="number" name="" id="PPrice" required> 
+                                    </div>
+                                </div>
+                                <div class="productDescription">
+                                    <div class="formController">
+                                        <label for="Product Description" >Description</label>
+                                        <input type="text" name="" id="PDescription" required>
+                                    </div>
+                                </div>
+                                <div class="productStock">
+                                    <div class="formController">
+                                        <label for="Product Stock">Stock</label>
+                                        <input type="number" name="" id="PStock" required> 
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <footer class="formPopUpFooter">
+                        <button form="myForm" class="submtBtn">Submit</button>
+                    </footer>
+                </div>                       
+            </div>
+        </div>
+    </div>
+
+    <!-- <script src="./project/js/index.js"></script> -->
+    <script src="./script/sellerProducts.js"></script><!--external script-->
+    
+    <!-- <script src="./data.js"></script> -->
+
+
+
+     <!-- <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-minecart-loaded" viewBox="0 0 16 16">
+        <path d="M4 15a1 1 0 1 1 0-2 1 1 0 0 1 0 2m0 1a2 2 0 1 0 0-4 2 2 0 0 0 0 4m8-1a1 1 0 1 1 0-2 1 1 0 0 1 0 2m0 1a2 2 0 1 0 0-4 2 2 0 0 0 0 4M.115 3.18A.5.5 0 0 1 .5 3h15a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 14 12H2a.5.5 0 0 1-.491-.408l-1.5-8a.5.5 0 0 1 .106-.411zm.987.82 1.313 7h11.17l1.313-7z"/>
+        <path fill-rule="evenodd" d="M6 1a2.498 2.498 0 0 1 4 0c.818 0 1.545.394 2 1 .67 0 1.552.57 2 1h-2c-.314 0-.611-.15-.8-.4-.274-.365-.71-.6-1.2-.6-.314 0-.611-.15-.8-.4a1.497 1.497 0 0 0-2.4 0c-.189.25-.486.4-.8.4-.507 0-.955.251-1.228.638q-.136.194-.308.362H3c.13-.147.401-.432.562-.545a1.6 1.6 0 0 0 .393-.393A2.5 2.5 0 0 1 6 1"/>
+      </svg> -->
+    <!-- <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>ionicons
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script> -->
+</body>
+</html>

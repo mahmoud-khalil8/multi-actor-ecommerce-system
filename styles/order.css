@@ -1,0 +1,50 @@
+/* ================google font===================== */
+@import url('https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap');
+
+
+.orderContainer{
+    position:absolute;
+    width: calc(100%-300px);
+    min-height:100vh ;
+    left: 350px;
+    background-color: white;
+    transition: 2s;
+}
+.orderContainer.active{
+    width: calc(100%-60px);  
+    left: 62px;
+}
+.orderBody{
+    padding:10px;
+    margin: 10px;
+    margin-top: 50px;
+    border-radius: 10px;
+    background-color: #fbf2d5;
+}
+.orderBody header{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom:30px;
+    outline: none;
+}
+.orderBody table{
+    /* border: 1px solid black; */
+    border-collapse: collapse;
+    margin:auto;
+    text-align: center;
+}
+table .orderHeading{
+    background-color: rgba(234, 166, 142, 0.95);
+}
+table tr th , table tr td{
+    padding: 4px 15px;
+} 
+table tr td{
+    border-bottom: 1px solid rgba(234, 166, 142, 0.95);
+    transition: .5s;
+}
+table tr:nth-child(even){
+    background-color:white;
+    transition: .5s;
+}
