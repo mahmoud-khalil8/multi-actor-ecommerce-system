@@ -73,7 +73,17 @@ export function setupSignup() {
 
         showMessage("signupMessage", "Sign-up successful! Redirecting...", "success");
         setTimeout(() => {
-          window.location.href = "profile.html";
+          switch (userType) {
+            case "customer":
+              window.location.href = "customer-dashboard.html";
+              break;
+            case "seller":
+              window.location.href = "seller-dashboard.html";
+              break;
+            default:
+              console.error("Invalid user type:", userType);
+              window.location.href = "login.html";
+          }
         }, 2000);
       } catch (error) {
         showMessage("signupMessage", error.message, "danger");

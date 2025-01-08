@@ -49,9 +49,9 @@ function loadUserData() {
         document.getElementById("email").innerText = updatedUser.email;
         document.getElementById("phone").innerText = updatedUser["phone number"];
         document.getElementById("userImg").src = updatedUser.userImg || "UP/userpic.png";
-        document.getElementById("Street").innerText = updatedUser.address.split(",")[0];
+        document.getElementById("Street").innerText ="";
         document.getElementById("City").innerText = updatedUser.address.split(",")[1];
-        document.getElementById("Country").innerText = updatedUser.address.split(",")[2];
+        document.getElementById("Country").innerText = updatedUser.address.split(",")[0];
       }
     }
   }
