@@ -74,6 +74,11 @@ function displayPage(page) {
       categories[category].forEach((product) => {
         const productDiv = document.createElement("div");
         productDiv.className = "product-item";
+
+        // go to product details
+        productDiv.addEventListener("click",()=>{
+          window.location.href=`product.html?id=${product.id}`
+        })
   
         // Add product image
         const img = document.createElement("img");

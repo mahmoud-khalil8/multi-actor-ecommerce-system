@@ -49,10 +49,24 @@ nav{
 #header .login{
   border: none;
   background-color: transparent;
+
+  
 }
 #header .login a{
-  color:black;
-  text-decoration: underline;
+  color:#000000;
+  position: relative;
+  /* font-size: large; */
+  font-weight: bold;
+
+}
+#header .login a::after{
+content: "";
+position: absolute;
+width: 80%;
+height: 2px;
+background-color: #222;
+left: 10%;
+top: 75%;
 }
 
 /* header */
@@ -115,10 +129,10 @@ nav{
   content: "";
   position: absolute;
   left:0;
-  top: 150%;
+  top: 140%;
   width: 100%;
   background-color: #222;
-  height: 1.5px;
+  height: 2px;
 }
 /* landing */
 
