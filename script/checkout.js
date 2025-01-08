@@ -12,6 +12,7 @@ window.addEventListener('load', function() {
     let inputs = document.querySelectorAll('input[type="text"], input[type="radio"]');
     let paymentRadios = document.querySelectorAll('input[name="payment"]')
 
+    var myModal = new bootstrap.Modal(document.getElementById('confirmationModal'));
     inputs.forEach(function(input) {
         input.addEventListener('blur', function() {
             if (input.value.trim() === "") {
@@ -30,7 +31,6 @@ window.addEventListener('load', function() {
         e.preventDefault();
         if (validateInputs()) {
             form.submit(); 
-            var myModal = new bootstrap.Modal(document.getElementById('confirmationModal'));
             myModal.show();
         }
     });
@@ -42,16 +42,34 @@ window.addEventListener('load', function() {
         inputsToValidate.forEach((input) => {
             let value = input.value.trim();
             if (value === "") {
-                let message = `${input.placeholder || "select one" }`;
+                let message = `${input.placeholder || "please select one" }`;
                 showMessage(input, message);
                 isValid = false;
             } else {
                 hideMessage(input);
             }
         });
-        
 
-
+        if (first.value.trim() !== "" && !validateName(first.value.trim())) {
+            showMessage(email, "Please enter a valid First Name");
+            isValid = false;
+        }
+        if (second.value.trim() !== "" && !validateName(last.value.trim())) {
+            showMessage(email, "Please enter a valid Last Name");
+            isValid = false;
+        }
+        if (code.value.trim() !== "" && !validateZipCode(code.value.trim())) {
+            showMessage(email, "Please enter a valid Zip Code");
+            isValid = false;
+        }
+         if (number.value.trim() !== "" && !validatePhoneNumber(number.value.trim())) {
+            showMessage(email, "Please enter a valid Phone Number");
+            isValid = false;
+        }
+        if (email.value.trim() !== "" && !validateEmail(email.value.trim())) {
+            showMessage(email, "Please enter a valid Email Address");
+            isValid = false;
+        }
         let paymentSelected = false;
         paymentRadios.forEach((radio) => {
             if (radio.checked) {
@@ -63,43 +81,9 @@ window.addEventListener('load', function() {
             showMessage(paymentRadios[1], "Please select a payment method.");
             isValid = false;
         } else {
+            hideMessage(paymentRadios[0]);
             hideMessage(paymentRadios[1]);
         }
-
-        return isValid;
-    
-
-
-
-        // if (first.value.trim() !== "" && !validatename(first.value.trim())) {
-        //     showMessage(email, "Please enter a valid email address");
-        //     isValid = false;
-        // }
-
-        // if (second.value.trim() !== "" && !validatename(second.value.trim())) {
-        //     showMessage(email, "Please enter a valid email address");
-        //     isValid = false;
-        // }
-
-        // if (code.value.trim() !== "" && !validatenumber(code.value.trim())) {
-        //     showMessage(email, "Please enter a valid email address");
-        //     isValid = false;
-        // }
-
-        // if (number.value.trim() !== "" && !validatenumber(number.value.trim())) {
-        //     showMessage(email, "Please enter a valid email address");
-        //     isValid = false;
-        // }
-
-        // return isValid;
-       
-
-        
-        if (email.value.trim() !== "" && !validateEmail(email.value.trim())) {
-            showMessage(email, "Please enter a valid email address");
-            isValid = false;
-        }
-
         return isValid;
     }
 
@@ -128,5 +112,19 @@ window.addEventListener('load', function() {
     function validateEmail(email) {
         const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         return re.test(String(email).toLowerCase());
+    }
+
+    function validateName(name) {
+        return name && name.length >= 2;
+    }
+
+    function validatePhoneNumber(phoneNumber) {
+        const regex = /^\d{10}$/;
+        return regex.test(phoneNumber);
+    }
+
+    function validateZipCode(code) {
+        const regex = /^[A-Za-z]\d[A-Za-z][ -]?\d[A-Za-z]\d$/;
+        return regex.test(code);
     }
 });
