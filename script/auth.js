@@ -92,6 +92,7 @@ export function setupLogin() {
       const email = document.getElementById('loginEmail').value;
       const password = document.getElementById('loginPassword').value;
 
+
       // Hardcoded admin credentials (for demonstration purposes only)
       if (email === 'admin@admin.com' && password === 'admin123') {
         const adminUser = {
@@ -142,8 +143,10 @@ export function setupLogin() {
           // If the user doesn't exist in localStorage, create a new entry
           const newUser = {
             id: user.uid,
+
             role: 'customer', // Default role
-            name: '', // Add name if available
+            firstName:'', // Add name if available
+            lastName:'', // Add name if available
             email: email,
             address: '', // Add address if available
             phoneNumber: '', // Add phone number if available

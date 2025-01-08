@@ -1,38 +1,38 @@
-// creating an object
-let userData = {
-  users: [
-    {
-      id: 1,
-      role: "customer",
-      name: "John Doe",
-      userImg: "UP/userpic.png",
-      email: "john@example.com",
-      password: "hashed_password",
-      address: "123 Main St, City, Country",
-      "phone number": "123-456-7890",
-      orders: [101, 102],
-    },
-    {
-      id: 2,
-      role: "seller",
-      name: "Jane Smith",
-      email: "jane@example.com",
-      password: "hashed_password",
-      products: [201, 202],
-    },
-  ],
-};
+// // creating an object
+// let userData = {
+//   users: [
+//     {
+//       id: 1,
+//       role: "customer",
+//       name: "John Doe",
+//       userImg: "UP/userpic.png",
+//       email: "john@example.com",
+//       password: "hashed_password",
+//       address: "123 Main St, City, Country",
+//       "phone number": "123-456-7890",
+//       orders: [101, 102],
+//     },
+//     {
+//       id: 2,
+//       role: "seller",
+//       name: "Jane Smith",
+//       email: "jane@example.com",
+//       password: "hashed_password",
+//       products: [201, 202],
+//     },
+//   ],
+// };
 
-if (!localStorage.getItem("userData")) {
-  localStorage.setItem("userData", JSON.stringify(userData));
-}
+// if (!localStorage.getItem("userData")) {
+//   localStorage.setItem("userData", JSON.stringify(userData));
+// }
 
 // load userdata in the local strorage and to the data elements
 function loadUserData() {
-  let storedData = localStorage.getItem("userData");
+  let storedData = localStorage.getItem("currentUser");
   if (storedData) {
-    let parsedData = JSON.parse(storedData);
-    parsedData.users.forEach((user) => {
+    let user = JSON.parse(storedData);
+    
       if (user.role === "customer") {
         document.getElementById("headerName").innerText = user.name;
         document.getElementById("emailHeader").innerText = user.email;
@@ -41,7 +41,7 @@ function loadUserData() {
           user.name.split(" ")[0];
         document.getElementById("lastName").innerText = user.name.split(" ")[1];
         document.getElementById("email").innerText = user.email;
-        document.getElementById("phone").innerText = user["phone number"];
+        document.getElementById("phone").innerText = user["phoneNumber"];
         document.getElementById("userImg").src = user.userImg;
         document.getElementById("Street").innerText =
           user.address.split(",")[0];
@@ -49,7 +49,6 @@ function loadUserData() {
         document.getElementById("Country").innerText =
           user.address.split(",")[2];
       }
-    });
   }
 }
 
@@ -126,16 +125,14 @@ imageInput.addEventListener("change", function (event) {
 
     reader.onload = function (e) {
       userImg.src = e.target.result;
-      let storedData = localStorage.getItem("userData");
+      let storedData = localStorage.getItem("currentUser");
       if (storedData) {
-        let parsedData = JSON.parse(storedData);
+        let user = JSON.parse(storedData);
 
-        parsedData.users.forEach((user) => {
           if (user.role === "customer") {
             user.userImg = e.target.result;
-            localStorage.setItem("userData", JSON.stringify(parsedData));
+            localStorage.setItem("currentUser", JSON.stringify(user));
           }
-        });
       }
     };
 
@@ -181,21 +178,19 @@ document.getElementById("saveBtn").addEventListener("click", function () {
     }
 
     if (valid) {
-      let storedData = localStorage.getItem("userData");
+      let storedData = localStorage.getItem("currentUser");
       if (storedData) {
-        let parsedData = JSON.parse(storedData);
+        let user = JSON.parse(storedData);
 
-        parsedData.users.forEach((user) => {
           if (user.role === "customer") {
             if (user.password === currentPassword) {
               user.password = newPassword;
-              localStorage.setItem("userData", JSON.stringify(parsedData));
+              localStorage.setItem("currentUser", JSON.stringify(user));
               alert("Password changed successfully!");
             } else {
               alert("Current password is incorrect.");
             }
           }
-        });
       } else {
         alert("No user data found in localStorage.");
       }
@@ -254,12 +249,11 @@ document.getElementById("saveBtn").addEventListener("click", function () {
     });
 
     if (valid) {
-      let storedData = localStorage.getItem("userData");
+      let storedData = localStorage.getItem("currentUser");
 
       if (storedData) {
-        let parsedData = JSON.parse(storedData);
+        let user = JSON.parse(storedData);
 
-        parsedData.users.forEach((user) => {
           if (user.role === "customer") {
             fields[currentEditSection].forEach((field) => {
               let newValue = document.getElementById(`modal-${field.id}`).value;
@@ -290,9 +284,8 @@ document.getElementById("saveBtn").addEventListener("click", function () {
             });
 
             // Save the updated user data in local storage
-            localStorage.setItem("userData", JSON.stringify(parsedData));
+            localStorage.setItem("currentUser", JSON.stringify(user));
           }
-        });
       } else {
         alert("No user data found in localStorage.");
       }
