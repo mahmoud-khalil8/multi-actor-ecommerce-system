@@ -32,23 +32,28 @@ function loadUserData() {
   let storedData = localStorage.getItem("currentUser");
   if (storedData) {
     let user = JSON.parse(storedData);
-    
-      if (user.role === "customer") {
-        document.getElementById("headerName").innerText = user.name;
-        document.getElementById("emailHeader").innerText = user.email;
 
-        document.getElementById("firstName").innerText =
-          user.name.split(" ")[0];
-        document.getElementById("lastName").innerText = user.name.split(" ")[1];
-        document.getElementById("email").innerText = user.email;
-        document.getElementById("phone").innerText = user["phoneNumber"];
-        document.getElementById("userImg").src = user.userImg;
-        document.getElementById("Street").innerText =
-          user.address.split(",")[0];
-        document.getElementById("City").innerText = user.address.split(",")[1];
-        document.getElementById("Country").innerText =
-          user.address.split(",")[2];
+    if (user.role === "customer") {
+      // Fetch the latest user data from the `users` array in `localStorage`
+      let data = JSON.parse(localStorage.getItem("data"));
+      let users = data.users;
+      let updatedUser = users.find((u) => u.id === user.id);
+
+      if (updatedUser) {
+        // Update the displayed data
+        document.getElementById("headerName").innerText = updatedUser.name;
+        document.getElementById("emailHeader").innerText = updatedUser.email;
+
+        document.getElementById("firstName").innerText = updatedUser.name.split(" ")[0];
+        document.getElementById("lastName").innerText = updatedUser.name.split(" ")[1];
+        document.getElementById("email").innerText = updatedUser.email;
+        document.getElementById("phone").innerText = updatedUser["phone number"];
+        document.getElementById("userImg").src = updatedUser.userImg || "UP/userpic.png";
+        document.getElementById("Street").innerText = updatedUser.address.split(",")[0];
+        document.getElementById("City").innerText = updatedUser.address.split(",")[1];
+        document.getElementById("Country").innerText = updatedUser.address.split(",")[2];
       }
+    }
   }
 }
 
@@ -129,10 +134,20 @@ imageInput.addEventListener("change", function (event) {
       if (storedData) {
         let user = JSON.parse(storedData);
 
-          if (user.role === "customer") {
-            user.userImg = e.target.result;
-            localStorage.setItem("currentUser", JSON.stringify(user));
+        if (user.role === "customer") {
+          user.userImg = e.target.result;
+
+          // Update the user's profile image in the `users` array in `localStorage`
+          let data = JSON.parse(localStorage.getItem("data"));
+          let users = data.users;
+          let userIndex = users.findIndex((u) => u.id === user.id);
+          if (userIndex !== -1) {
+            users[userIndex].userImg = e.target.result; // Update profile image
+            localStorage.setItem("data", JSON.stringify({ ...data, users }));
           }
+
+          localStorage.setItem("currentUser", JSON.stringify(user));
+        }
       }
     };
 
@@ -144,13 +159,9 @@ document.getElementById("saveBtn").addEventListener("click", function () {
   let valid = true;
 
   if (currentEditSection === "password") {
-    let currentPassword = document.getElementById(
-      "modal-currentpassword"
-    ).value;
+    let currentPassword = document.getElementById("modal-currentpassword").value;
     let newPassword = document.getElementById("modal-newPassword").value;
-    let confirmPassword = document.getElementById(
-      "modal-confirmPassword"
-    ).value;
+    let confirmPassword = document.getElementById("modal-confirmPassword").value;
 
     if (!currentPassword) {
       alert("Current password is required.");
@@ -182,15 +193,25 @@ document.getElementById("saveBtn").addEventListener("click", function () {
       if (storedData) {
         let user = JSON.parse(storedData);
 
-          if (user.role === "customer") {
-            if (user.password === currentPassword) {
-              user.password = newPassword;
-              localStorage.setItem("currentUser", JSON.stringify(user));
-              alert("Password changed successfully!");
-            } else {
-              alert("Current password is incorrect.");
+        if (user.role === "customer") {
+          if (user.password === currentPassword) {
+            user.password = newPassword;
+
+            // Update the user's password in the `users` array in `localStorage`
+            let data = JSON.parse(localStorage.getItem("data"));
+            let users = data.users;
+            let userIndex = users.findIndex((u) => u.id === user.id);
+            if (userIndex !== -1) {
+              users[userIndex].password = newPassword; // Update password
+              localStorage.setItem("data", JSON.stringify({ ...data, users }));
             }
+
+            localStorage.setItem("currentUser", JSON.stringify(user));
+            alert("Password changed successfully!");
+          } else {
+            alert("Current password is incorrect.");
           }
+        }
       } else {
         alert("No user data found in localStorage.");
       }
@@ -254,38 +275,40 @@ document.getElementById("saveBtn").addEventListener("click", function () {
       if (storedData) {
         let user = JSON.parse(storedData);
 
-          if (user.role === "customer") {
-            fields[currentEditSection].forEach((field) => {
-              let newValue = document.getElementById(`modal-${field.id}`).value;
+        if (user.role === "customer") {
+          fields[currentEditSection].forEach((field) => {
+            let newValue = document.getElementById(`modal-${field.id}`).value;
 
-              if (field.id === "firstName" || field.id === "lastName") {
-                user.name = `${
-                  document.getElementById("modal-firstName").value
-                } ${document.getElementById("modal-lastName").value}`;
-                document.getElementById("headerName").innerText = user.name;
-              } else if (field.id === "phone") {
-                user["phone number"] =
-                  document.getElementById("modal-phone").value;
-              } else if (field.id === "email") {
-                user.email = document.getElementById("modal-email").value;
-              } else if (field.id === "userImg") {
-                user.userImg = document.getElementById("modal-userImg").value;
-              } else if (
-                field.id === "Street" ||
-                field.id === "City" ||
-                field.id === "Country"
-              ) {
-                user.address = `${
-                  document.getElementById("modal-Street").value
-                }, ${document.getElementById("modal-City").value}, ${
-                  document.getElementById("modal-Country").value
-                }`;
-              }
-            });
+            if (field.id === "firstName" || field.id === "lastName") {
+              user.name = `${document.getElementById("modal-firstName").value} ${document.getElementById("modal-lastName").value}`;
+              document.getElementById("headerName").innerText = user.name;
+            } else if (field.id === "phone") {
+              user["phone number"] = document.getElementById("modal-phone").value;
+            } else if (field.id === "email") {
+              user.email = document.getElementById("modal-email").value;
+            } else if (field.id === "userImg") {
+              user.userImg = document.getElementById("modal-userImg").value;
+            } else if (
+              field.id === "Street" ||
+              field.id === "City" ||
+              field.id === "Country"
+            ) {
+              user.address = `${document.getElementById("modal-Street").value}, ${document.getElementById("modal-City").value}, ${document.getElementById("modal-Country").value}`;
+            }
+          });
 
-            // Save the updated user data in local storage
-            localStorage.setItem("currentUser", JSON.stringify(user));
+          // Update the user's data in the `users` array in `localStorage`
+          let data = JSON.parse(localStorage.getItem("data"));
+          let users = data.users;
+          let userIndex = users.findIndex((u) => u.id === user.id);
+          if (userIndex !== -1) {
+            users[userIndex] = user; // Update the user's data
+            localStorage.setItem("data", JSON.stringify({ ...data, users }));
           }
+
+          // Save the updated user data in local storage
+          localStorage.setItem("currentUser", JSON.stringify(user));
+        }
       } else {
         alert("No user data found in localStorage.");
       }
