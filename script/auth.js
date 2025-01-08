@@ -73,7 +73,17 @@ export function setupSignup() {
 
         showMessage("signupMessage", "Sign-up successful! Redirecting...", "success");
         setTimeout(() => {
-          window.location.href = "profile.html";
+          switch (userType) {
+            case "customer":
+              window.location.href = "customer-dashboard.html";
+              break;
+            case "seller":
+              window.location.href = "seller-dashboard.html";
+              break;
+            default:
+              console.error("Invalid user type:", userType);
+              window.location.href = "login.html";
+          }
         }, 2000);
       } catch (error) {
         showMessage("signupMessage", error.message, "danger");
@@ -91,6 +101,7 @@ export function setupLogin() {
 
       const email = document.getElementById('loginEmail').value;
       const password = document.getElementById('loginPassword').value;
+
 
       // Hardcoded admin credentials (for demonstration purposes only)
       if (email === 'admin@admin.com' && password === 'admin123') {
@@ -142,8 +153,10 @@ export function setupLogin() {
           // If the user doesn't exist in localStorage, create a new entry
           const newUser = {
             id: user.uid,
+
             role: 'customer', // Default role
-            name: '', // Add name if available
+            firstName:'', // Add name if available
+            lastName:'', // Add name if available
             email: email,
             address: '', // Add address if available
             phoneNumber: '', // Add phone number if available

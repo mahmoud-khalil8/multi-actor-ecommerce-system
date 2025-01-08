@@ -1,3 +1,49 @@
-
 /* mohamed */
 
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+.userProfile {
+  max-width: 60vw;
+  margin: 10px auto;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  overflow: hidden;
+}
+nav{
+  background-color: rgba(255, 249, 229, 1);
+
+}
+.userProfile img {
+  object-fit: cover;
+}
+.profileHeader {
+  color: black;
+  /* text-align: center; */
+  padding: 20px;
+  /* position: relative;. */
+}
+.profileHeader img {
+  border-radius: 50%;
+  width: 100px;
+  height: 100px;
+}
+
+.edit-btn {
+  border: none;
+  height: auto;
+  background-color: #010101;
+  color: white;
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.edit-btn:hover {
+  background: #636262;
+  transform: scale(1.1);
+}
+.password {
+  height: 60px;
+}

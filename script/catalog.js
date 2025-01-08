@@ -1,6 +1,25 @@
+
+const profile = document.getElementById("profilebtn");
+profile.addEventListener("click", function () {
+  const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+  const currentUserRole = currentUser.role;
+  if(currentUserRole==="admin"){
+    window.location.href = "admin-dashboard.html";
+  }
+  else if(currentUserRole==="customer"){
+    window.location.href = "customer-dashboard.html";
+  }
+  else if(currentUserRole==="seller"){
+    window.location.href = "seller-dashboard.html";
+  }
+
+}
+)
+
 let currentPage = 1; // Current page
 const totalPages = 3; // Total number of pages
 let categories = {}; // To store grouped categories
+
 
 function fetchAndDisplayProducts(apiUrl) {
   fetch(apiUrl)

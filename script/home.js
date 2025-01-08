@@ -1,9 +1,73 @@
+import { initializeLocalStorage } from "./utils/localStorage.js";
+
+// best seller 
+initializeLocalStorage();
+
+const profile = document.getElementById("profilebtn");
+profile.addEventListener("click", function () {
+  const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+  const currentUserRole = currentUser.role;
+  if(currentUserRole==="admin"){
+    window.location.href = "admin-dashboard.html";
+  }
+  else if(currentUserRole==="customer"){
+    window.location.href = "customer-dashboard.html";
+  }
+  else if(currentUserRole==="seller"){
+    window.location.href = "seller-dashboard.html";
+  }
+
+}
+)
+
 // Fetch and display products
 function fetchAndDisplayProducts(url, containerId, isRandom = false) {
   fetch(url)
     .then((response) => {
       if (!response.ok) {
         throw new Error(`Failed to fetch ${response.statusText}`);
+
+
+fetch('script/api.json')
+.then(response => {
+  if (!response.ok) {
+    throw new Error('Failed to fetch ' + response.statusText);
+  }
+  return response.json();
+})
+  .then(data => {
+    const products = data.products; // Get all products
+
+    // Sort the products by rating in descending order
+    const topRatedProducts = products.sort((a, b) => b.rating - a.rating).slice(1, 6); // Get top 5 rated products
+
+    const container = document.getElementById('product-container');
+
+    // Loop through each product and display its details
+    topRatedProducts.forEach(product => {
+      const productDiv = document.createElement('div');
+      productDiv.className = 'product-item';
+
+      // Add product image
+      const img = document.createElement('img');
+      img.src = product.thumbnail; // Set the thumbnail as image source
+      img.alt = product.title; // Set alt text for accessibility
+      productDiv.appendChild(img);
+
+      // Add product title
+      const title = document.createElement('h5');
+      title.innerText = product.title;
+      title.style.marginTop = `20px`;
+      productDiv.appendChild(title);
+
+      // Add stars
+      const stars = document.createElement("div");
+      stars.className = "star";
+      const rate = Math.round(product.rating);
+      for (let i = 0; i < rate; i++) {
+        const star = document.createElement("i");
+        star.className = `fas fa-star`;
+        stars.appendChild(star);
       }
       return response.json();
     })
