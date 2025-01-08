@@ -47,14 +47,14 @@ function loadUserData() {
         document.getElementById("firstName").innerText = updatedUser.name.split(" ")[0];
         document.getElementById("lastName").innerText = updatedUser.name.split(" ")[1];
         document.getElementById("email").innerText = updatedUser.email;
-        document.getElementById("phone").innerText = updatedUser["phone number"];
+        document.getElementById("phone").innerText = updatedUser["phoneNumber"];
         document.getElementById("userImg").src = updatedUser.userImg || "UP/userpic.png";
         
         let address = updatedUser.address.split(",");
         document.getElementById("Street").innerText = address[0];
         document.getElementById("City").innerText = address[1];
         document.getElementById("Country").innerText = address[2];
-        
+
       }
     }
   }
