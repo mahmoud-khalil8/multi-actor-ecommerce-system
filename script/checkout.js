@@ -1,6 +1,6 @@
 const user = JSON.parse(localStorage.getItem('currentUser'));
 
-if (!user || user.role !== 'admin') {
+if (!user ) {
 document.body.innerHTML = `
     <div style="display: flex; justify-content: center; align-items: center; height: 100vh; background-color: #f8d7da; color: #721c24; font-family: Arial, sans-serif;">
       <div style="text-align: center;">
