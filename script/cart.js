@@ -56,6 +56,3 @@ document.addEventListener("DOMContentLoaded", function () {
     subtotalElement.textContent = `$${subtotal.toFixed(2)}`;
     totalElement.textContent = `$${total.toFixed(2)}`;
 });
-
-
-
