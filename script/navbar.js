@@ -23,6 +23,7 @@ if (profile) {
 }
 // Function to check if a user is logged in
 function checkLoginStatus() {
+  console.log("Checking login status...");
   // Get the current user from localStorage
   let currentUser = JSON.parse(localStorage.getItem("currentUser"));
 
@@ -31,20 +32,19 @@ function checkLoginStatus() {
   let cartLink = document.getElementById("cartLink");
   let loginButton = document.getElementById("loginbutton");
   let profileLink = document.getElementById("profileLink");
-
   if (currentUser) {
     // User is logged in: Show Orders and Cart, hide Login button
-    if (ordersLink) ordersLink.style.display = "block";
-    if (cartLink) cartLink.style.display = "block";
-    if (profileLink) profileLink.style.display = "block";
-    if (loginButton) loginButton.style.display = "none";
+    if (ordersLink) ordersLink.classList.remove("hidden");
+    if (cartLink) cartLink.classList.remove("hidden");
+    if (profileLink) profileLink.classList.remove("hidden");
+    if (loginButton) loginButton.classList.add("hidden");
     
   } else {
     // User is not logged in: Hide Orders and Cart, show Login button
-    if (ordersLink) ordersLink.style.display = "none";
-    if (cartLink) cartLink.style.display = "none";
-    if (profileLink) profileLink.style.display = "none";
-    if (loginButton) loginButton.style.display = "block";
+    if (ordersLink) ordersLink.classList.add("hidden");
+    if (cartLink) cartLink.classList.add("hidden");
+    if (profileLink) profileLink.classList.add("hidden");
+    if (loginButton) loginButton.classList.remove("hidden");
   }
 }
 

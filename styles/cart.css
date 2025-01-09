@@ -10,29 +10,12 @@ body{
 .all{
     background-color: rgb(253, 251, 251);
 }
-nav{
-  background-color: #e4ebf0;
 
-}
-.logo{
-  width: 60px;
-  height: auto;
-}
 button{
   border: none;
   background-color: transparent;
 }
-.navbar-toggler {
-  padding: var(--bs-navbar-toggler-padding-y) var(--bs-navbar-toggler-padding-x);
-  font-size: var(--bs-navbar-toggler-font-size);
-  line-height: 1;
-  color: transparent;
-  background-color: transparent;
-  border: none;
-  border-radius: var(--bs-navbar-toggler-border-radius);
-  transition: var(--bs-navbar-toggler-transition);
-  
-}
+
 @media (max-width: 992px) {
   .navbar-nav .nav-item {
     border-bottom: 2px solid #FFFFFF !important;

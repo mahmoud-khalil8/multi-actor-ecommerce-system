@@ -11,9 +11,7 @@ body{
     display: flex;
     justify-content: space-between;
 }
-.nav-link {
-    margin: 0 20px;
-}
+
 .bg{
     background-image:url(photos/1.png);
     width: 100%;

@@ -15,29 +15,31 @@ loadCartFromStorage();
 
 const urlParams = new URLSearchParams(window.location.search);
 const productId = urlParams.get("id");
-// let productId = 10;
 
-if (!productId) {
-  console.error("Product ID not found in the URL.");
+if (!productId || isNaN(productId)) {
+  console.error("Invalid or missing Product ID in the URL.");
 }
 
 // Fetch product data from api.json
-fetch("api.json")
+fetch("script/api.json")
   .then((response) => {
     if (!response.ok) {
-      throw new Error("Network response was not ok");
+      throw new Error(`HTTP error! Status: ${response.status}`);
     }
     return response.json();
   })
   .then((data) => {
     const product = data.products.find((p) => p.id === parseInt(productId));
-
     if (product) {
       displayProductDetails(product);
 
       document
         .getElementById("addToCart")
         .addEventListener("click", function () {
+          if(localStorage.getItem("currentUser") === null){
+            window.location.href = "login.html";
+            return ;
+          }
           addToCart(product);
         });
     } else {
@@ -56,14 +58,19 @@ function displayProductDetails(product) {
 
   let rateHTML = "";
   for (let i = 0; i < Math.round(product.rating); i++) {
-    rateHTML += `<img width="20" height="20" src="up/image.png" alt="rate" />`; // Change the src path as needed
+    rateHTML += `<img width="20" height="20" src="./assets/images/star.png" alt="rate" />`; // Update the path as needed
   }
   document.getElementById("rate").innerHTML = rateHTML;
 }
 
 function addToCart(product) {
-  let quantity = parseInt(document.getElementById("quantity").value); // Get quantity from input
+  let quantityInput = document.getElementById("quantity");
+  if (!quantityInput) {
+    console.error("Quantity input not found.");
+    return;
+  }
 
+  let quantity = parseInt(quantityInput.value);
   if (isNaN(quantity) || quantity <= 0) {
     alert("Please enter a valid quantity.");
     return;
@@ -78,7 +85,8 @@ function addToCart(product) {
     cart.products.push({
       id: product.id,
       name: product.title,
-      description: product.description,
+      // description: product.description,
+      price: product.price, // Added the price property here
       image: product.images[0],
       rate: Math.round(product.rating),
       quantity: quantity,
