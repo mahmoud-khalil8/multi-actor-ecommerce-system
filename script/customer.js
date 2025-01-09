@@ -1,63 +1,53 @@
 import { validatePhoneNumber, showMessage } from "./utils/validation.js";
-// // creating an object
-// let userData = {
-//   users: [
-//     {
-//       id: 1,
-//       role: "customer",
-//       name: "John Doe",
-//       userImg: "UP/userpic.png",
-//       email: "john@example.com",
-//       password: "hashed_password",
-//       address: "123 Main St, City, Country",
-//       "phone number": "123-456-7890",
-//       orders: [101, 102],
-//     },
-//     {
-//       id: 2,
-//       role: "seller",
-//       name: "Jane Smith",
-//       email: "jane@example.com",
-//       password: "hashed_password",
-//       products: [201, 202],
-//     },
-//   ],
-// };
 
-// if (!localStorage.getItem("userData")) {
-//   localStorage.setItem("userData", JSON.stringify(userData));
-// }
-
-// load userdata in the local strorage and to the data elements
+// Load user data from localStorage and populate the profile page
 function loadUserData() {
-  let storedData = localStorage.getItem("currentUser");
-  if (storedData) {
-    let user = JSON.parse(storedData);
+  try {
+    // Check if a user is logged in
+    let currentUser = JSON.parse(localStorage.getItem("currentUser"));
+    if (!currentUser) {
+      alert("No user is currently logged in.");
+      window.location.href = "login.html"; // Redirect to login page
+      return;
+    }
 
-    if (user.role === "customer") {
-      // Fetch the latest user data from the `users` array in `localStorage`
-      let data = JSON.parse(localStorage.getItem("data"));
-      let users = data.users;
-      let updatedUser = users.find((u) => u.id === user.id);
+    // Fetch all users from localStorage
+    let data = JSON.parse(localStorage.getItem("data"));
+    if (!data || !data.users) {
+      alert("No user data found in localStorage.");
+      return;
+    }
 
-      if (updatedUser) {
-        // Update the displayed data
-        document.getElementById("headerName").innerText = updatedUser.name;
-        document.getElementById("emailHeader").innerText = updatedUser.email;
+    // Find the updated user data from the `users` array
+    let updatedUser = data.users.find((u) => u.id === currentUser.id);
+    if (!updatedUser) {
+      alert("User data not found.");
+      return;
+    }
 
-        document.getElementById("firstName").innerText = updatedUser.name.split(" ")[0];
-        document.getElementById("lastName").innerText = updatedUser.name.split(" ")[1];
-        document.getElementById("email").innerText = updatedUser.email;
-        document.getElementById("phone").innerText = updatedUser["phoneNumber"];
-        document.getElementById("userImg").src = updatedUser.userImg || "UP/userpic.png";
-        
-        let address = updatedUser.address.split(",");
-        document.getElementById("Street").innerText = "";
-        document.getElementById("City").innerText = address[1];
-        document.getElementById("Country").innerText = address[0];
+    // Update the displayed data
+    document.getElementById("headerName").innerText = updatedUser.name;
+    document.getElementById("emailHeader").innerText = updatedUser.email;
 
+    document.getElementById("firstName").innerText = updatedUser.name.split(" ")[0];
+    document.getElementById("lastName").innerText = updatedUser.name.split(" ")[1];
+    document.getElementById("email").innerText = updatedUser.email;
+    document.getElementById("phone").innerText = updatedUser.phoneNumber || "N/A";
+    document.getElementById("userImg").src = updatedUser.userImg || "UP/userpic.png";
+
+    // Parse and display address
+    if (updatedUser.address) {
+      let address = updatedUser.address.split(",");
+      if (address.length >= 2) {
+        document.getElementById("City").innerText = address[1].trim();
+        document.getElementById("Country").innerText = address[0].trim();
+      } else {
+        console.error("Invalid address format:", updatedUser.address);
       }
     }
+  } catch (error) {
+    console.error("Error loading user data:", error);
+    alert("An error occurred while loading user data.");
   }
 }
 
@@ -66,14 +56,13 @@ window.onload = loadUserData;
 
 let currentEditSection;
 
-let fields = {
+const fields = {
   personal: [
     { id: "firstName", label: "First Name" },
     { id: "lastName", label: "Last Name" },
     { id: "phone", label: "Phone" },
   ],
   address: [
-    { id: "Street", label: "Street" },
     { id: "City", label: "City" },
     { id: "Country", label: "Country" },
   ],
@@ -83,40 +72,43 @@ let fields = {
     { id: "confirmPassword", label: "Confirm Password" },
   ],
 };
-const editPersonal = document.getElementById("editPersonal");
-editPersonal.addEventListener("click", function () {
-  editFields("personal");
-});
-// editing the
+
+// Edit personal information
+document.getElementById("editPersonal").addEventListener("click", () => editFields("personal"));
+
+// Edit address
+document.getElementById("editAddress").addEventListener("click", () => editFields("address"));
+
+// Open modal for editing fields
 function editFields(section) {
   currentEditSection = section;
   let modalForm = document.getElementById("modalForm");
   modalForm.innerHTML = "";
 
   if (section === "password") {
-    modalForm.innerHTML += `
-        <form>
-            <div class="mb-3">
-                <label for="currentPass" class="form-label">Current Password</label>
-                <input type="password" autocomplete="on" class="form-control" id="modal-currentpassword">
-            </div>
-            <div class="mb-3">
-                <label for="newPass" class="form-label">New Password</label>
-                <input type="password" autocomplete="on" class="form-control" id="modal-newPassword">
-            </div>
-            <div class="mb-3">
-                <label for="confirmPass" class="form-label">Confirm Password</label>
-                <input type="password" autocomplete="on" class="form-control" id="modal-confirmPassword">
-            </div>
-        </form>`;
+    modalForm.innerHTML = `
+      <form>
+        <div class="mb-3">
+          <label for="currentPass" class="form-label">Current Password</label>
+          <input type="password" autocomplete="on" class="form-control" id="modal-currentpassword">
+        </div>
+        <div class="mb-3">
+          <label for="newPass" class="form-label">New Password</label>
+          <input type="password" autocomplete="on" class="form-control" id="modal-newPassword">
+        </div>
+        <div class="mb-3">
+          <label for="confirmPass" class="form-label">Confirm Password</label>
+          <input type="password" autocomplete="on" class="form-control" id="modal-confirmPassword">
+        </div>
+      </form>`;
   } else {
     fields[section].forEach((field) => {
       let value = document.getElementById(field.id).innerText;
       modalForm.innerHTML += `
-            <div class="mb-3">
-                <label for="${field.id}" class="form-label">${field.label}</label>
-                <input type="text" class="form-control" id="modal-${field.id}" value="${value}">
-            </div>`;
+        <div class="mb-3">
+          <label for="${field.id}" class="form-label">${field.label}</label>
+          <input type="text" class="form-control" id="modal-${field.id}" value="${value}">
+        </div>`;
     });
   }
 
@@ -125,44 +117,49 @@ function editFields(section) {
   modal.show();
 }
 
-// profiel image
-
-let imageInput = document.getElementById("imageInput");
-let userImg = document.getElementById("userImg");
-
-imageInput.addEventListener("change", function (event) {
+// Handle profile image upload
+document.getElementById("imageInput").addEventListener("change", function (event) {
   const file = event.target.files[0];
-  if (file) {
-    const reader = new FileReader();
+  if (!file) return;
 
-    reader.onload = function (e) {
-      userImg.src = e.target.result;
-      let storedData = localStorage.getItem("currentUser");
-      if (storedData) {
-        let user = JSON.parse(storedData);
-
-        if (user.role === "customer") {
-          user.userImg = e.target.result;
-
-          // Update the user's profile image in the `users` array in `localStorage`
-          let data = JSON.parse(localStorage.getItem("data"));
-          let users = data.users;
-          let userIndex = users.findIndex((u) => u.id === user.id);
-          if (userIndex !== -1) {
-            users[userIndex].userImg = e.target.result; // Update profile image
-            localStorage.setItem("data", JSON.stringify({ ...data, users }));
-          }
-
-          localStorage.setItem("currentUser", JSON.stringify(user));
-        }
-      }
-    };
-
-    reader.readAsDataURL(file);
+  // Validate file type
+  if (!file.type.startsWith("image/")) {
+    alert("Please upload a valid image file.");
+    return;
   }
+
+  // Validate file size (e.g., 5MB limit)
+  if (file.size > 5 * 1024 * 1024) {
+    alert("File size must be less than 5MB.");
+    return;
+  }
+
+  const reader = new FileReader();
+  reader.onload = function (e) {
+    document.getElementById("userImg").src = e.target.result;
+
+    // Update user data in localStorage
+    let currentUser = JSON.parse(localStorage.getItem("currentUser"));
+    if (currentUser) {
+      let data = JSON.parse(localStorage.getItem("data"));
+      let users = data.users;
+      let userIndex = users.findIndex((u) => u.id === currentUser.id);
+
+      if (userIndex !== -1) {
+        users[userIndex].userImg = e.target.result; // Update profile image
+        localStorage.setItem("data", JSON.stringify({ ...data, users }));
+
+        // Update currentUser in localStorage
+        currentUser.userImg = e.target.result;
+        localStorage.setItem("currentUser", JSON.stringify(currentUser));
+      }
+    }
+  };
+
+  reader.readAsDataURL(file);
 });
 
-
+// Save changes made in the modal
 document.getElementById("saveBtn").addEventListener("click", function () {
   let valid = true;
 
@@ -171,123 +168,93 @@ document.getElementById("saveBtn").addEventListener("click", function () {
     let newPassword = document.getElementById("modal-newPassword").value;
     let confirmPassword = document.getElementById("modal-confirmPassword").value;
 
-    if (!currentPassword) {
-      showMessage("modal-currentpassword-error", "Current password is required.");
+    if (!currentPassword || !newPassword || !confirmPassword) {
+      alert("All fields are required.");
       valid = false;
-    }
-
-    if (!newPassword) {
-      showMessage("modal-newPassword-error", "New password is required.");
+    } else if (newPassword !== confirmPassword) {
+      alert("Passwords do not match.");
       valid = false;
-    }
+    } else {
+      let currentUser = JSON.parse(localStorage.getItem("currentUser"));
+      if (currentUser) {
+        let data = JSON.parse(localStorage.getItem("data"));
+        let users = data.users;
+        let userIndex = users.findIndex((u) => u.id === currentUser.id);
 
-    if (!confirmPassword) {
-      showMessage("modal-confirmPassword-error", "Confirm password is required.");
-      valid = false;
-    }
+        if (userIndex !== -1) {
+          if (users[userIndex].password === currentPassword) {
+            users[userIndex].password = newPassword; // Update password
+            localStorage.setItem("data", JSON.stringify({ ...data, users }));
 
-    if (newPassword !== confirmPassword) {
-      showMessage("modal-newPassword-error", "Passwords do not match.");
-      valid = false;
-    }
+            // Update currentUser in localStorage
+            currentUser.password = newPassword;
+            localStorage.setItem("currentUser", JSON.stringify(currentUser));
 
-    if (valid) {
-      let storedData = localStorage.getItem("currentUser");
-      if (storedData) {
-        let user = JSON.parse(storedData);
-
-        if (user.role === "customer") {
-          if (user.password === currentPassword) {
-            user.password = newPassword;
-
-            let data = JSON.parse(localStorage.getItem("data"));
-            let users = data.users;
-            let userIndex = users.findIndex((u) => u.id === user.id);
-            if (userIndex !== -1) {
-              users[userIndex].password = newPassword;
-              localStorage.setItem("data", JSON.stringify({ ...data, users }));
-            }
-
-            localStorage.setItem("currentUser", JSON.stringify(user));
             alert("Password changed successfully!");
           } else {
             alert("Current password is incorrect.");
           }
         }
-      } else {
-        alert("No user data found in localStorage.");
       }
-
-      bootstrap.Modal.getInstance(document.getElementById("editModal")).hide();
     }
   } else {
-    // Validate only phone number
-    let phoneNumber = document.getElementById("modal-phone").value;
-    if (!validatePhoneNumber(phoneNumber)) {
-      let message = "Invalid phone number.";
-      if(document.getElementById("modal-phone-error")) {
-        document.getElementById("modal-phone-error").innerText = message;
-      } else {
-
-      let span = document.createElement("span");
-      span.id = "modal-phone-error";
-      span.className = "text-danger";
-      span.innerText = message;
-      document.getElementById("modalForm").appendChild(span);
+    // Validate phone number only if the "personal" section is being edited
+    if (currentEditSection === "personal") {
+      let phoneInput = document.getElementById("modal-phone");
+      if (phoneInput) {
+        let phoneNumber = phoneInput.value;
+        if (phoneNumber && !validatePhoneNumber(phoneNumber)) {
+          showMessage("modal-phone-error", "Invalid phone number.");
+          valid = false;
+        }
       }
-
-
-      showMessage("modal-phone-error", "Invalid phone number.");
-      valid = false;
     }
 
     if (valid) {
-      let storedData = localStorage.getItem("currentUser");
+      let currentUser = JSON.parse(localStorage.getItem("currentUser"));
+      if (currentUser) {
+        let data = JSON.parse(localStorage.getItem("data"));
+        let users = data.users;
+        let userIndex = users.findIndex((u) => u.id === currentUser.id);
 
-      if (storedData) {
-        let user = JSON.parse(storedData);
-
-        if (user.role === "customer") {
+        if (userIndex !== -1) {
           fields[currentEditSection].forEach((field) => {
             let newValue = document.getElementById(`modal-${field.id}`).value;
-
             if (field.id === "phone") {
-              user["phoneNumber"] = document.getElementById("modal-phone").value;
+              users[userIndex].phoneNumber = newValue;
             } else if (field.id === "firstName" || field.id === "lastName") {
-              user.name = `${document.getElementById("modal-firstName").value} ${document.getElementById("modal-lastName").value}`;
-              user.firstName = document.getElementById("modal-firstName").value;
-              user.lastName = document.getElementById("modal-lastName").value;
-              document.getElementById("headerName").innerText = user.name;
+              users[userIndex].name = `${document.getElementById("modal-firstName").value} ${document.getElementById("modal-lastName").value}`;
             } else if (field.id === "email") {
-              user.email = document.getElementById("modal-email").value;
-            } else if (field.id === "userImg") {
-              user.userImg = document.getElementById("modal-userImg").value;
-            } else if (
-              field.id === "Street" ||
-              field.id === "City" ||
-              field.id === "Country"
-            ) {
-              user.address = `${document.getElementById("modal-Street").value}, ${document.getElementById("modal-City").value}, ${document.getElementById("modal-Country").value}`;
+              users[userIndex].email = newValue;
+            } else if ( field.id === "City" || field.id === "Country") {
+              users[userIndex].address = ` ${document.getElementById("modal-Country").value}, ${document.getElementById("modal-City").value}`;
             }
           });
 
-          let data = JSON.parse(localStorage.getItem("data"));
-          let users = data.users;
-          let userIndex = users.findIndex((u) => u.id === user.id);
-          if (userIndex !== -1) {
-            users[userIndex] = user;
-            localStorage.setItem("data", JSON.stringify({ ...data, users }));
-          }
+          // Update localStorage
+          localStorage.setItem("data", JSON.stringify({ ...data, users }));
 
-          localStorage.setItem("currentUser", JSON.stringify(user));
+          // Update currentUser in localStorage
+          Object.assign(currentUser, users[userIndex]);
+          localStorage.setItem("currentUser", JSON.stringify(currentUser));
+
+          // Refresh the displayed data
+          loadUserData();
         }
-      } else {
-        alert("No user data found in localStorage.");
       }
-
-      bootstrap.Modal.getInstance(document.getElementById("editModal")).hide();
-      loadUserData();
     }
+  }
+
+  if (valid) {
+    bootstrap.Modal.getInstance(document.getElementById("editModal")).hide();
   }
 });
 
+// Logout functionality
+document.getElementById("logoutBtn").addEventListener("click", function () {
+  // Clear the current user data from localStorage
+  localStorage.removeItem("currentUser");
+
+  // Redirect to the login page (or home page)
+  window.location.href = "login.html"; // Replace with your login page URL
+});

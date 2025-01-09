@@ -16,9 +16,21 @@ nav{
   background-color: #e4ebf0;
 
 }
+
 .logo{
   width: 60px;
   height: auto;
+}
+.navbar-toggler {
+  padding: var(--bs-navbar-toggler-padding-y) var(--bs-navbar-toggler-padding-x);
+  font-size: var(--bs-navbar-toggler-font-size);
+  line-height: 1;
+  color: transparent;
+  background-color: transparent;
+  border: none;
+  border-radius: var(--bs-navbar-toggler-border-radius);
+  transition: var(--bs-navbar-toggler-transition);
+  
 }
 .userProfile img {
   object-fit: cover;
