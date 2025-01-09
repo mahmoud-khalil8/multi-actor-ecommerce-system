@@ -1,3 +1,4 @@
+import { validatePhoneNumber, showMessage } from "./utils/validation.js";
 // // creating an object
 // let userData = {
 //   users: [
@@ -51,9 +52,9 @@ function loadUserData() {
         document.getElementById("userImg").src = updatedUser.userImg || "UP/userpic.png";
         
         let address = updatedUser.address.split(",");
-        document.getElementById("Street").innerText = address[0];
+        document.getElementById("Street").innerText = "";
         document.getElementById("City").innerText = address[1];
-        document.getElementById("Country").innerText = address[2];
+        document.getElementById("Country").innerText = address[0];
 
       }
     }
@@ -82,7 +83,10 @@ let fields = {
     { id: "confirmPassword", label: "Confirm Password" },
   ],
 };
-
+const editPersonal = document.getElementById("editPersonal");
+editPersonal.addEventListener("click", function () {
+  editFields("personal");
+});
 // editing the
 function editFields(section) {
   currentEditSection = section;
@@ -158,6 +162,7 @@ imageInput.addEventListener("change", function (event) {
   }
 });
 
+
 document.getElementById("saveBtn").addEventListener("click", function () {
   let valid = true;
 
@@ -167,27 +172,22 @@ document.getElementById("saveBtn").addEventListener("click", function () {
     let confirmPassword = document.getElementById("modal-confirmPassword").value;
 
     if (!currentPassword) {
-      alert("Current password is required.");
+      showMessage("modal-currentpassword-error", "Current password is required.");
       valid = false;
     }
 
     if (!newPassword) {
-      alert("New password is required.");
+      showMessage("modal-newPassword-error", "New password is required.");
       valid = false;
     }
 
     if (!confirmPassword) {
-      alert("Confirm password is required.");
+      showMessage("modal-confirmPassword-error", "Confirm password is required.");
       valid = false;
     }
 
     if (newPassword !== confirmPassword) {
-      alert("New password and confirm password do not match.");
-      valid = false;
-    }
-
-    if (newPassword.length < 8) {
-      alert("Password must not be less than 8 characters.");
+      showMessage("modal-newPassword-error", "Passwords do not match.");
       valid = false;
     }
 
@@ -200,12 +200,11 @@ document.getElementById("saveBtn").addEventListener("click", function () {
           if (user.password === currentPassword) {
             user.password = newPassword;
 
-            // Update the user's password in the `users` array in `localStorage`
             let data = JSON.parse(localStorage.getItem("data"));
             let users = data.users;
             let userIndex = users.findIndex((u) => u.id === user.id);
             if (userIndex !== -1) {
-              users[userIndex].password = newPassword; // Update password
+              users[userIndex].password = newPassword;
               localStorage.setItem("data", JSON.stringify({ ...data, users }));
             }
 
@@ -219,58 +218,28 @@ document.getElementById("saveBtn").addEventListener("click", function () {
         alert("No user data found in localStorage.");
       }
 
-      // Close the modal after saving
       bootstrap.Modal.getInstance(document.getElementById("editModal")).hide();
     }
   } else {
-    // Validate profile data fields
-    fields[currentEditSection].forEach((field) => {
-      let newValue = document.getElementById(`modal-${field.id}`).value;
+    // Validate only phone number
+    let phoneNumber = document.getElementById("modal-phone").value;
+    if (!validatePhoneNumber(phoneNumber)) {
+      let message = "Invalid phone number.";
+      if(document.getElementById("modal-phone-error")) {
+        document.getElementById("modal-phone-error").innerText = message;
+      } else {
 
-      if (field.id === "firstName" || field.id === "lastName") {
-        // Allow spaces for first and last name, but only alphabetic
-        if (!/^[a-zA-Z\s]+$/.test(newValue)) {
-          alert(
-            `${field.label} should only contain letters and spaces (no numbers or special characters).`
-          );
-          valid = false;
-        }
-      } else if (field.id === "phone") {
-        // Validate phone number (10 digits)
-        const phoneRegex = /^\d{10}$/;
-        if (!phoneRegex.test(newValue)) {
-          alert("Please enter a valid 10-digit phone number.");
-          valid = false;
-        }
-      } else if (field.id === "email") {
-        // Validate email format
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!emailRegex.test(newValue)) {
-          alert("Please enter a valid email address.");
-          valid = false;
-        }
-      } else if (field.id === "userImg") {
-        // Image URL validation (basic URL check)
-        if (!newValue) {
-          alert("User image URL is required.");
-          valid = false;
-        }
-      } else if (field.id === "City" || field.id === "Country") {
-        // Allow only letters and spaces for City and Country
-        if (!/^[a-zA-Z\s]+$/.test(newValue)) {
-          alert(
-            `${field.label} should only contain letters and spaces (no numbers or special characters).`
-          );
-          valid = false;
-        }
-      } else if (field.id === "Street") {
-        // Street field can be any text (no specific validation needed here)
-        if (!newValue.trim()) {
-          alert("Street address is required.");
-          valid = false;
-        }
+      let span = document.createElement("span");
+      span.id = "modal-phone-error";
+      span.className = "text-danger";
+      span.innerText = message;
+      document.getElementById("modalForm").appendChild(span);
       }
-    });
+
+
+      showMessage("modal-phone-error", "Invalid phone number.");
+      valid = false;
+    }
 
     if (valid) {
       let storedData = localStorage.getItem("currentUser");
@@ -282,13 +251,13 @@ document.getElementById("saveBtn").addEventListener("click", function () {
           fields[currentEditSection].forEach((field) => {
             let newValue = document.getElementById(`modal-${field.id}`).value;
 
-            if (field.id === "firstName" || field.id === "lastName") {
+            if (field.id === "phone") {
+              user["phoneNumber"] = document.getElementById("modal-phone").value;
+            } else if (field.id === "firstName" || field.id === "lastName") {
               user.name = `${document.getElementById("modal-firstName").value} ${document.getElementById("modal-lastName").value}`;
               user.firstName = document.getElementById("modal-firstName").value;
               user.lastName = document.getElementById("modal-lastName").value;
               document.getElementById("headerName").innerText = user.name;
-            } else if (field.id === "phone") {
-              user["phoneNumber"] = document.getElementById("modal-phone").value;
             } else if (field.id === "email") {
               user.email = document.getElementById("modal-email").value;
             } else if (field.id === "userImg") {
@@ -298,32 +267,27 @@ document.getElementById("saveBtn").addEventListener("click", function () {
               field.id === "City" ||
               field.id === "Country"
             ) {
-              
               user.address = `${document.getElementById("modal-Street").value}, ${document.getElementById("modal-City").value}, ${document.getElementById("modal-Country").value}`;
             }
           });
 
-          // Update the user's data in the `users` array in `localStorage`
           let data = JSON.parse(localStorage.getItem("data"));
           let users = data.users;
           let userIndex = users.findIndex((u) => u.id === user.id);
           if (userIndex !== -1) {
-            users[userIndex] = user; // Update the user's data
+            users[userIndex] = user;
             localStorage.setItem("data", JSON.stringify({ ...data, users }));
           }
 
-          // Save the updated user data in local storage
           localStorage.setItem("currentUser", JSON.stringify(user));
         }
       } else {
         alert("No user data found in localStorage.");
       }
 
-      // Close the modal after saving
       bootstrap.Modal.getInstance(document.getElementById("editModal")).hide();
       loadUserData();
-    } else {
-      alert("Please make sure that all fields match the validation");
     }
   }
 });
+

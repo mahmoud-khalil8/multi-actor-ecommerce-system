@@ -29,14 +29,15 @@ function validateEmail(email) {
 }
 
 function validatePassword(password) {
-  return password && password.length >= 6;
+  const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{6,}$/;
+  return regex.test(password);
 }
-
 function validateLocation(location) {
   return location && location.length >= 5;
 }
 
-function validatePhoneNumber(phoneNumber) {
-  const regex = /^\d{10}$/;
+export function validatePhoneNumber(phoneNumber) {
+  const regex = /^010\d{8}$/; // Starts with 010 and has exactly 11 digits
   return regex.test(phoneNumber);
 }
+
