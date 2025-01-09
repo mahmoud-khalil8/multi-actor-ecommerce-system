@@ -1,6 +1,19 @@
 
 import { initializeLocalStorage } from "./utils/localStorage.js";
+const user = JSON.parse(localStorage.getItem('currentUser'));
 
+if (!user || user.role !== 'admin') {
+document.body.innerHTML = `
+    <div style="display: flex; justify-content: center; align-items: center; height: 100vh; background-color: #f8d7da; color: #721c24; font-family: Arial, sans-serif;">
+      <div style="text-align: center;">
+        <h1>Not Authorized</h1>
+        <p>You do not have permission to access this page.</p>
+        <a href="login.html" style="color: #721c24; text-decoration: underline;">Go to Login</a>
+      </div>
+    </div>
+  `;
+  // Stop further execution
+  throw new Error('Not Authorized');}
 // Initialize local storage
 initializeLocalStorage();
 

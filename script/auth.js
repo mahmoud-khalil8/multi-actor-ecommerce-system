@@ -75,10 +75,10 @@ export function setupSignup() {
         setTimeout(() => {
           switch (userType) {
             case "customer":
-              window.location.href = "customer-dashboard.html";
+              window.location.href = "home.html";
               break;
             case "seller":
-              window.location.href = "seller-dashboard.html";
+              window.location.href = "home.html";
               break;
             default:
               console.error("Invalid user type:", userType);
@@ -137,13 +137,13 @@ export function setupLogin() {
           // Redirect based on role
           switch (existingUser.role) {
             case 'customer':
-              window.location.href = 'customer-dashboard.html';
+              window.location.href = 'home.html';
               break;
             case 'seller':
-              window.location.href = 'seller-dashboard.html';
+              window.location.href = 'home.html';
               break;
             case 'admin':
-              window.location.href = 'admin-dashboard.html';
+              window.location.href = 'home.html';
               break;
             default:
               console.error('Invalid user role:', existingUser.role);
@@ -170,7 +170,7 @@ export function setupLogin() {
           localStorage.setItem('currentUser', JSON.stringify(newUser));
 
           // Redirect to customer dashboard
-          window.location.href = 'customer-dashboard.html';
+          window.location.href = 'home.html';
         }
       } catch (error) {
         showMessage('loginMessage', error.message, 'danger');

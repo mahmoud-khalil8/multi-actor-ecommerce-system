@@ -95,4 +95,11 @@ function addToCart(product) {
   }
 
   localStorage.setItem("cart", JSON.stringify(cart));
+  const successModal = new bootstrap.Modal(document.getElementById("successModal"));
+  successModal.show();
+
+  // Automatically close the modal after 2 seconds
+  setTimeout(() => {
+    successModal.hide();
+  }, 2000);
 }
