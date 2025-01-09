@@ -1,87 +1,53 @@
 import { initializeLocalStorage } from "./utils/localStorage.js";
 
-// best seller 
+// Initialize local storage
 initializeLocalStorage();
 
+// Handle profile button click
 const profile = document.getElementById("profilebtn");
-profile.addEventListener("click", function () {
-  const currentUser = JSON.parse(localStorage.getItem("currentUser"));
-  const currentUserRole = currentUser.role;
-  if(currentUserRole==="admin"){
-    window.location.href = "admin-dashboard.html";
-  }
-  else if(currentUserRole==="customer"){
-    window.location.href = "customer-dashboard.html";
-  }
-  else if(currentUserRole==="seller"){
-    window.location.href = "seller-dashboard.html";
-  }
+if (profile) {
+  profile.addEventListener("click", () => {
+    const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+    if (!currentUser) return;
 
+    const currentUserRole = currentUser.role;
+    switch (currentUserRole) {
+      case "admin":
+        window.location.href = "admin-dashboard.html";
+        break;
+      case "customer":
+        window.location.href = "customer-dashboard.html";
+        break;
+      case "seller":
+        window.location.href = "seller-dashboard.html";
+        break;
+      default:
+        console.error("Unknown user role:", currentUserRole);
+    }
+  });
 }
-)
 
 // Fetch and display products
 function fetchAndDisplayProducts(url, containerId, isRandom = false) {
   fetch(url)
     .then((response) => {
       if (!response.ok) {
-        throw new Error(`Failed to fetch ${response.statusText}`);
-
-
-fetch('script/api.json')
-.then(response => {
-  if (!response.ok) {
-    throw new Error('Failed to fetch ' + response.statusText);
-  }
-  return response.json();
-})
-  .then(data => {
-    const products = data.products; // Get all products
-
-    // Sort the products by rating in descending order
-    const topRatedProducts = products.sort((a, b) => b.rating - a.rating).slice(1, 6); // Get top 5 rated products
-
-    const container = document.getElementById('product-container');
-
-    // Loop through each product and display its details
-    topRatedProducts.forEach(product => {
-      const productDiv = document.createElement('div');
-      productDiv.className = 'product-item';
-
-      // Add product image
-      const img = document.createElement('img');
-      img.src = product.thumbnail; // Set the thumbnail as image source
-      img.alt = product.title; // Set alt text for accessibility
-      productDiv.appendChild(img);
-
-      // Add product title
-      const title = document.createElement('h5');
-      title.innerText = product.title;
-      title.style.marginTop = `20px`;
-      productDiv.appendChild(title);
-
-      // Add stars
-      const stars = document.createElement("div");
-      stars.className = "star";
-      const rate = Math.round(product.rating);
-      for (let i = 0; i < rate; i++) {
-        const star = document.createElement("i");
-        star.className = `fas fa-star`;
-        stars.appendChild(star);
+        throw new Error(`Failed to fetch: ${response.statusText}`);
       }
       return response.json();
     })
     .then((data) => {
       let products = data.products;
 
-      // Sort products if not random
-      if (!isRandom) {
-        products = products.sort((a, b) => b.rating - a.rating).slice(1, 6); // Top 5 rated
-      } else {
-        products = products.sort(() => 0.5 - Math.random()).slice(0, 5); // Random 5
-      }
+      // Sort products by rating or randomize
+      products = isRandom
+        ? products.sort(() => 0.5 - Math.random()).slice(0, 5)
+        : products.sort((a, b) => b.rating - a.rating).slice(0, 5);
 
       const container = document.getElementById(containerId);
+      if (!container) return;
+
+      container.innerHTML = ""; // Clear existing content
       products.forEach((product) => {
         const productDiv = createProductElement(product);
         container.appendChild(productDiv);
@@ -102,19 +68,19 @@ function createProductElement(product) {
     window.location.href = `product.html?id=${product.id}`;
   });
 
-  // Product image
+  // Add product image
   const img = document.createElement("img");
   img.src = product.thumbnail;
   img.alt = product.title;
   productDiv.appendChild(img);
 
-  // Product title
+  // Add product title
   const title = document.createElement("h5");
   title.innerText = product.title;
   title.style.marginTop = "20px";
   productDiv.appendChild(title);
 
-  // Product rating
+  // Add product rating
   const stars = document.createElement("div");
   stars.className = "star";
   for (let i = 0; i < Math.round(product.rating); i++) {
@@ -124,7 +90,7 @@ function createProductElement(product) {
   }
   productDiv.appendChild(stars);
 
-  // Price and cart symbol
+  // Add price and cart icon
   const priceAndCart = document.createElement("div");
   priceAndCart.style.display = "flex";
   priceAndCart.style.justifyContent = "space-evenly";
@@ -138,20 +104,14 @@ function createProductElement(product) {
   link.href = "#"; // Default cart action
   link.className = "addtocartsympol";
 
-  const sympol = document.createElement("i");
-  sympol.className = "fa-solid fa-cart-shopping";
-  sympol.style.color = "#323232";
+  const cartIcon = document.createElement("i");
+  cartIcon.className = "fa-solid fa-cart-shopping";
+  cartIcon.style.color = "#323232";
 
-  // // Prevent container click propagation
-  // link.addEventListener("click", (event) => {
-  //   event.stopPropagation();
-  //   window.location.href = `cart.html?id=${product.id}`;
-  // });
-
-  link.appendChild(sympol);
+  link.appendChild(cartIcon);
   priceAndCart.appendChild(link);
-
   productDiv.appendChild(priceAndCart);
+
   return productDiv;
 }
 
@@ -166,7 +126,7 @@ function checkLoginBeforeCart() {
 
 // Show login button if not logged in
 const loginButton = document.getElementById("loginbutton");
-if (!localStorage.getItem("currentUser")) {
+if (loginButton && !localStorage.getItem("currentUser")) {
   loginButton.style.display = "block";
 }
 
