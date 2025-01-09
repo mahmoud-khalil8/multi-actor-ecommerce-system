@@ -133,3 +133,61 @@ pre{
     border-radius: 10px;
     border: 2px solid lightgray;
 }
+@media (max-width: 768px) {
+    .right-bar {
+        width: 100%;
+        padding: 15px;
+    }
+
+    .all {
+        flex-direction: column;
+    }
+
+    .table {
+        margin-left: 0;
+        margin-right: 0;
+    }
+
+    .first {
+        flex-direction: column;
+    }
+
+    .username {
+        width: 100%;
+        margin-right: 0;
+    }
+
+    .details input {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+
+    .t11,
+    .t22 {
+        display: block;
+        width: 100%;
+    }
+
+    .check {
+        width: 100%;
+    }
+}
+
+@media (max-width: 576px) {
+    .right-bar {
+        padding: 10px;
+    }
+
+    .bg {
+        height: 200px;
+    }
+
+    h1 {
+        font-size: 24px;
+    }
+
+    .check {
+        width: 100%;
+        font-size: 14px;
+    }
+}
