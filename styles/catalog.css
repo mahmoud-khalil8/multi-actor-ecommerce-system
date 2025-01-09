@@ -23,10 +23,15 @@
   top: 0;
   z-index: 100;
   }
-  nav{
-  background-color:rgba(255, 249, 229, 1);
-  
-  }
+nav{
+  background-color: #e4ebf0;
+
+}
+.logo{
+  width: 60px;
+  height: auto;
+}
+
   #searchForm {
     position: relative;
     max-width: 900px; /* Optional: Limit max width */
@@ -143,7 +148,7 @@
   
   .pagination-button {
     padding: 10px 25px;
-    background-color: rgb(255, 244, 209);
+    background-color:#e4ebf0;
     color: #222;
     border: none;
     border-radius: 5px;

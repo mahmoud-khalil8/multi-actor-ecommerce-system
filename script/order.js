@@ -1,7 +1,29 @@
+const profile = document.getElementById("profilebtn");
+if (profile) {
+  profile.addEventListener("click", () => {
+    const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+    if (!currentUser) return;
+
+    const currentUserRole = currentUser.role;
+    switch (currentUserRole) {
+      case "admin":
+        window.location.href = "admin-dashboard.html";
+        break;
+      case "customer":
+        window.location.href = "customer-dashboard.html";
+        break;
+      case "seller":
+        window.location.href = "seller-dashboard.html";
+        break;
+      default:
+        console.error("Unknown user role:", currentUserRole);
+    }
+  });
+}
 const orders = [
     {
       "id": 101,
-      "userId": "X9PUGjMtOph5ivukRAJ61pI0VVT2", // userId is a string
+      "userId": "jji02NFzb9YoCBg9KnBGBn1fWJi1", // userId is a string
       "sellerid": 3,
       "items": [
         {
@@ -19,7 +41,7 @@ const orders = [
   
   // Store orders in localStorage
   localStorage.setItem('orders', JSON.stringify(orders));
-  const currentUser = localStorage.getItem("currentUser");
+  const currentUser = JSON.parse(localStorage.getItem("currentUser"));
   
   // Retrieve the orders from localStorage and parse it
   const storedOrders = JSON.parse(localStorage.getItem("orders"));
@@ -31,7 +53,7 @@ const orders = [
     // Check if the currentUser exists and if storedOrders are available
     if (currentUser && storedOrders) {
       // Loop through the orders and check if userId matches currentUser
-      const userOrder = storedOrders.find(order => order.userId === currentUser); // Compare as strings
+      const userOrder = storedOrders.find(order => order.userId === currentUser.id); // Compare as strings
   
       if (userOrder) {
         // If a matching order is found, display the total in the body

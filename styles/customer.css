@@ -13,8 +13,12 @@
   overflow: hidden;
 }
 nav{
-  background-color: rgba(255, 249, 229, 1);
+  background-color: #e4ebf0;
 
+}
+.logo{
+  width: 60px;
+  height: auto;
 }
 .userProfile img {
   object-fit: cover;

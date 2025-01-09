@@ -26,8 +26,16 @@ body {
   z-index: 100;
 }
 nav{
-  background-color: rgba(255, 249, 229, 1);
+  background-color: #e4ebf0;
 
+}
+.logo{
+  width: 60px;
+  height: auto;
+}
+button{
+  border: none;
+  background-color: transparent;
 }
 .navbar-toggler {
   padding: var(--bs-navbar-toggler-padding-y) var(--bs-navbar-toggler-padding-x);
@@ -80,9 +88,7 @@ top: 75%;
   justify-content: space-around;
   align-items: center;
   padding: 20px 80px;
-  /* background-color: #FBEBB5; */
-  background-color: rgba(255, 249, 229, 1);/*  very important*/
-  /* background-color: #fbf2d5; */
+  
 
   height: 93vh;
 }
@@ -117,7 +123,7 @@ top: 75%;
   border: none;
   border: 1px solid transparent;
   border-radius: 15px;
-  background-color: rgba(255, 249, 229, 1);
+  background-color: #eee;
   padding: 4px;
 }
 #landing button a{
@@ -282,7 +288,7 @@ top: 75%;
 
 /* footer */
  #footer {
-  background-color: rgba(255, 249, 229, 1); /* Warm beige background */
+  background-color:#eee; /* Warm beige background */
   padding: 30px 15px;
   color: #333; /* Neutral text color */
   font-family: Arial, sans-serif;
