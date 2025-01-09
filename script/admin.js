@@ -428,3 +428,11 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 });
+// Logout functionality
+document.getElementById("logoutBtn").addEventListener("click", function () {
+  // Clear the current user data from localStorage
+  localStorage.removeItem("currentUser");
+
+  // Redirect to the login page (or home page)
+  window.location.href = "login.html"; // Replace with your login page URL
+});
