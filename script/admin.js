@@ -436,16 +436,8 @@ document.addEventListener('DOMContentLoaded', () => {
  document.getElementById("logoutBtn").addEventListener("click", function () {
    localStorage.removeItem("currentUser");
 
-  if(localStorage.getItem("cart")) {
-     localStorage.removeItem("cart");
-    localStorage.removeItem("Total price");
-  }
-  if(localStorage.getItem("products")) {
-     localStorage.removeItem("products");
-  }
-  if(localStorage.getItem("users")) {
-     localStorage.removeItem("users");
-  }
+ 
+  
   if(localStorage.getItem("sales")) {
      localStorage.removeItem("sales");
   }
