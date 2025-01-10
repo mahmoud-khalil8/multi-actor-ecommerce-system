@@ -17,11 +17,10 @@ function displayNewReleases() {
     container.appendChild(productDiv);
   });
 
-  checkLoginBeforeCart(); // Adjust cart links based on login status
+  checkLoginBeforeCart(); 
 }
-// Call this function to display new releases when the page loads
 displayNewReleases();
-// Fetch and display products
+
 function fetchAndDisplayProducts(url, containerId, isRandom = false) {
   fetch(url)
     .then((response) => {
@@ -33,7 +32,6 @@ function fetchAndDisplayProducts(url, containerId, isRandom = false) {
     .then((data) => {
       let products = data.products;
 
-      // Sort products by rating or randomize
       products = isRandom
         ? products.sort(() => 0.5 - Math.random()).slice(0, 5)
         : products.sort((a, b) => b.rating - a.rating).slice(0, 5);
@@ -41,7 +39,7 @@ function fetchAndDisplayProducts(url, containerId, isRandom = false) {
       const container = document.getElementById(containerId);
       if (!container) return;
 
-      container.innerHTML = ""; // Clear existing content
+      container.innerHTML = "";
       products.forEach((product) => {
         const productDiv = createProductElement(product);
         container.appendChild(productDiv);
@@ -49,34 +47,30 @@ function fetchAndDisplayProducts(url, containerId, isRandom = false) {
     
 
 
-      checkLoginBeforeCart(); // Adjust cart links based on login status
+      checkLoginBeforeCart(); 
     })
     .catch((error) => console.error(`Error fetching products:`, error));
 }
 
-// Create product element
 function createProductElement(product) {
   const productDiv = document.createElement("div");
   productDiv.className = "product-item";
 
-  // Navigate to product details on click
   productDiv.addEventListener("click", () => {
     window.location.href = `product.html?id=${product.id}`;
   });
 
-  // Add product image
+  
   const img = document.createElement("img");
   img.src = product.thumbnail;
   img.alt = product.title;
   productDiv.appendChild(img);
 
-  // Add product title
   const title = document.createElement("h5");
   title.innerText = product.title;
   title.style.marginTop = "20px";
   productDiv.appendChild(title);
 
-  // Add product rating
   const stars = document.createElement("div");
   stars.className = "star";
   for (let i = 0; i < Math.round(product.rating); i++) {
@@ -86,7 +80,6 @@ function createProductElement(product) {
   }
   productDiv.appendChild(stars);
 
-  // Add price and cart icon
   const priceAndCart = document.createElement("div");
   priceAndCart.style.display = "flex";
   priceAndCart.style.justifyContent = "space-evenly";
@@ -114,25 +107,21 @@ function createProductElementLocalStorage(product) {
   const productDiv = document.createElement("div");
   productDiv.className = "product-item";
 
-  // Show modal on click for local storage products
   productDiv.addEventListener("click", () => {
     const underReviewModal = new bootstrap.Modal(document.getElementById("underReviewModal"));
     underReviewModal.show();
   });
 
-  // Add product image
   const img = document.createElement("img");
-  img.src = product.image; // Use 'image' instead of 'thumbnail'
-  img.alt = product.name;  // Use 'name' instead of 'title'
+  img.src = product.image; 
+  img.alt = product.name;  
   productDiv.appendChild(img);
 
-  // Add product title
   const title = document.createElement("h5");
-  title.innerText = product.name; // Use 'name' instead of 'title'
+  title.innerText = product.name;
   title.style.marginTop = "20px";
   productDiv.appendChild(title);
 
-  // Add product rating (if available)
   if (product.rating) {
     const stars = document.createElement("div");
     stars.className = "star";
@@ -144,7 +133,6 @@ function createProductElementLocalStorage(product) {
     productDiv.appendChild(stars);
   }
 
-  // Add price and cart icon
   const priceAndCart = document.createElement("div");
   priceAndCart.style.display = "flex";
   priceAndCart.style.justifyContent = "space-evenly";
@@ -155,7 +143,7 @@ function createProductElementLocalStorage(product) {
   priceAndCart.appendChild(price);
 
   const link = document.createElement("a");
-  link.href = "#"; // Default cart action
+  link.href = "#";  
   link.className = "addtocartsympol";
 
   const cartIcon = document.createElement("i");
@@ -168,7 +156,6 @@ function createProductElementLocalStorage(product) {
 
   return productDiv;
 }
-// Redirect cart links if not logged in
 function checkLoginBeforeCart() {
   if (!localStorage.getItem("currentUser")) {
     document.querySelectorAll(".addtocartsympol").forEach((cart) => {
@@ -177,7 +164,6 @@ function checkLoginBeforeCart() {
   }
 }
 
-// Show login button if not logged in
 const loginButton = document.getElementById("loginbutton");
 if (loginButton && !localStorage.getItem("currentUser")) {
   loginButton.style.display = "block";

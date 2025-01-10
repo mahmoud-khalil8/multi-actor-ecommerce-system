@@ -60,7 +60,8 @@ if (!localStorage.getItem("orders")) {
 }
     var contentDiv = document.querySelector(".content");
     let navLinks = document.querySelectorAll(".nav-link");
-  
+    var navbarCollapse = document.querySelector(".navbar-collapse");
+
     // Function to load content based on the page
     function loadPage(page) {
       fetch(`${page}.html`)
@@ -93,12 +94,21 @@ if (!localStorage.getItem("orders")) {
         });
     }
   
-    // Add event listeners to nav links
     navLinks.forEach(link => {
       link.addEventListener("click", event => {
         event.preventDefault();
         var page = event.currentTarget.getAttribute("data-page");
         loadPage(page);
+        if(page === "sellerProducts"){
+          // Load the default page (products) on initial load
+          window.location.reload();
+        }
+       
+        if (navbarCollapse.classList.contains("show")) {
+          // navbarToggler.click();
+          bootstrap.Collapse.getInstance(navbarCollapse).toggle();
+          console.log(navbarCollapse.classList.contains("show"));
+        }
       });
     });
   
@@ -106,5 +116,6 @@ if (!localStorage.getItem("orders")) {
     loadPage("sellerProducts");
     
   });
+  
   
   

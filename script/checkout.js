@@ -10,7 +10,6 @@ if (!user) {
       </div>
     </div>
   `;
-  // Stop further execution
   throw new Error('Not Authorized');
 }
 
@@ -33,7 +32,6 @@ window.addEventListener('load', function () {
   let label2 = document.getElementById('label2');
   let totalPrice = document.getElementById('total-price');
 
-  // Modal for successful checkout
   const successModal = new bootstrap.Modal(document.getElementById('successModal'));
 
   inputs.forEach(function (input) {
@@ -53,10 +51,9 @@ window.addEventListener('load', function () {
   check.addEventListener('click', function (e) {
     e.preventDefault();
     if (validateInputs()) {
-      // Save checkout details to localStorage
       const order = {
-        id: Date.now(), // Unique order ID
-        user: user.id, // User ID
+        id: Date.now(), 
+        user: user.id, 
         
         firstName: first.value.trim(),
         lastName: last.value.trim(),
@@ -73,19 +70,15 @@ window.addEventListener('load', function () {
         date: new Date().toISOString(),
       };
 
-      // Save order to localStorage
       const orders = JSON.parse(localStorage.getItem('orders')) || [];
       orders.push(order);
       localStorage.setItem('orders', JSON.stringify(orders));
 
-      // Clear the cart after successful checkout
       localStorage.removeItem('cart');
       localStorage.removeItem('Total price');
 
-      // Show success modal
       successModal.show();
       window.location.href = 'order.html';
-      // Reset the form
       form.reset();
     }
   });

@@ -20,7 +20,6 @@ if (!productId || isNaN(productId)) {
   console.error("Invalid or missing Product ID in the URL.");
 }
 
-// Fetch product data from api.json
 fetch("script/api.json")
   .then((response) => {
     if (!response.ok) {
@@ -51,14 +50,14 @@ fetch("script/api.json")
   });
 
 function displayProductDetails(product) {
-  document.getElementById("productImg").src = product.images[0]; // Set the image
-  document.getElementById("description").innerText = product.description; // Set description
-  document.getElementById("name").innerText = product.title; // Set name
-  document.getElementById("price").innerText = `${product.price} L.E`; // Set price
+  document.getElementById("productImg").src = product.images[0]; 
+  document.getElementById("description").innerText = product.description; 
+  document.getElementById("name").innerText = product.title; 
+  document.getElementById("price").innerText = `${product.price} L.E`; 
 
   let rateHTML = "";
   for (let i = 0; i < Math.round(product.rating); i++) {
-    rateHTML += `<img width="20" height="20" src="./assets/images/star.png" alt="rate" />`; // Update the path as needed
+    rateHTML += `<img width="20" height="20" src="./assets/images/star.png" alt="rate" />`;
   }
   document.getElementById("rate").innerHTML = rateHTML;
 }
@@ -86,7 +85,7 @@ function addToCart(product) {
       id: product.id,
       name: product.title,
       // description: product.description,
-      price: product.price, // Added the price property here
+      price: product.price, 
       image: product.images[0],
       rate: Math.round(product.rating),
       quantity: quantity,
@@ -98,7 +97,6 @@ function addToCart(product) {
   const successModal = new bootstrap.Modal(document.getElementById("successModal"));
   successModal.show();
 
-  // Automatically close the modal after 2 seconds
   setTimeout(() => {
     successModal.hide();
   }, 2000);

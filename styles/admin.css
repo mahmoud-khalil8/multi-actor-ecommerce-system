@@ -3,13 +3,13 @@ body {
 }
 
 .sidebar {
-  height: 100vh; /* Full viewport height */
-  position: fixed; /* Keep it fixed in place */
+  height: 100vh;
+  position: fixed; 
   top: 0;
   left: 0;
-  overflow-y: auto; /* Enable scrolling if content overflows */
-  background-color: #f8f9fa; /* Background color for the sidebar */
-  width: 250px; /* Set sidebar width */
+  overflow-y: auto;
+  background-color: #f8f9fa; 
+  width: 250px; 
 }
 
 .sidebar .nav-link {
@@ -20,7 +20,6 @@ body {
   font-weight: bold;
   color: #000;
 }
-/* Table Container */
 .table-container {
   padding: 20px;
   background-color: #f8f9fa;
@@ -34,14 +33,14 @@ body {
 
 }
 .nav-link:hover{
-  background-color: #FBEBB5;
+  background-color: #b5d8fb;
   border-radius: 8px;
 }
 .backToHomeBtn{
   margin-left: 10px;
   margin-bottom: 20px;
   font-size: 16px;
-  background-color: #FBEBB5;
+  background-color: #b5d8fb;
   border-radius: 8px;
 }
 .backToHomeBtn a{
@@ -78,7 +77,6 @@ body {
 #polarAreaChart {
   max-height: 300px;
 }
-/* Table styling */
 .table thead th {
   background-color: #f1f1f1;
 }
@@ -87,7 +85,6 @@ body {
 }
 
 
-/* Custom CSS for Mobile View */
 @media (max-width: 767.98px) {
     .table-responsive {
     overflow-x: auto;
@@ -98,15 +95,15 @@ body {
   #sidebar {
     position: fixed;
     top: 0;
-    left: -100%; /* Hide the sidebar by default */
+    left: -100%;  
     bottom: 0;
     z-index: 1000;
-    width: 250px; /* Set a fixed width for the sidebar */
-    transition: left 0.3s ease-in-out; /* Smooth transition */
+    width: 250px;  
+    transition: left 0.3s ease-in-out; 
   }
 
   #sidebar.collapse.show {
-    left: 0; /* Show the sidebar when toggled */
+    left: 0;  
   }
 
   .navbar-toggler {
@@ -114,21 +111,20 @@ body {
     top: 0;
     left: 0;
     z-index: 1001;
-    margin: 0.75rem; /* Adjust spacing */
-    background-color: white; /* Add background for visibility */
-    border: 1px solid rgba(0, 0, 0, 0.1); /* Add border for better visibility */
+    margin: 0.75rem; 
+    background-color: white;  
+    border: 1px solid rgba(0, 0, 0, 0.1); 
   }
 
   main {
-    margin-top: 60px; /* Add margin to prevent content from overlapping the burger menu */
+    margin-top: 60px; 
   }
 }
 .navbar-toggler {
-  background-color: transparent !important; /* Remove background */
-  border: none !important; /* Remove border */
+  background-color: transparent !important;
+  border: none !important; 
 }
 
-/* Ensure the burger menu icon is visible */
 .navbar-toggler-icon {
   background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%280, 0, 0, 0.55%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
 }

@@ -11,7 +11,6 @@ body {
   height: 100%;
 }
 
-/* Welcome Section */
 .welcome-section {
   background-image: url('../assets/images/illustration.png') ;
  background-size: cover;
@@ -34,7 +33,6 @@ background-position: center;
   font-size: 1.2rem;
 }
 
-/* Signup/Login Section */
 .signup-section, .login-section {
   display: flex;
   align-items: center;

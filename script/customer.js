@@ -1,31 +1,26 @@
 import { validatePhoneNumber} from "./utils/validation.js";
 
-// Load user data from localStorage and populate the profile page
 function loadUserData() {
   try {
-    // Check if a user is logged in
     let currentUser = JSON.parse(localStorage.getItem("currentUser"));
     if (!currentUser) {
       alert("No user is currently logged in.");
-      window.location.href = "login.html"; // Redirect to login page
+      window.location.href = "login.html";
       return;
     }
 
-    // Fetch all users from localStorage
     let users = JSON.parse(localStorage.getItem("users")) || [];
     if (!Array.isArray(users)) {
       alert("Invalid user data found in localStorage.");
       return;
     }
 
-    // Find the updated user data from the `users` array
     let updatedUser = users.find((u) => u.id === currentUser.id);
     if (!updatedUser) {
       alert("User data not found.");
       return;
     }
 
-    // Update the displayed data
     document.getElementById("headerName").innerText = updatedUser.name;
     document.getElementById("emailHeader").innerText = updatedUser.email;
 
@@ -35,7 +30,6 @@ function loadUserData() {
     document.getElementById("phone").innerText = updatedUser.phoneNumber || "N/A";
     document.getElementById("userImg").src = updatedUser.userImg || "UP/userpic.png";
 
-    // Parse and display address
     if (updatedUser.address) {
       let address = updatedUser.address.split(",");
       if (address.length >= 2) {
@@ -51,7 +45,6 @@ function loadUserData() {
   }
 }
 
-// Initial load of user data when the page is loaded or refreshed
 window.onload = loadUserData;
 
 let currentEditSection;
@@ -73,13 +66,10 @@ const fields = {
   ],
 };
 
-// Edit personal information
 document.getElementById("editPersonal").addEventListener("click", () => editFields("personal"));
 
-// Edit address
 document.getElementById("editAddress").addEventListener("click", () => editFields("address"));
 
-// Open modal for editing fields
 function editFields(section) {
     currentEditSection = section;
     let modalForm = document.getElementById("modalForm");
@@ -103,7 +93,6 @@ function editFields(section) {
           </div>
         </form>`;
     } else {
-      // Add the modal-error element for other sections
       modalForm.innerHTML = `<span id="modal-error"></span>`;
 
       fields[section].forEach((field) => {
@@ -116,17 +105,14 @@ function editFields(section) {
       });
     }
 
-    // Show the modal
     const modal = new bootstrap.Modal(document.getElementById("editModal"));
     modal.show();
   }
 
-// Handle profile image upload
 document.getElementById("imageInput").addEventListener("change", function (event) {
   const file = event.target.files[0];
   if (!file) return;
 
-  // Validate file type
   if (!file.type.startsWith("image/")) {
     alert("Please upload a valid image file.");
     return;
@@ -142,17 +128,15 @@ document.getElementById("imageInput").addEventListener("change", function (event
   reader.onload = function (e) {
     document.getElementById("userImg").src = e.target.result;
 
-    // Update user data in localStorage
     let currentUser = JSON.parse(localStorage.getItem("currentUser"));
     if (currentUser) {
       let users = JSON.parse(localStorage.getItem("users")) || [];
       let userIndex = users.findIndex((u) => u.id === currentUser.id);
 
       if (userIndex !== -1) {
-        users[userIndex].userImg = e.target.result; // Update profile image
+        users[userIndex].userImg = e.target.result; 
         localStorage.setItem("users", JSON.stringify(users));
 
-        // Update currentUser in localStorage
         currentUser.userImg = e.target.result;
         localStorage.setItem("currentUser", JSON.stringify(currentUser));
       }
@@ -162,7 +146,6 @@ document.getElementById("imageInput").addEventListener("change", function (event
   reader.readAsDataURL(file);
 });
 
-// Save changes made in the modal
 document.getElementById("saveBtn").addEventListener("click", function () {
   let valid = true;
 
@@ -188,7 +171,6 @@ document.getElementById("saveBtn").addEventListener("click", function () {
             users[userIndex].password = newPassword; // Update password
             localStorage.setItem("users", JSON.stringify(users));
 
-            // Update currentUser in localStorage
             currentUser.password = newPassword;
             localStorage.setItem("currentUser", JSON.stringify(currentUser));
 
@@ -200,7 +182,6 @@ document.getElementById("saveBtn").addEventListener("click", function () {
       }
     }
   } else {
-    // Validate phone number only if the "personal" section is being edited
     if (currentEditSection === "personal") {
       let phoneInput = document.getElementById("modal-phone");
       if (phoneInput) {
@@ -232,14 +213,11 @@ document.getElementById("saveBtn").addEventListener("click", function () {
             }
           });
 
-          // Update localStorage
           localStorage.setItem("users", JSON.stringify(users));
 
-          // Update currentUser in localStorage
           Object.assign(currentUser, users[userIndex]);
           localStorage.setItem("currentUser", JSON.stringify(currentUser));
 
-          // Refresh the displayed data
           loadUserData();
         }
       }
@@ -251,28 +229,27 @@ document.getElementById("saveBtn").addEventListener("click", function () {
   }
 });
 
-// Logout functionality
 document.getElementById("logoutBtn").addEventListener("click", function () {
-  // Clear the current user data from localStorage
+
   localStorage.removeItem("currentUser");
   localStorage.removeItem("cart");
   localStorage.removeItem("orders");
 
-  // Redirect to the login page (or home page)
-  window.location.href = "login.html"; // Replace with your login page URL
+
+  window.location.href = "login.html";  
 });
 
 function showMessage(elementId, message) {
     const element = document.getElementById(elementId);
     if (element) {
       element.textContent = message;
-      element.style.display = "block"; // Ensure the element is visible
-      element.classList.add("alert", "alert-danger"); // Add Bootstrap alert class
+      element.style.display = "block";  
+      element.classList.add("alert", "alert-danger");  
       setTimeout(() => {
-        element.style.display = "none"; // Hide the message after a few seconds
-      }, 3000); // Adjust the timeout as needed
+        element.style.display = "none";  
+      }, 3000); 
     } else {
       console.error(`Element with ID ${elementId} not found.`);
-      alert(message); // Fallback to alert if the element doesn't exist
+      alert(message);  
     }
   }

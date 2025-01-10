@@ -21,7 +21,6 @@ var popUpFooter = document.querySelector(".formPopUpFooter");
 var formInputFeild =document.querySelectorAll(".inputFeild");
 
 var isEdit = false , editId;
-//get the user id from local storage
 const sellerId = JSON.parse(localStorage.getItem('currentUser')).id;
 var currentSellerId = sellerId ? sellerId : 2;
 
@@ -30,7 +29,6 @@ var originalData = localStorage.getItem('products') ? JSON.parse(localStorage.ge
 var getData = [...originalData]
 var sellerProducts = getData.filter(product => product.sellerId === currentSellerId); 
 
-//add button 
 newMemberAddBtn.addEventListener('click',()=>{
     isEdit = false
     submtionButton.innerHTML="Add";
@@ -44,7 +42,7 @@ newMemberAddBtn.addEventListener('click',()=>{
       input.disabled = false; // Disable all input fields
       });
     
-});//end newMemberAddBtn event
+}); 
 
 colseButton.addEventListener('click',()=>{
     popUpPage.classList.remove("visible");

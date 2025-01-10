@@ -1,23 +1,22 @@
 
 
-let currentPage = 1; // Current page
-const totalPages = 3; // Total number of pages
-let categories = {}; // To store grouped categories
+let currentPage = 1; 
+const totalPages = 3; 
+let categories = {};  
 
 
 function fetchAndDisplayProducts(apiUrl) {
   fetch(apiUrl)
-    .then((response) => response.json()) // Convert response to JSON
+    .then((response) => response.json())  
     .then((data) => {
       const products = data.products;
       categories = groupByCategory(products);
-      displayPage(currentPage); // Display the first page
-      createPaginationButtons(); // Create the pagination buttons
+      displayPage(currentPage);  
+      createPaginationButtons();  
     })
     .catch((error) => console.error("Error fetching products:", error));
 }
 
-// Group products by category
 function groupByCategory(products) {
   return products.reduce((acc, product) => {
     acc[product.category] = acc[product.category] || [];
@@ -26,23 +25,21 @@ function groupByCategory(products) {
   }, {});
 }
 
-// Display products for the current page
 function displayPage(page) {
-    currentPage = page;  // Update currentPage value
+    currentPage = page;   
   
     const container = document.getElementById("products-container");
-    container.innerHTML = ""; // Clear previous content
+    container.innerHTML = "";  
   
     const categoryKeys = Object.keys(categories);
     const categoriesPerPage = Math.ceil(categoryKeys.length / totalPages);
     const startIndex = (page - 1) * categoriesPerPage;
-    const endIndex = Math.min(startIndex + categoriesPerPage, categoryKeys.length); // Prevent going beyond available categories
+    const endIndex = Math.min(startIndex + categoriesPerPage, categoryKeys.length); 
   
     categoryKeys.slice(startIndex, endIndex).forEach((category) => {
       const categoryDiv = document.createElement("div");
       categoryDiv.className = "category-container";
   
-      // Add category title
       const categoryTitle = document.createElement("h2");
       categoryTitle.innerText = category;
       categoryTitle.className = "category-title";
@@ -51,7 +48,6 @@ function displayPage(page) {
       
       categoryDiv.appendChild(categoryTitle);
   
-      // Create a grid for the products in this category
       const productsDiv = document.createElement("div");
       productsDiv.className = "products-grid";
   
@@ -59,23 +55,19 @@ function displayPage(page) {
         const productDiv = document.createElement("div");
         productDiv.className = "product-item";
 
-        // go to product details
         productDiv.addEventListener("click",()=>{
           window.location.href=`product.html?id=${product.id}`
         })
   
-        // Add product image
         const img = document.createElement("img");
         img.src = product.thumbnail;
         img.alt = product.title;
         productDiv.appendChild(img);
   
-        // Add product title
         const title = document.createElement("h5");
         title.innerText = product.title;
         productDiv.appendChild(title);
   
-        // Add stars
         const stars = document.createElement("div");
         stars.className = "star";
         const rate = Math.round(product.rating);
@@ -86,7 +78,6 @@ function displayPage(page) {
         }
         productDiv.appendChild(stars);
   
-        // Add product price and cart
         const sympolandprice = document.createElement("div");
         sympolandprice.style.display = "flex";
         sympolandprice.style.justifyContent = "space-between";
@@ -96,7 +87,7 @@ function displayPage(page) {
         sympolandprice.appendChild(price);
   
         const link = document.createElement("a");
-        link.href = "#"; // Placeholder for cart functionality
+        link.href = "#";  
         link.className="addtocartsympol";
 
         const sympol = document.createElement("i");
@@ -114,22 +105,19 @@ function displayPage(page) {
   
       categoryDiv.appendChild(productsDiv);
       container.appendChild(categoryDiv);
-    // Redirect to login page for cart symbol if not logged in
     checkLoginBeforeCart();
     });
   
   
-    // Scroll the page to the top
     window.scrollTo(0, 0);
   
-    createPaginationButtons();  // Recreate pagination buttons after each page change
+    createPaginationButtons();  
   }
   
 
-// Create pagination buttons
 function createPaginationButtons() {
   const paginationContainer = document.getElementById("pagination-container");
-  paginationContainer.innerHTML = ""; // Clear previous buttons
+  paginationContainer.innerHTML = ""; 
 
   for (let i = 1; i <= totalPages; i++) {
     const button = document.createElement("button");
@@ -138,35 +126,30 @@ function createPaginationButtons() {
     button.addEventListener("click", () => displayPage(i));
 
     if (i === currentPage) {
-      button.classList.add("active"); // Highlight current page button
+      button.classList.add("active"); 
     }
 
     paginationContainer.appendChild(button);
   }
 }
 
-// Fetch and display products
 fetchAndDisplayProducts(`script/api.json`);
 
 
-  // search
-  // Attach event listener to the form
 document.getElementById('searchForm').addEventListener('submit', async function (event) {
-  event.preventDefault(); // Prevent form submission
+  event.preventDefault();
 
   const query = document.getElementById('searchInput').value.trim().toLowerCase(); // Get search query
   const resultsContainer = document.getElementById('results');
-  resultsContainer.innerHTML = ''; // Clear previous results
+  resultsContainer.innerHTML = ''; 
 
   if (!query) {
-    return; // Exit if the query is empty
+    return; 
   }
 
   try {
-    // Fetch data from the local JSON file
     const response = await fetch('script/api.json');
 
-    // Check if response is OK
     if (!response.ok) {
       throw new Error(`Failed to fetch: ${response.statusText}`);
     }
@@ -174,18 +157,15 @@ document.getElementById('searchForm').addEventListener('submit', async function 
     const data = await response.json();
     const products = data.products;
 
-    // Filter products based on the search query
     const filteredProducts = products.filter(product =>
       product.title.toLowerCase().includes(query)
     );
 
-    // Check if products are found
     if (filteredProducts.length === 0) {
       resultsContainer.innerHTML = '<p class="text-danger" style="margin:20px auto;text-align:center;">No products found for your search.</p>';
       return;
     }
 
-    // Display results
     filteredProducts.forEach(product => {
       const productHTML = `
  <div class="card mb-3 shadow-lg rounded-lg text-center " style=" border-radius: 10px; transition: transform 0.3s ease, box-shadow 0.3s ease;">
@@ -214,11 +194,9 @@ document.getElementById('searchForm').addEventListener('submit', async function 
       `;
       resultsContainer.innerHTML += productHTML;
 
-      // Optionally hide the main product container
       const pro = document.getElementById("products-container");
       pro.style.display = "none";
     });
-    // Redirect to login page for cart symbol if not logged in
     checkLoginBeforeCart()
   } catch (error) {
     console.error('Error fetching data:', error);
@@ -227,46 +205,39 @@ document.getElementById('searchForm').addEventListener('submit', async function 
 });
 
 
-// handle search clear
 
 document.getElementById('searchInput').addEventListener('input', function () {
   const resultsContainer = document.getElementById('results');
-      // document.getElementById("products").style.display="block"
   
-  // Check if the input is empty (e.g., "X" button was clicked)
   if (this.value.trim() === '') {
-      resultsContainer.innerHTML = ''; // Clear results
-      resultsContainer.style.display = 'none'; // Optionally hide the results container
+      resultsContainer.innerHTML = '';  
+      resultsContainer.style.display = 'none'; 
       document.getElementById("products-container").style.display="block"
 
   } else {
-      resultsContainer.style.display = ''; // Show results container if typing again
+      resultsContainer.style.display = ''; 
       // document.getElementById("products").style.display="block"
   }
 });
 
-// handle search form  active , blur , input 
 
-// Add event listener for focus (when input is active)
 searchInput.addEventListener('focus', function () {
-this.style.borderColor = '#007BFF'; // Change border color (e.g., Bootstrap primary color)
-this.style.boxShadow = '0 0 8px rgba(0, 123, 255, 0.6)'; // Add a glowing blue shadow
+this.style.borderColor = '#007BFF'; 
+this.style.boxShadow = '0 0 8px rgba(0, 123, 255, 0.6)';  
 });
 
-// Add event listener for blur (when input loses focus)
-searchInput.addEventListener('blur', function () {
-this.style.borderColor = ''; // Reset to default
-this.style.boxShadow = ''; // Reset shadow
+ searchInput.addEventListener('blur', function () {
+this.style.borderColor = '';  
+this.style.boxShadow = '';  
 });
 
-// Optional: Add dynamic styling during input
-searchInput.addEventListener('input', function () {
+ searchInput.addEventListener('input', function () {
 if (this.value.trim() !== '') {
-this.style.borderColor = '#28A745'; // Change border to green for typing
-this.style.boxShadow = '0 0 8px rgba(40, 167, 69, 0.6)'; // Green glow
+this.style.borderColor = '#28A745';  
+this.style.boxShadow = '0 0 8px rgba(40, 167, 69, 0.6)'; 
 } else {
-this.style.borderColor = '#007BFF'; // Reset to blue for focus
-this.style.boxShadow = '0 0 8px rgba(0, 123, 255, 0.6)'; // Blue glow
+this.style.borderColor = '#007BFF'; 
+this.style.boxShadow = '0 0 8px rgba(0, 123, 255, 0.6)';  
 }
 });
 
@@ -274,7 +245,6 @@ this.style.boxShadow = '0 0 8px rgba(0, 123, 255, 0.6)'; // Blue glow
 
 
 
-    // Redirect to login page for cart symbol if not logged in
     function checkLoginBeforeCart(){
       if (!(localStorage.getItem("currentUser"))) {
         const cartSymbols = document.getElementsByClassName("addtocartsympol");

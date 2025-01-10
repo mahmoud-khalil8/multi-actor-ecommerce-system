@@ -40,7 +40,6 @@ export function setupSignup() {
 
       const address = `${country}, ${city}`;
 
-      // Validate fields
       const errors = validateForm({ firstName, lastName, email, password, address, phoneNumber });
       if (errors.length > 0) {
         showMessage("signupMessage", errors.join(" "), "danger");
@@ -52,7 +51,6 @@ export function setupSignup() {
         const userCredential = await createUserWithEmailAndPassword(auth, email, password);
         const user = userCredential.user;
 
-        // Save non-sensitive user data to local storage
         const newUser = {
           id: user.uid,
           role: userType,
@@ -62,12 +60,10 @@ export function setupSignup() {
           phoneNumber: phoneNumber,
         };
 
-        // Update local storage
         const users = JSON.parse(localStorage.getItem("users")) || [];
         users.push(newUser);
         localStorage.setItem("users", JSON.stringify(users));
 
-        // Save the new user as the current user
         localStorage.setItem("currentUser", JSON.stringify(newUser));
 
         showMessage("signupMessage", "Sign-up successful! Redirecting...", "success");
@@ -91,7 +87,6 @@ export function setupSignup() {
   }
 }
 
-// Login Functionality
 export function setupLogin() {
   const loginForm = document.getElementById("loginForm");
   if (loginForm) {
@@ -101,38 +96,31 @@ export function setupLogin() {
       const email = document.getElementById("loginEmail").value;
       const password = document.getElementById("loginPassword").value;
 
-      // Hardcoded admin credentials (for demonstration purposes only)
       if (email === "admin@admin.com" && password === "admin123") {
         const adminUser = {
-          id: "admin-uid", // Use the Firebase UID or a unique ID
+          id: "admin-uid", 
           role: "admin",
           name: "Admin User",
           email: email,
-          address: "", // Add address if available
-          phoneNumber: "", // Add phone number if available
+          address: "",  
+          phoneNumber: "",  
         };
-        // Save admin user to localStorage
-        localStorage.setItem("currentUser", JSON.stringify(adminUser));
+         localStorage.setItem("currentUser", JSON.stringify(adminUser));
 
-        // Redirect to admin dashboard
-        window.location.href = "admin-dashboard.html";
+         window.location.href = "admin-dashboard.html";
         return;
       }
 
-      // Regular user login
-      try {
+       try {
         const userCredential = await signInWithEmailAndPassword(auth, email, password);
         const user = userCredential.user;
 
-        // Fetch user data from localStorage
-        const users = JSON.parse(localStorage.getItem("users")) || [];
+         const users = JSON.parse(localStorage.getItem("users")) || [];
         const existingUser = users.find((u) => u.email === email);
 
         if (existingUser) {
-          // Save the user data to localStorage
           localStorage.setItem("currentUser", JSON.stringify(existingUser));
 
-          // Redirect based on role
           switch (existingUser.role) {
             case "customer":
               window.location.href = "home.html";
@@ -148,24 +136,20 @@ export function setupLogin() {
               window.location.href = "login.html";
           }
         } else {
-          // If the user doesn't exist in localStorage, create a new entry
           const newUser = {
             id: user.uid,
             role: "customer", // Default role
-            name: "", // Add name if available
+            name: "",  
             email: email,
-            address: "", // Add address if available
-            phoneNumber: "", // Add phone number if available
+            address: "", 
+            phoneNumber: "", 
           };
 
-          // Update localStorage
           users.push(newUser);
           localStorage.setItem("users", JSON.stringify(users));
 
-          // Save the new user as the current user
           localStorage.setItem("currentUser", JSON.stringify(newUser));
 
-          // Redirect to home page
           window.location.href = "home.html";
         }
       } catch (error) {
@@ -175,7 +159,6 @@ export function setupLogin() {
   }
 }
 
-// Forgot Password Functionality
 export function setupForgotPassword() {
   const forgotPasswordForm = document.getElementById("forgotPasswordForm");
   if (forgotPasswordForm) {

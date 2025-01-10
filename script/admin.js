@@ -1,3 +1,4 @@
+import { contentTemplates } from './utils/adminContentTempelates.js';
 const user = JSON.parse(localStorage.getItem('currentUser'));
 
 if (!user || user.role !== 'admin') {
@@ -10,176 +11,10 @@ document.body.innerHTML = `
       </div>
     </div>
   `;
-  // Stop further execution
   throw new Error('Not Authorized');}
 import { initializeEarningsChart, initializePolarAreaChart } from './utils/charts.js';
 
-// Content templates for different pages
-const contentTemplates = {
-  dashboard: `
-    <div class="container py-4">
-      <!-- Top Summary Cards -->
-      <div class="row g-4">
-        <div class="col-md-4">
-          <div class="card text-center">
-            <div class="card-body card1">
-              <h5 class="card-title">Total Customers</h5>
-              <h2>307.48K</h2>
-              <p class="text-success">+30% this month</p>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-4">
-          <div class="card text-center">
-            <div class="card-body card2">
-              <h5 class="card-title">Total Revenue</h5>
-              <h2>$30.58K</h2>
-              <p class="text-danger">-15% this month</p>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-4">
-          <div class="card text-center">
-            <div class="card-body card3">
-              <h5 class="card-title">Total Deals</h5>
-              <h2>2.48K</h2>
-              <p class="text-success">+23% this month</p>
-            </div>
-          </div>
-        </div>
-      </div>
 
-      <!-- Section: Charts and Lists -->
-      <section class="mt-5 charts-and-lists">
-        <div class="row">
-          <!-- Earnings Chart -->
-          <div class="col-lg-8 col-md-12 mb-4">
-            <div class="earningAndSalesCharts">
-              <div class="card">
-                <div class="card-header">Earnings Chart</div>
-                <div class="card-body">
-                  <canvas id="earningsChart" height="100"></canvas>
-                </div>
-              </div>
-            </div>
-            <div class="card mb-4">
-              <div class="card-header">Sales by category</div>
-              <div class="card-body">
-                <canvas id="polarAreaChart" height="100"></canvas>
-              </div>
-            </div>
-          </div>
-
-          <!-- Top Countries by Sales and Recent Orders -->
-          <div class="col-lg-4 col-md-12">
-            <!-- Top Countries -->
-            <div class="card mb-4">
-              <div class="card-header">Top Countries by Sells</div>
-              <ul class="list-group list-group-flush">
-                <li class="list-group-item">Australia <span class="float-end">7.12K</span></li>
-                <li class="list-group-item">Belgium <span class="float-end">4.15K</span></li>
-                <li class="list-group-item">Canada <span class="float-end">6.45K</span></li>
-              </ul>
-            </div>
-
-            <!-- Top Customers -->
-            <div class="card mb-4">
-              <div class="card-header">Top Customers</div>
-              <ul class="list-group list-group-flush">
-                <li class="list-group-item">Robert Lewis <span class="float-end">$4.19K</span></li>
-                <li class="list-group-item">Tom Barrett <span class="float-end">$3.56K</span></li>
-                <li class="list-group-item">Tom Barrett <span class="float-end">$3.56K</span></li>
-              </ul>
-            </div>
-
-            <!-- Recent Orders -->
-            <div class="card">
-              <div class="card-header">Recent Orders</div>
-              <ul class="list-group list-group-flush" id="recentOrdersList">
-                <!-- Dynamically populated -->
-              </ul>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- Section: Top Selling Products -->
-      <section class="mt-5">
-        <div class="card">
-          <div class="card-header">Top Selling Products</div>
-          <div class="table-responsive">
-            <table class="table" id="topSellingProductsTable">
-              <thead>
-                <tr>
-                  <th>#</th>
-                  <th>Product Name</th>
-                  <th>Category</th>
-                  <th>Stock</th>
-                  <th>Total Sales</th>
-                </tr>
-              </thead>
-              <tbody>
-                <!-- Dynamically populated -->
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </section>
-    </div>
-  `,
-  users: `
-    <div class="container py-4">
-      <h2>Manage Users</h2>
-      <div class="table-responsive">
-        <table class="table" id="usersTable">
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Name</th>
-              <th>Email</th>
-              <th>Role</th>
-              <th>Address</th>
-              <th>Phone Number</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            <!-- Users will be dynamically populated here -->
-          </tbody>
-        </table>
-      </div>
-    </div>
-  `,
-  products: `
-    <div class="container py-4">
-      <h2>Moderate Product Listings</h2>
-      <div class="table-responsive">
-        <table class="table" id="productsTable">
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Name</th>
-              <th>Category</th>
-              <th>Price</th>
-              <th>Stock</th>
-              <th>Status</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            <!-- Products will be dynamically populated here -->
-          </tbody>
-        </table>
-      </div>
-    </div>
-  `,
-  orders: `
-    <h2>Orders</h2>
-    <p>Manage all orders here.</p>
-  `,
-};
-
-// Function to fetch and display top-selling products
 function displayTopSellingProducts() {
   const products = JSON.parse(localStorage.getItem('products')) || [];
   const sales = JSON.parse(localStorage.getItem('sales')) || [];
@@ -200,7 +35,6 @@ function displayTopSellingProducts() {
   });
 }
 
-// Function to fetch and display recent orders
 function displayRecentOrders() {
   const orders = JSON.parse(localStorage.getItem('orders')) || [];
   const recentOrdersList = document.getElementById('recentOrdersList');
@@ -215,7 +49,6 @@ function displayRecentOrders() {
   });
 }
 
-// Function to fetch and display users in the table
 function displayUsers() {
   const users = JSON.parse(localStorage.getItem('users')) || [];
   const usersTable = document.getElementById('usersTable').getElementsByTagName('tbody')[0];
@@ -231,7 +64,6 @@ function displayUsers() {
     row.insertCell(4).textContent = user.address || 'N/A';
     row.insertCell(5).textContent = user.phoneNumber || 'N/A';
 
-    // Add buttons for actions (Edit and Delete)
     const actionsCell = row.insertCell(6);
     const editButton = document.createElement('button');
     editButton.className = 'btn btn-warning btn-sm me-2';
@@ -257,17 +89,14 @@ let currentUser = null;
 function editUser(user) {
   currentUser = user;
 
-  // Populate modal fields
   document.getElementById('userName').value = user.name;
   document.getElementById('userRole').value = user.role;
 
-  // Show the modal
   const editUserModal = new bootstrap.Modal(document.getElementById('editUserModal'));
   editUserModal.show();
 }
 
-// Save changes when the "Save Changes" button is clicked
-document.getElementById('saveUserChanges')?.addEventListener('click', () => {
+document.getElementById('saveUserChanges').addEventListener('click', () => {
   const newName = document.getElementById('userName').value;
   const newRole = document.getElementById('userRole').value;
 
@@ -277,41 +106,96 @@ document.getElementById('saveUserChanges')?.addEventListener('click', () => {
       u.id === currentUser.id ? { ...u, name: newName, role: newRole } : u
     );
     localStorage.setItem('users', JSON.stringify(updatedUsers));
-    displayUsers(); // Refresh the table
+    displayUsers(); 
     alert('User updated successfully!');
 
-    // Hide the modal
     const editUserModal = bootstrap.Modal.getInstance(document.getElementById('editUserModal'));
     editUserModal.hide();
   }
 });
+
+
+
+
+let currentProduct = null;
+
+function editProduct(product) {
+  currentProduct = product;
+
+  document.getElementById('productName').value = product.name;
+  document.getElementById('productCategory').value = product.category;
+  document.getElementById('productPrice').value = product.price;
+  document.getElementById('productStock').value = product.stock;
+  document.getElementById('productStatus').value = product.status || 'Pending';
+
+  const editProductModal = new bootstrap.Modal(document.getElementById('editProductModal'));
+  editProductModal.show();
+}
+
+let productIdToDelete = null;
+
+function deleteProduct(productId) {
+  productIdToDelete = productId;
+
+  const deleteProductModal = new bootstrap.Modal(document.getElementById('deleteProductModal'));
+  deleteProductModal.show();
+}
+document.getElementById('confirmDeleteProduct').addEventListener('click', () => {
+  if (productIdToDelete) {
+    const products = JSON.parse(localStorage.getItem('products')) || [];
+    const updatedProducts = products.filter(product => product.id !== productIdToDelete);
+    localStorage.setItem('products', JSON.stringify(updatedProducts));
+    displayProducts();  
+    alert('Product deleted successfully!');
+
+    const deleteProductModal = bootstrap.Modal.getInstance(document.getElementById('deleteProductModal'));
+    deleteProductModal.hide();
+  }
+});
+document.getElementById('saveProductChanges').addEventListener('click', () => {
+  const newName = document.getElementById('productName').value;
+  const newCategory = document.getElementById('productCategory').value;
+  const newPrice = parseFloat(document.getElementById('productPrice').value);
+  const newStock = parseInt(document.getElementById('productStock').value);
+  const newStatus = document.getElementById('productStatus').value;
+
+  if (newName && newCategory && newPrice && newStock && newStatus && currentProduct) {
+    const products = JSON.parse(localStorage.getItem('products')) || [];
+    const updatedProducts = products.map(p =>
+      p.id === currentProduct.id ? { ...p, name: newName, category: newCategory, price: newPrice, stock: newStock, status: newStatus } : p
+    );
+    localStorage.setItem('products', JSON.stringify(updatedProducts));
+    displayProducts(); 
+    alert('Product updated successfully!');
+
+    const editProductModal = bootstrap.Modal.getInstance(document.getElementById('editProductModal'));
+    editProductModal.hide();
+  }
+});
+
 
 let userIdToDelete = null;
 
 function deleteUser(userId) {
   userIdToDelete = userId;
 
-  // Show the modal
   const deleteUserModal = new bootstrap.Modal(document.getElementById('deleteUserModal'));
   deleteUserModal.show();
 }
 
-// Confirm deletion when the "Delete" button is clicked
 document.getElementById('confirmDeleteUser')?.addEventListener('click', () => {
   if (userIdToDelete) {
     const users = JSON.parse(localStorage.getItem('users')) || [];
     const updatedUsers = users.filter(u => u.id !== userIdToDelete);
     localStorage.setItem('users', JSON.stringify(updatedUsers));
-    displayUsers(); // Refresh the table
+    displayUsers(); 
     alert('User deleted successfully!');
 
-    // Hide the modal
     const deleteUserModal = bootstrap.Modal.getInstance(document.getElementById('deleteUserModal'));
     deleteUserModal.hide();
   }
 });
 
-// Function to fetch and display products in the table
 function displayProducts() {
   const products = JSON.parse(localStorage.getItem('products')) || [];
   const productsTable = document.getElementById('productsTable').getElementsByTagName('tbody')[0];
@@ -325,10 +209,17 @@ function displayProducts() {
     row.insertCell(2).textContent = product.category;
     row.insertCell(3).textContent = `$${product.price}`;
     row.insertCell(4).textContent = product.stock;
-    row.insertCell(5).textContent = product.status || 'Pending'; // Default status
+    row.insertCell(5).textContent = product.status || 'Pending';
 
-    // Add buttons for actions (Approve and Reject)
     const actionsCell = row.insertCell(6);
+
+    const editButton = document.createElement('button');
+    editButton.className = 'btn btn-warning btn-sm me-2';
+    editButton.textContent = 'Edit';
+    editButton.addEventListener('click', () => {
+      editProduct(product);
+    });
+
     const approveButton = document.createElement('button');
     approveButton.className = 'btn btn-success btn-sm me-2';
     approveButton.textContent = 'Approve';
@@ -337,14 +228,23 @@ function displayProducts() {
     });
 
     const rejectButton = document.createElement('button');
-    rejectButton.className = 'btn btn-danger btn-sm';
+    rejectButton.className = 'btn btn-danger btn-sm me-2';
     rejectButton.textContent = 'Reject';
     rejectButton.addEventListener('click', () => {
       updateProductStatus(product.id, 'Rejected');
     });
 
+    const deleteButton = document.createElement('button');
+    deleteButton.className = 'btn btn-danger btn-sm';
+    deleteButton.textContent = 'Delete';
+    deleteButton.addEventListener('click', () => {
+      deleteProduct(product.id);
+    });
+
+    actionsCell.appendChild(editButton);
     actionsCell.appendChild(approveButton);
     actionsCell.appendChild(rejectButton);
+    actionsCell.appendChild(deleteButton);
   });
 }
 
@@ -353,15 +253,13 @@ let productIdToUpdate = null;
 function updateProductStatus(productId, status) {
   productIdToUpdate = productId;
 
-  // Populate modal fields
+  
   document.getElementById('productStatus').value = status;
 
-  // Show the modal
   const updateProductStatusModal = new bootstrap.Modal(document.getElementById('updateProductStatusModal'));
   updateProductStatusModal.show();
 }
 
-// Save changes when the "Save Changes" button is clicked
 document.getElementById('saveProductStatus')?.addEventListener('click', () => {
   const newStatus = document.getElementById('productStatus').value;
 
@@ -371,56 +269,163 @@ document.getElementById('saveProductStatus')?.addEventListener('click', () => {
       p.id === productIdToUpdate ? { ...p, status: newStatus } : p
     );
     localStorage.setItem('products', JSON.stringify(updatedProducts));
-    displayProducts(); // Refresh the table
+    displayProducts();  
     alert(`Product status updated to: ${newStatus}`);
 
-    // Hide the modal
     const updateProductStatusModal = bootstrap.Modal.getInstance(document.getElementById('updateProductStatusModal'));
     updateProductStatusModal.hide();
   }
 });
+function initializeLocalStorage() {
+  if (!localStorage.getItem('products')) {
+    const sampleProducts = [
+      {
+        id: 1,
+        name: "Essence Mascara Lash Princess",
+        category: "beauty",
+        price: 9.99,
+        stock: 50,
+        status: "Pending"
+      },
+      {
+        id: 2,
+        name: "Wireless Bluetooth Earbuds",
+        category: "electronics",
+        price: 29.99,
+        stock: 100,
+        status: "Approved"
+      },
+      {
+        id: 3,
+        name: "Organic Green Tea",
+        category: "food",
+        price: 5.99,
+        stock: 200,
+        status: "Rejected"
+      }
+    ];
 
+    localStorage.setItem('products', JSON.stringify(sampleProducts));
+  }
+
+  if (!localStorage.getItem('users')) {
+    const sampleUsers = [
+      {
+        id: 1,
+        name: "John Doe",
+        email: "john@example.com",
+        role: "Admin",
+        address: "123 Main St, City",
+        phoneNumber: "01018714720"
+      },
+      {
+        id: 2,
+        name: "Jane Smith",
+        email: "jane@example.com",
+        role: "User",
+        address: "456 Elm St, Town",
+        phoneNumber: "01023456770"
+      },
+      {
+        id: 3,
+        name: "Alice Johnson",
+        email: "alice@example.com",
+        role: "User",
+        address: "789 Oak St, Village",
+        phoneNumber: "0104695678"
+      }
+    ];
+
+    localStorage.setItem('users', JSON.stringify(sampleUsers));
+  }
+
+  if (!localStorage.getItem('sales')) {
+    const sampleSales = [
+      {
+        id: 1,
+        productsSold: [
+          { productId: 1, quantitySold: 10 },
+          { productId: 2, quantitySold: 5 }
+        ]
+      },
+      {
+        id: 2,
+        productsSold: [
+          { productId: 1, quantitySold: 15 },
+          { productId: 3, quantitySold: 20 }
+        ]
+      }
+    ];
+
+    localStorage.setItem('sales', JSON.stringify(sampleSales));
+  }
+
+  if (!localStorage.getItem('orders')) {
+    const sampleOrders = [
+      {
+        id: 1,
+        customerName: "John Doe",
+        total: 120.50,
+        status: "Pending",
+        date: "2023-10-01"
+      },
+      {
+        id: 2,
+        customerName: "Jane Smith",
+        total: 89.99,
+        status: "Shipped",
+        date: "2023-10-02"
+      },
+      {
+        id: 3,
+        customerName: "Alice Johnson",
+        total: 45.00,
+        status: "Delivered",
+        date: "2023-10-03"
+      }
+    ];
+
+    localStorage.setItem('orders', JSON.stringify(sampleOrders));
+  }
+}
 document.addEventListener('DOMContentLoaded', () => {
   const contentContainer = document.getElementById('contentContainer');
-
-  // Load the dashboard initially
+  initializeLocalStorage(); 
+  
   if (contentContainer && contentTemplates.dashboard) {
     contentContainer.innerHTML = contentTemplates.dashboard;
-    initializeEarningsChart(); // Initialize chart for the dashboard
+    
+    initializeEarningsChart(); 
     initializePolarAreaChart();
     displayTopSellingProducts();
     displayRecentOrders();
   }
 
-  // Add event handler for navigation
   document.addEventListener('click', e => {
     const target = e.target;
     if (target.matches('.nav-link[data-page]')) {
       e.preventDefault();
       const page = target.getAttribute('data-page');
 
-      // Load content and charts dynamically
       if (contentTemplates[page]) {
         contentContainer.innerHTML = contentTemplates[page];
 
         if (page === 'dashboard') {
-          initializeEarningsChart(); // Initialize chart for the dashboard
+          initializeEarningsChart();
           initializePolarAreaChart();
           displayTopSellingProducts();
           displayRecentOrders();
         } else if (page === 'users') {
-          displayUsers(); // Display users when the Users page is loaded
+          displayUsers();  
         } else if (page === 'products') {
-          displayProducts(); // Display products when the Products page is loaded
+          displayProducts();  
         }
       }
 
-      // Update navigation active state
-      document.querySelectorAll('.nav-link').forEach(link => link.classList.remove('active'));
+       document.querySelectorAll('.nav-link').forEach(link => link.classList.remove('active'));
       target.classList.add('active');
 
-      // Collapse the sidebar if open
-      const sidebar = document.getElementById('sidebar');
+       const sidebar = document.getElementById('sidebar');
       if (sidebar.classList.contains('show')) {
         const bsCollapse = new bootstrap.Collapse(sidebar, { toggle: false });
         bsCollapse.hide();
@@ -428,11 +433,23 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 });
-// Logout functionality
-document.getElementById("logoutBtn").addEventListener("click", function () {
-  // Clear the current user data from localStorage
-  localStorage.removeItem("currentUser");
+ document.getElementById("logoutBtn").addEventListener("click", function () {
+   localStorage.removeItem("currentUser");
 
-  // Redirect to the login page (or home page)
-  window.location.href = "login.html"; // Replace with your login page URL
+  if(localStorage.getItem("cart")) {
+     localStorage.removeItem("cart");
+    localStorage.removeItem("Total price");
+  }
+  if(localStorage.getItem("products")) {
+     localStorage.removeItem("products");
+  }
+  if(localStorage.getItem("users")) {
+     localStorage.removeItem("users");
+  }
+  if(localStorage.getItem("sales")) {
+     localStorage.removeItem("sales");
+  }
+
+  
+   window.location.href = "login.html";  
 });

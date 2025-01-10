@@ -1,5 +1,4 @@
 
-// Step 1: Create the data structure
 var salesData = [
     {
         sellerId: 1,
@@ -27,7 +26,6 @@ var salesData = [
     }
 ];
 
-// Step 2: Store the data in local storage
 localStorage.setItem('sales', JSON.stringify(salesData));
 
 
