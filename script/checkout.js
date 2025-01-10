@@ -1,12 +1,12 @@
 window.addEventListener('load', function() {
-    console.log(localStorage.getItem('Total price'));
+    let cachedTotalPrice = localStorage.getItem('Total price');
     let first = document.getElementById('first-name');
     let last = document.getElementById('last-name');
-    let country = document.getElementById('country')
-    let code = document.getElementById('code')
+    let country = document.getElementById('country');
+    let code = document.getElementById('code');
     let city = document.getElementById('city');
     let street = document.getElementById('street');
-    let number = document.getElementById('number')
+    let number = document.getElementById('number');
     let email = document.getElementById('email');
     let check = document.getElementById('checkk');
     let form = document.querySelector('.all');
@@ -14,6 +14,7 @@ window.addEventListener('load', function() {
     let radio1 = document.getElementById('radio1');
     let radio2 = document.getElementById('radio2');
     let label2 = document.getElementById('label2');
+    let totalPrice = document.getElementById('total-price');
     inputs.forEach(function(input) {
         input.addEventListener('blur', function() {
             if (input.value.trim() === "") {
@@ -138,4 +139,6 @@ window.addEventListener('load', function() {
         const regex = "^\d{5}(?:[-\s]\d{4})?$";
         return regex.match(code);
     }
+
+    totalPrice.innerHTML = cachedTotalPrice;
 });
