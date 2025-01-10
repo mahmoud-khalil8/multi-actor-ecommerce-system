@@ -1,46 +1,51 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" href="./styles/checkout.css">
-    <title>Checkout</title>
-    <style>
-      *{
-          padding: 0;
-          margin: 0;
-          box-sizing: border-box;
-      }
-      .mainwrapper{
-          display: flex;
-          flex-direction:row;
-          justify-content:center;
-          width:100vw;
-          height:100vh;
-      }
-      .container{
-          align-self:center;
-          width: 30vw;
-          height: auto;
-          box-shadow: 1px 1px 3px;
-      }
-      .fas{
-          text-align: center;
-          font-size: 100px; 
-          color: #28a745;
-          margin: 0 auto;
-      }
-   
-      .success-message{
-          display: flex;
-          flex-direction: column;
-          text-align: center;
-      }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="./styles/checkout.css">
+  <title>Checkout</title>
+  <style>
+    * {
+      padding: 0;
+      margin: 0;
+      box-sizing: border-box;
+    }
+
+    .mainwrapper {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      width: 100vw;
+      height: 100vh;
+    }
+
+    .container {
+      align-self: center;
+      width: 30vw;
+      height: auto;
+      box-shadow: 1px 1px 3px;
+    }
+
+    .fas {
+      text-align: center;
+      font-size: 100px;
+      color: #28a745;
+      margin: 0 auto;
+    }
+
+    .success-message {
+      display: flex;
+      flex-direction: column;
+      text-align: center;
+    }
   </style>
 </head>
+
 <body>
-     <!-- start Nav -->
+  <!-- start Nav -->
   <section id="header">
     <nav class="navbar navbar-expand-lg ">
       <div class="container-fluid mian-header">
@@ -70,106 +75,106 @@
     </nav>
   </section>
   <!-- end Nav -->
-  <div class="bg d-flex justify-content-center align-items-center text-center text-dark" style="background-image: url('photos/1.png'); background-size: cover; height: 260px; margin-bottom: 20px;">
+  <div class="bg d-flex justify-content-center align-items-center text-center text-dark"
+    style="background-image: url('photos/1.png'); background-size: cover; height: 260px; margin-bottom: 20px;">
     <h1 class="fw-bold display-4 display-sm-5 display-md-6 display-lg-6">CHECKOUT</h1>
   </div>
 
-  <form class="all">
-    
-    <div class="parent d-flex">
-      
-      <div class="child col-12 col-md-6 col-lg-8">
-          <h2>Billing Details</h2>
-          <div class="d-flex">
-            <div class="d-flex">
-              <div>
-                <div class="col-12">
-                  <label>First Name: </label>
-                  <input type="text" class="username px-2" id="first-name" placeholder="Enter your first name">
-                </div>
-              </div>
-            </div>
-            <div>
-              <div class="col-12">
-                <label>Last Name: </label>
-                <input type="text" class="username px-2" id="last-name" placeholder="Enter your last name">
-             </div>
-            </div>
-            </div>
+  <form class="all d-flex justify-content-center">
+    <div class="parent col-10 d-flex justify-content-">
+      <div class="child col-12 col-md-12 col-lg-6">
+        <h2>Billing Details</h2>
+        <div class="username-container col-lg-12">
+          
             
-          <div>
-            <label>Country: </label>
-             <div>
-               <select id="country" class="c">
-                 <option value="" selected disabled>Select your Country</option>
-               </select>
-             </div>
-           </div>
-           <div>
-            <div>
-              <label>Zip :</label>
-              <input type="text" id="code" class="userdetails px-2" placeholder="Enter Zip Code">
+              <div class="col-12  col-lg-6">
+                <label>First Name: </label>
+                <input type="text" class="username col-11" id="first-name" placeholder="Enter your first name">
+              </div>
+            
+          
+          
+            <div class="col-12  col-lg-6">
+              <label>Last Name: </label>
+              <input type="text" class="username col-11" id="last-name" placeholder="Enter your last name">
             </div>
+          
+        </div>
+
+        <div class="col-12">
+          <label>Country: </label>
+          <div class="col-12">
+            <select id="country" class="c col-12">
+              <option value="" selected disabled>Select your Country</option>
+            </select>
           </div>
-          <div>
-            <label>City: </label>
-            <div>
-              <select id="city" class="c">
-                <option value="" selected disabled>Select your City</option>
-              </select>
-            </div>
+        </div>
+        <div class="col-12">
+          <div class="col-12">
+            <label>Zip :</label>
+            <input type="text" id="code" class="userdetails col-12" placeholder="Enter Zip Code">
           </div>
-          <div>
-            <div>
-              <label>Street: </label>
-              <input type="text" class="userdetails px-2" placeholder="Enter your Street Adress" id="street">
-            </div>
+        </div>
+        <div class="col-12">
+          <label>City: </label>
+          <div class="col-12">
+            <select id="city" class="c col-12">
+              <option value="" selected disabled>Select your City</option>
+            </select>
           </div>
-          <div>
-            <div>
-              <label>Phone Number: </label>
-              <input type="text" class="userdetails px-2" placeholder="Enter your Phone Number" id="number">
-            </div>
+        </div>
+        
+          <div class="col-12">
+            <label>Street: </label>
+            <input type="text" class="userdetails col-12" placeholder="Enter your Street Adress" id="street">
           </div>
-          <div>
-            <div>
-              <label>Email: </label>
-              <input type="email" class="userdetails px-2" placeholder="Enter your Email" id="email">
-            </div>
+          <div class="col-12">
+            <label>Phone Number: </label>
+            <input type="text" class="userdetails col-12" placeholder="Enter your Phone Number" id="number">
+          </div>
+          <div class="col-12">
+            <label>Email: </label>
+            <input type="email" class="userdetails col-12" placeholder="Enter your Email" id="email">
           </div>
       </div>
-      <div class="child col-12 col-md-6 col-lg-4 mt-3 mt-md-0">
-          <div class="right-bar">
-            <p class="total"><span>Total Quantity</span>  <span>....</span></p>
-            <p class="total"><span>Total Price</span>  <span>....</span></p>
-            <hr>
-            <br>
-            <div class="radio">
-              <div>
+        <div class="right-bar col-12 col-md-10 col-lg-4 mt-3 mt-md-0">
+          <!-- <p class="total"><span>Total Quantity</span>  <span>....</span></p> -->
+          <p class="total"><span>Total Price</span> <span>....</span></p>
+          <hr>
+          <br>
+          <div class="money-transfer">
+            <div>
+              <div class="d-flex">
                 <div>
-                  <input type="radio" class="circule" name="payment" value="bank">
+                  <input type="radio" class="circule" name="payment" value="bank" id="radio1">
                 </div>
                 <div>
                   <label class="clable">Direct Bank Transfer</label>
                 </div>
-                <div>
-                  <input type="radio" class="circule" name="payment" value="cash">
-                </div>
-                <div>
-                  <label class="clable">Cash On Delivery</label>
-                </div>
               </div>
-              <p><pre>
+              <div class="d-flex">
+                <div>
+                <input type="radio" class="circule" name="payment" value="cash" id="radio2">
+              </div>
+              <div>
+                <label class="clable" id="label2">Cash On Delivery</label>
+              </div>
+            </div>
+            </div>
+            <p>
+            <pre>
 Your personal data will be used to support your experience 
 throughout this website,to manage access to your account,
-and for other purposes described in our <b><a href="#">privacy policy</a></b>.</pre></p>
-            </div>
-            <div class="button-position"><input type="submit" value="Checkout" class="check" id="checkk"></div>
-        </div></div>
+and for other purposes described in our <b><a href="#">privacy policy</a></b>.</pre>
+            </p>
+          </div>
+          <div class="button-position"><input type="submit" value="Checkout" class="check" id="checkk"></div>
+        </div>
     </div>
   </form>
 
-  <div class="modal fade" id="confirmationModal" tabindex="-1" aria-labelledby="confirmationModalLabel" aria-hidden="true">
+  <div class="modal fade" id="confirmationModal" tabindex="-1" aria-labelledby="confirmationModalLabel"
+    aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
@@ -199,24 +204,8 @@ and for other purposes described in our <b><a href="#">privacy policy</a></b>.</
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
   <script src="./script/utils/countriesAndCities.js"></script>
+  <script src="./script/cart.js"></script>
   <script src="./script/checkout.js"></script>
 </body>
+
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

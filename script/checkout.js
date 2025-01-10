@@ -1,4 +1,5 @@
 window.addEventListener('load', function() {
+    console.log(localStorage.getItem('Total price'));
     let first = document.getElementById('first-name');
     let last = document.getElementById('last-name');
     let country = document.getElementById('country')
@@ -9,10 +10,10 @@ window.addEventListener('load', function() {
     let email = document.getElementById('email');
     let check = document.getElementById('checkk');
     let form = document.querySelector('.all');
-    let inputs = document.querySelectorAll('input[type="text"], input[type="radio"]');
-    let paymentRadios = document.querySelectorAll('input[name="payment"]')
-
-    var myModal = new bootstrap.Modal(document.getElementById('confirmationModal'));
+    let inputs = document.querySelectorAll('input[type="text"], input[type="radio"],input[type="email"],select');
+    let radio1 = document.getElementById('radio1');
+    let radio2 = document.getElementById('radio2');
+    let label2 = document.getElementById('label2');
     inputs.forEach(function(input) {
         input.addEventListener('blur', function() {
             if (input.value.trim() === "") {
@@ -30,10 +31,21 @@ window.addEventListener('load', function() {
     check.addEventListener('click', function(e) {
         e.preventDefault();
         if (validateInputs()) {
-            form.submit(); 
+            form.submit();
             myModal.show();
         }
     });
+
+    radio1.addEventListener('click',()=>{
+        hideMessage(radio1);
+        hideMessage(radio2);
+        hideMessage(label2);
+    })
+    radio2.addEventListener('change',()=>{
+        hideMessage(radio1);
+        hideMessage(radio2);
+        hideMessage(label2);
+            })
 
     function validateInputs() {
         let isValid = true;
@@ -51,41 +63,34 @@ window.addEventListener('load', function() {
         });
 
         if (first.value.trim() !== "" && !validateName(first.value.trim())) {
-            showMessage(email, "Please enter a valid First Name");
+            showMessage(first, "Please enter a valid First Name");
             isValid = false;
         }
-        if (second.value.trim() !== "" && !validateName(last.value.trim())) {
-            showMessage(email, "Please enter a valid Last Name");
+        if (last.value.trim() !== "" && !validateName(last.value.trim())) {
+            showMessage(last, "Please enter a valid Last Name");
             isValid = false;
         }
         if (code.value.trim() !== "" && !validateZipCode(code.value.trim())) {
-            showMessage(email, "Please enter a valid Zip Code");
+            showMessage(code, "Please enter a valid Zip Code");
             isValid = false;
         }
          if (number.value.trim() !== "" && !validatePhoneNumber(number.value.trim())) {
-            showMessage(email, "Please enter a valid Phone Number");
+            showMessage(number, "Please enter a valid Phone Number");
             isValid = false;
         }
         if (email.value.trim() !== "" && !validateEmail(email.value.trim())) {
             showMessage(email, "Please enter a valid Email Address");
             isValid = false;
         }
-        let paymentSelected = false;
-        paymentRadios.forEach((radio) => {
-            if (radio.checked) {
-                paymentSelected = true;
-            }
-        });
-        if (!paymentSelected) {
-            showMessage(paymentRadios[0], "Please select a payment method.");
-            showMessage(paymentRadios[1], "Please select a payment method.");
+        if(!radio1.checked && !radio2.checked){
+            showMessage(radio2);
+            showMessage(radio1);
+            showMessage(label2,"please select a money tranfer method");
             isValid = false;
-        } else {
-            hideMessage(paymentRadios[0]);
-            hideMessage(paymentRadios[1]);
         }
         return isValid;
     }
+    
 
     function showMessage(input, message) {
         let span = input.nextElementSibling;
@@ -97,9 +102,11 @@ window.addEventListener('load', function() {
             span.style.marginTop = "10px";
             input.insertAdjacentElement("afterend", span);
         }
-        span.textContent = message;
+            span.textContent = message;
+       if(input != label2){
         input.style.border = "3px solid red";
-    }
+       }
+    } 
 
     function hideMessage(input) {
         let span = input.nextElementSibling;
@@ -110,8 +117,12 @@ window.addEventListener('load', function() {
     }
 
     function validateEmail(email) {
-        const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        return re.test(String(email).toLowerCase());
+            return String(email)
+              .toLowerCase()
+              .match(
+                /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+              );
+          
     }
 
     function validateName(name) {
@@ -124,7 +135,7 @@ window.addEventListener('load', function() {
     }
 
     function validateZipCode(code) {
-        const regex = /^[A-Za-z]\d[A-Za-z][ -]?\d[A-Za-z]\d$/;
-        return regex.test(code);
+        const regex = "^\d{5}(?:[-\s]\d{4})?$";
+        return regex.match(code);
     }
 });
