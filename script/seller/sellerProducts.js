@@ -21,7 +21,9 @@ var popUpFooter = document.querySelector(".formPopUpFooter");
 var formInputFeild =document.querySelectorAll(".inputFeild");
 
 var isEdit = false , editId;
-var currentSellerId = 2;
+//get the user id from local storage
+const sellerId = JSON.parse(localStorage.getItem('currentUser')).id;
+var currentSellerId = sellerId ? sellerId : 2;
 
 
 var originalData = localStorage.getItem('products') ? JSON.parse(localStorage.getItem('products')):[]
@@ -148,7 +150,7 @@ submtionButton.addEventListener('click', (e)=>{
 
     const information = {  
         id:isEdit ? editId : Date.now(),
-        sellerId: 2,
+        sellerId: sellerId,
         name: ProductName.value,
         description: ProductDescription.value,
         price: ProductPrice.value,
@@ -245,7 +247,7 @@ function editInfo(_id,_img,_name,_cat,_price,_desc,_stock){
     let originalIndex = originalData.findIndex(item => item.id === _id)
     originalData[originalIndex]={
         id: _id,
-        sellerId: 2,
+        sellerId: sellerId,
         name: _name,
         description: _desc,
         price: _price,

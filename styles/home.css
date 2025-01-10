@@ -349,3 +349,74 @@ top: 75%;
     margin: 5px 0;
   }
 }
+/* Center the container and its content */
+#new-releases-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Center items horizontally */
+  justify-content: center; /* Center items vertically */
+  margin: 40px auto; /* Add some margin and center the container */
+  padding: 20px;
+  max-width: 1200px; /* Optional: Limit the container width */
+}
+
+/* Center the heading */
+#new-releases-container h2 {
+  font-size: 24px;
+  color: #333;
+  margin-bottom: 20px;
+  text-align: center; /* Center the text */
+}
+
+/* Center the product items */
+#new-releases-container .product-item {
+  background-color: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 10px;
+  padding: 15px;
+  text-align: center; /* Center the content inside each product */
+  margin: 10px 0; /* Add some spacing between products */
+  width: 100%; /* Ensure the product item takes full width */
+  max-width: 300px; /* Optional: Limit the product item width */
+}
+
+/* Center the product image */
+#new-releases-container .product-item img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+  margin-bottom: 15px;
+}
+
+/* Center the product title */
+#new-releases-container .product-item h5 {
+  font-size: 18px;
+  color: #333;
+  margin: 10px 0;
+}
+
+/* Center the star rating */
+#new-releases-container .product-item .star {
+  display: flex;
+  justify-content: center; /* Center the stars */
+  margin-bottom: 10px;
+}
+
+/* Center the price and cart icon */
+#new-releases-container .product-item div {
+  display: flex;
+  justify-content: center; /* Center the price and cart icon */
+  align-items: center;
+  margin-top: 15px;
+}
+
+#new-releases-container .product-item p {
+  font-size: 16px;
+  color: #333;
+  margin-right: 10px; /* Add spacing between price and cart icon */
+}
+
+#new-releases-container .product-item a {
+  text-decoration: none;
+  color: #333;
+}

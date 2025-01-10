@@ -57,6 +57,7 @@ window.addEventListener('load', function () {
       const order = {
         id: Date.now(), // Unique order ID
         user: user.id, // User ID
+        
         firstName: first.value.trim(),
         lastName: last.value.trim(),
         email: email.value.trim(),

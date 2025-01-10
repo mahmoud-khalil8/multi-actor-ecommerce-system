@@ -44,6 +44,22 @@ table tr:nth-child(even){
     transition: .5s;
 }
 
+.status-box {
+  padding: 5px 10px;
+  border-radius: 5px;
+  text-align: center;
+  display: inline-block;
+}
+
+.status-pending {
+  background-color: #fff3cd; /* Bootstrap warning background color */
+  color: #856404; /* Bootstrap warning text color */
+}
+
+.status-succeeded {
+  background-color: #d4edda; /* Bootstrap success background color */
+  color: #155724; /* Bootstrap success text color */
+}
 /* =========================responsive========================== */
 /* @media (max-width: 1024px) {
     .orderContainer {

@@ -2,6 +2,62 @@
 // =================================
 
 document.addEventListener("DOMContentLoaded", () => {
+  // Check if orders exist in local storage
+if (!localStorage.getItem("orders")) {
+  const sampleOrders = [
+    {
+      orderId: 1,
+      userId: 123,
+      sellerId: 2,
+      items: [
+        {
+          productId: 101,
+          quantity: 2,
+          price: 50,
+        },
+      ],
+      total: 100,
+      shippingAddress: "123 Main St, City, Country",
+      paymentMethod: "cash on delivery",
+      status: "Pending",
+    },
+    {
+      orderId: 2,
+      userId: 124,
+      sellerId: 2,
+      items: [
+        {
+          productId: 102,
+          quantity: 1,
+          price: 75,
+        },
+      ],
+      total: 75,
+      shippingAddress: "456 Elm St, City, Country",
+      paymentMethod: "direct bank transfer",
+      status: "Shipped",
+    },
+    {
+      orderId: 3,
+      userId: 125,
+      sellerId: 3, // This order belongs to a different seller
+      items: [
+        {
+          productId: 103,
+          quantity: 3,
+          price: 20,
+        },
+      ],
+      total: 60,
+      shippingAddress: "789 Oak St, City, Country",
+      paymentMethod: "cash on delivery",
+      status: "Delivered",
+    },
+  ];
+
+  // Store sample orders in local storage
+  localStorage.setItem("orders", JSON.stringify(sampleOrders));
+}
     var contentDiv = document.querySelector(".content");
     let navLinks = document.querySelectorAll(".nav-link");
   
