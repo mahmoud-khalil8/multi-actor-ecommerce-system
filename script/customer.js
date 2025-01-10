@@ -1,4 +1,4 @@
-import { validatePhoneNumber, showMessage } from "./utils/validation.js";
+import { validatePhoneNumber} from "./utils/validation.js";
 
 // Load user data from localStorage and populate the profile page
 function loadUserData() {
@@ -12,14 +12,14 @@ function loadUserData() {
     }
 
     // Fetch all users from localStorage
-    let data = JSON.parse(localStorage.getItem("data"));
-    if (!data || !data.users) {
-      alert("No user data found in localStorage.");
+    let users = JSON.parse(localStorage.getItem("users")) || [];
+    if (!Array.isArray(users)) {
+      alert("Invalid user data found in localStorage.");
       return;
     }
 
     // Find the updated user data from the `users` array
-    let updatedUser = data.users.find((u) => u.id === currentUser.id);
+    let updatedUser = users.find((u) => u.id === currentUser.id);
     if (!updatedUser) {
       alert("User data not found.");
       return;
@@ -81,41 +81,45 @@ document.getElementById("editAddress").addEventListener("click", () => editField
 
 // Open modal for editing fields
 function editFields(section) {
-  currentEditSection = section;
-  let modalForm = document.getElementById("modalForm");
-  modalForm.innerHTML = "";
+    currentEditSection = section;
+    let modalForm = document.getElementById("modalForm");
+    modalForm.innerHTML = "";
 
-  if (section === "password") {
-    modalForm.innerHTML = `
-      <form>
-        <div class="mb-3">
-          <label for="currentPass" class="form-label">Current Password</label>
-          <input type="password" autocomplete="on" class="form-control" id="modal-currentpassword">
-        </div>
-        <div class="mb-3">
-          <label for="newPass" class="form-label">New Password</label>
-          <input type="password" autocomplete="on" class="form-control" id="modal-newPassword">
-        </div>
-        <div class="mb-3">
-          <label for="confirmPass" class="form-label">Confirm Password</label>
-          <input type="password" autocomplete="on" class="form-control" id="modal-confirmPassword">
-        </div>
-      </form>`;
-  } else {
-    fields[section].forEach((field) => {
-      let value = document.getElementById(field.id).innerText;
-      modalForm.innerHTML += `
-        <div class="mb-3">
-          <label for="${field.id}" class="form-label">${field.label}</label>
-          <input type="text" class="form-control" id="modal-${field.id}" value="${value}">
-        </div>`;
-    });
+    if (section === "password") {
+      modalForm.innerHTML = `
+        <form>
+          <span id="modal-error"></span>
+          <div class="mb-3">
+            <label for="currentPass" class="form-label">Current Password</label>
+            <input type="password" autocomplete="on" class="form-control" id="modal-currentpassword">
+          </div>
+          <div class="mb-3">
+            <label for="newPass" class="form-label">New Password</label>
+            <input type="password" autocomplete="on" class="form-control" id="modal-newPassword">
+          </div>
+          <div class="mb-3">
+            <label for="confirmPass" class="form-label">Confirm Password</label>
+            <input type="password" autocomplete="on" class="form-control" id="modal-confirmPassword">
+          </div>
+        </form>`;
+    } else {
+      // Add the modal-error element for other sections
+      modalForm.innerHTML = `<span id="modal-error"></span>`;
+
+      fields[section].forEach((field) => {
+        let value = document.getElementById(field.id).innerText;
+        modalForm.innerHTML += `
+          <div class="mb-3">
+            <label for="${field.id}" class="form-label">${field.label}</label>
+            <input type="text" class="form-control" id="modal-${field.id}" value="${value}">
+          </div>`;
+      });
+    }
+
+    // Show the modal
+    const modal = new bootstrap.Modal(document.getElementById("editModal"));
+    modal.show();
   }
-
-  // Show the modal
-  const modal = new bootstrap.Modal(document.getElementById("editModal"));
-  modal.show();
-}
 
 // Handle profile image upload
 document.getElementById("imageInput").addEventListener("change", function (event) {
@@ -141,13 +145,12 @@ document.getElementById("imageInput").addEventListener("change", function (event
     // Update user data in localStorage
     let currentUser = JSON.parse(localStorage.getItem("currentUser"));
     if (currentUser) {
-      let data = JSON.parse(localStorage.getItem("data"));
-      let users = data.users;
+      let users = JSON.parse(localStorage.getItem("users")) || [];
       let userIndex = users.findIndex((u) => u.id === currentUser.id);
 
       if (userIndex !== -1) {
         users[userIndex].userImg = e.target.result; // Update profile image
-        localStorage.setItem("data", JSON.stringify({ ...data, users }));
+        localStorage.setItem("users", JSON.stringify(users));
 
         // Update currentUser in localStorage
         currentUser.userImg = e.target.result;
@@ -177,14 +180,13 @@ document.getElementById("saveBtn").addEventListener("click", function () {
     } else {
       let currentUser = JSON.parse(localStorage.getItem("currentUser"));
       if (currentUser) {
-        let data = JSON.parse(localStorage.getItem("data"));
-        let users = data.users;
+        let users = JSON.parse(localStorage.getItem("users")) || [];
         let userIndex = users.findIndex((u) => u.id === currentUser.id);
 
         if (userIndex !== -1) {
           if (users[userIndex].password === currentPassword) {
             users[userIndex].password = newPassword; // Update password
-            localStorage.setItem("data", JSON.stringify({ ...data, users }));
+            localStorage.setItem("users", JSON.stringify(users));
 
             // Update currentUser in localStorage
             currentUser.password = newPassword;
@@ -204,7 +206,7 @@ document.getElementById("saveBtn").addEventListener("click", function () {
       if (phoneInput) {
         let phoneNumber = phoneInput.value;
         if (phoneNumber && !validatePhoneNumber(phoneNumber)) {
-          showMessage("modal-phone-error", "Invalid phone number.");
+            showMessage("modal-error", "Invalid phone number.");
           valid = false;
         }
       }
@@ -213,8 +215,7 @@ document.getElementById("saveBtn").addEventListener("click", function () {
     if (valid) {
       let currentUser = JSON.parse(localStorage.getItem("currentUser"));
       if (currentUser) {
-        let data = JSON.parse(localStorage.getItem("data"));
-        let users = data.users;
+        let users = JSON.parse(localStorage.getItem("users")) || [];
         let userIndex = users.findIndex((u) => u.id === currentUser.id);
 
         if (userIndex !== -1) {
@@ -226,13 +227,13 @@ document.getElementById("saveBtn").addEventListener("click", function () {
               users[userIndex].name = `${document.getElementById("modal-firstName").value} ${document.getElementById("modal-lastName").value}`;
             } else if (field.id === "email") {
               users[userIndex].email = newValue;
-            } else if ( field.id === "City" || field.id === "Country") {
+            } else if (field.id === "City" || field.id === "Country") {
               users[userIndex].address = ` ${document.getElementById("modal-Country").value}, ${document.getElementById("modal-City").value}`;
             }
           });
 
           // Update localStorage
-          localStorage.setItem("data", JSON.stringify({ ...data, users }));
+          localStorage.setItem("users", JSON.stringify(users));
 
           // Update currentUser in localStorage
           Object.assign(currentUser, users[userIndex]);
@@ -254,7 +255,24 @@ document.getElementById("saveBtn").addEventListener("click", function () {
 document.getElementById("logoutBtn").addEventListener("click", function () {
   // Clear the current user data from localStorage
   localStorage.removeItem("currentUser");
+  localStorage.removeItem("cart");
+  localStorage.removeItem("orders");
 
   // Redirect to the login page (or home page)
   window.location.href = "login.html"; // Replace with your login page URL
 });
+
+function showMessage(elementId, message) {
+    const element = document.getElementById(elementId);
+    if (element) {
+      element.textContent = message;
+      element.style.display = "block"; // Ensure the element is visible
+      element.classList.add("alert", "alert-danger"); // Add Bootstrap alert class
+      setTimeout(() => {
+        element.style.display = "none"; // Hide the message after a few seconds
+      }, 3000); // Adjust the timeout as needed
+    } else {
+      console.error(`Element with ID ${elementId} not found.`);
+      alert(message); // Fallback to alert if the element doesn't exist
+    }
+  }

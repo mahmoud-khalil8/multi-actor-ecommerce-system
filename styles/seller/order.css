@@ -1,0 +1,106 @@
+/* ================google font===================== */
+@import url('https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap');
+
+
+.orderContainer{
+    position:absolute;
+    width: 100%;
+    min-height:100vh ;
+    background-color: white;
+    transition: 2s;
+}
+.orderBody{
+    padding:10px;
+    /* margin: 10px; */
+    margin-top: 50px;
+    border-radius: 10px;
+    background-color: #e4ebf0;
+}
+.orderBody header{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom:30px;
+    outline: none;
+}
+.orderBody table{
+    /* border: 1px solid black; */
+    border-collapse: collapse;
+    margin:auto;
+    text-align: center;
+}
+table .orderHeading{
+    background-color: rgba(142, 214, 234, 0.95);
+}
+table tr th , table tr td{
+    padding: 4px 30px;
+} 
+table tr td{
+    border-bottom: 1px solid rgba(142, 210, 234, 0.95);
+    transition: .5s;
+}
+table tr:nth-child(even){
+    background-color:white;
+    transition: .5s;
+}
+
+/* =========================responsive========================== */
+/* @media (max-width: 1024px) {
+    .orderContainer {
+        width: 95%; 
+        margin: 0 auto; 
+    }
+
+    .orderBody {
+        padding: 20px;
+        margin-top: 20px;
+    }
+
+    .orderBody table {
+        font-size: 0.9rem; 
+    }
+
+    table tr th, table tr td {
+        padding: 8px 30px;
+         
+    }
+}
+
+@media (max-width: 768px) {
+    .orderBody {
+        padding: 15px;
+    }
+
+    .orderBody table {
+        display: block; 
+        overflow-x: auto;
+        white-space: nowrap; 
+    }
+
+    table tr th, table tr td {
+        font-size: 0.8rem; 
+        padding: 8px 30px;
+    }
+
+    table tr:nth-child(even) {
+        background-color: #fdf4e9; 
+    }
+}
+
+@media (max-width: 480px) {
+    .orderBody header {
+        flex-direction: column; 
+    }
+
+    table tr th, table tr td {
+        padding: 5px 8px; 
+        font-size: 0.7rem; 
+    }
+
+    table {
+        display: block;
+        width: 100%;
+        overflow-x: auto;
+        border: none;
+    }
+} */

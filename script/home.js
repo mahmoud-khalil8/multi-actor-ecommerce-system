@@ -1,7 +1,4 @@
-import { initializeLocalStorage } from "./utils/localStorage.js";
 
-// Initialize local storage
-initializeLocalStorage();
 
 
 

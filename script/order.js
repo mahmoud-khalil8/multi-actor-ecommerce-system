@@ -1,110 +1,52 @@
+// Store orders in localStorage if not already present
+localStorage.getItem('orders') ? '' : localStorage.setItem('orders', JSON.stringify([]));
 
-const profile = document.getElementById("profilebtn");
-if (profile) {
-  profile.addEventListener("click", () => {
-    const currentUser = JSON.parse(localStorage.getItem("currentUser"));
-    if (!currentUser) return;
+// Retrieve the current user and orders from localStorage
+const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+const storedOrders = JSON.parse(localStorage.getItem("orders"));
 
-    const currentUserRole = currentUser.role;
-    switch (currentUserRole) {
-      case "admin":
-        window.location.href = "admin-dashboard.html";
-        break;
-      case "customer":
-        window.location.href = "customer-dashboard.html";
-        break;
-      case "seller":
-        window.location.href = "seller-dashboard.html";
-        break;
-      default:
-        console.error("Unknown user role:", currentUserRole);
-    }
-  });
-}
-const orders = [
-    {
-      "id": 101,
-      "userId": "jji02NFzb9YoCBg9KnBGBn1fWJi1", // userId is a string
-      "sellerid": 3,
-      "items": [
-        {
-          "productId": 201,
-          "quantity": 2,
-          "price": 99.99
-        }
-      ],
-      "total": 199.98,
-      "shippingAddress": "123 Main St, City, Country",
-      "paymentMethod": "Credit Card",
-      "status": "Delivered"
-    }
-  ];
-  
-  // Store orders in localStorage
-  localStorage.setItem('orders', JSON.stringify(orders));
-  const currentUser = JSON.parse(localStorage.getItem("currentUser"));
-  
-  // Retrieve the orders from localStorage and parse it
-  const storedOrders = JSON.parse(localStorage.getItem("orders"));
-  
-  // Function to check and display order details if userId matches currentUser
-  function checkAndDisplayOrderDetails() {
-    const container = document.getElementById("order-details");
+// Function to display order details in the table
+function displayOrderDetails() {
+  const orderInfo = document.querySelector(".orderInfo");
 
-    // Check if the currentUser exists and if storedOrders are available
-    if (currentUser && storedOrders) {
-      // Loop through the orders and check if userId matches currentUser
-      const userOrder = storedOrders.find(order => order.userId === currentUser.id); // Compare as strings
-  
-      if (userOrder) {
-        // If a matching order is found, display the total in the body
-  
-        // Access the items array for quantity and price
-        let itemsHTML = "";
-        userOrder.items.forEach(item => {
-          itemsHTML += `
-            <tr>
-              <td>Quantity</td>
-              <td>${item.quantity}</td>
-            </tr>
-            <tr>
-              <td>Price</td>
-              <td>$${item.price}</td>
-            </tr>
-          `;
-        });
-  
-        container.innerHTML = `
-          <table>
-            <tbody>
-              ${itemsHTML}
-              <tr>
-                <td>Payment Method</td>
-                <td>${userOrder.paymentMethod}</td>
-              </tr>
-              <tr>
-                <td>Shipping Address</td>
-                <td>${userOrder.shippingAddress}</td>
-              </tr>
-              <tr>
-                <td>Status</td>
-                <td>${userOrder.status}</td>
-              </tr>
-              <tr>
-                <td>Total</td>
-                <td>$${userOrder.total}</td>
-              </tr>
-            </tbody>
-          </table>
+  // Check if the currentUser exists and if storedOrders are available
+  if (currentUser && storedOrders) {
+    // Filter orders for the current user
+    const userOrders = storedOrders.filter(order => order.user === currentUser.id);
+
+    if (userOrders.length > 0) {
+      // Loop through the user's orders and populate the table
+      userOrders.forEach((order, index) => {
+        const row = document.createElement("tr");
+
+        row.innerHTML = `
+          <td>${index + 1}</td>
+          <td>${order.user}</td>
+          <td>$${order.totalPrice}</td>
+          <td>${order.address ? `${order.address.street}, ${order.address.city}, ${order.address.country}, ${order.address.zipCode}` : "N/A"}</td>
+          <td>${order.paymentMethod}</td>
+          <td>${order.status || "Pending"}</td>
         `;
-      } else {
-        container.innerHTML="No orders found for this user"
-      }
+
+        orderInfo.appendChild(row);
+      });
     } else {
-      console.log("Current user or orders not found.");
+      // If no orders are found for the user
+      orderInfo.innerHTML = `
+        <tr>
+          <td colspan="9" style="text-align: center;">No orders found for this user.</td>
+        </tr>
+      `;
     }
+  } else {
+    // If current user or orders are not found
+    orderInfo.innerHTML = `
+      <tr>
+        <td colspan="9" style="text-align: center;">Current user or orders not found.</td>
+      </tr>
+    `;
   }
-  
-  // Call the function to check and display the order details
-  checkAndDisplayOrderDetails();
-  
+}
+
+// Call the function to display the order details
+displayOrderDetails();

@@ -1,4 +1,3 @@
-// auth.js
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js";
 import {
   getAuth,
@@ -6,7 +5,7 @@ import {
   signInWithEmailAndPassword,
   sendPasswordResetEmail,
 } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-auth.js";
-import { showMessage,validateForm} from "./utils/validation.js";
+import { showMessage, validateForm } from "./utils/validation.js";
 
 // Firebase configuration
 const firebaseConfig = {
@@ -64,9 +63,9 @@ export function setupSignup() {
         };
 
         // Update local storage
-        const users = JSON.parse(localStorage.getItem("data")).users;
+        const users = JSON.parse(localStorage.getItem("users")) || [];
         users.push(newUser);
-        localStorage.setItem("data", JSON.stringify({ ...JSON.parse(localStorage.getItem("data")), users }));
+        localStorage.setItem("users", JSON.stringify(users));
 
         // Save the new user as the current user
         localStorage.setItem("currentUser", JSON.stringify(newUser));
@@ -94,30 +93,29 @@ export function setupSignup() {
 
 // Login Functionality
 export function setupLogin() {
-  const loginForm = document.getElementById('loginForm');
+  const loginForm = document.getElementById("loginForm");
   if (loginForm) {
-    loginForm.addEventListener('submit', async (e) => {
+    loginForm.addEventListener("submit", async (e) => {
       e.preventDefault();
 
-      const email = document.getElementById('loginEmail').value;
-      const password = document.getElementById('loginPassword').value;
-
+      const email = document.getElementById("loginEmail").value;
+      const password = document.getElementById("loginPassword").value;
 
       // Hardcoded admin credentials (for demonstration purposes only)
-      if (email === 'admin@admin.com' && password === 'admin123') {
+      if (email === "admin@admin.com" && password === "admin123") {
         const adminUser = {
-          id: 'admin-uid', // Use the Firebase UID or a unique ID
-          role: 'admin',
-          name: 'Admin User',
+          id: "admin-uid", // Use the Firebase UID or a unique ID
+          role: "admin",
+          name: "Admin User",
           email: email,
-          address: '', // Add address if available
-          phoneNumber: '', // Add phone number if available
+          address: "", // Add address if available
+          phoneNumber: "", // Add phone number if available
         };
         // Save admin user to localStorage
-        localStorage.setItem('currentUser', JSON.stringify(adminUser));
+        localStorage.setItem("currentUser", JSON.stringify(adminUser));
 
         // Redirect to admin dashboard
-        window.location.href = 'admin-dashboard.html';
+        window.location.href = "admin-dashboard.html";
         return;
       }
 
@@ -126,54 +124,52 @@ export function setupLogin() {
         const userCredential = await signInWithEmailAndPassword(auth, email, password);
         const user = userCredential.user;
 
-        // Fetch user data from localStorage or Firestore
-        const users = JSON.parse(localStorage.getItem('data')).users;
+        // Fetch user data from localStorage
+        const users = JSON.parse(localStorage.getItem("users")) || [];
         const existingUser = users.find((u) => u.email === email);
 
         if (existingUser) {
           // Save the user data to localStorage
-          localStorage.setItem('currentUser', JSON.stringify(existingUser));
+          localStorage.setItem("currentUser", JSON.stringify(existingUser));
 
           // Redirect based on role
           switch (existingUser.role) {
-            case 'customer':
-              window.location.href = 'home.html';
+            case "customer":
+              window.location.href = "home.html";
               break;
-            case 'seller':
-              window.location.href = 'home.html';
+            case "seller":
+              window.location.href = "home.html";
               break;
-            case 'admin':
-              window.location.href = 'home.html';
+            case "admin":
+              window.location.href = "home.html";
               break;
             default:
-              console.error('Invalid user role:', existingUser.role);
-              window.location.href = 'login.html';
+              console.error("Invalid user role:", existingUser.role);
+              window.location.href = "login.html";
           }
         } else {
           // If the user doesn't exist in localStorage, create a new entry
           const newUser = {
             id: user.uid,
-
-            role: 'customer', // Default role
-            firstName:'', // Add name if available
-            lastName:'', // Add name if available
+            role: "customer", // Default role
+            name: "", // Add name if available
             email: email,
-            address: '', // Add address if available
-            phoneNumber: '', // Add phone number if available
+            address: "", // Add address if available
+            phoneNumber: "", // Add phone number if available
           };
 
           // Update localStorage
           users.push(newUser);
-          localStorage.setItem('data', JSON.stringify({ ...JSON.parse(localStorage.getItem('data')), users }));
+          localStorage.setItem("users", JSON.stringify(users));
 
           // Save the new user as the current user
-          localStorage.setItem('currentUser', JSON.stringify(newUser));
+          localStorage.setItem("currentUser", JSON.stringify(newUser));
 
-          // Redirect to customer dashboard
-          window.location.href = 'home.html';
+          // Redirect to home page
+          window.location.href = "home.html";
         }
       } catch (error) {
-        showMessage('loginMessage', error.message, 'danger');
+        showMessage("loginMessage", error.message, "danger");
       }
     });
   }

@@ -1,5 +1,6 @@
 // utils.js
 export function showMessage(elementId, message, type = "danger") {
+  if(type=='danger'){}
   const messageElement = document.getElementById(elementId);
   if (messageElement) {
     messageElement.textContent = message;

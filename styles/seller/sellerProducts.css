@@ -1,0 +1,345 @@
+/* google fonts */
+@import url('https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap');
+
+*{
+    font-family: "Ubuntu", serif;
+    margin:0;
+    padding:0;
+    box-sizing: borderbox;
+}
+body{
+    min-height: 100vh;
+    /* overflow-x: hidden; */
+}
+.container{
+    position: relative;
+    width: 100%;
+}
+
+.mainwrapper{
+    position:absolute;
+    width: 100%;
+    min-height:100vh ;
+    background-color: white;
+    transition: 2s;
+}
+
+/* ======================products====================== */
+.productBody{
+    padding:10px;
+    margin: 10px;
+    margin-top: 50px;
+    border-radius: 10px;
+    background-color: #e4ebf0;
+    /* overflow-x: auto ; */
+}
+.productBody header{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom:30px;
+    outline: none;
+}
+
+.addProduct{
+    margin-bottom: 10px ;
+    
+}
+#addButton { 
+    background-color: white;
+    position: relative;
+    margin-top: 15px; 
+    margin-left: 90%;
+    width: 50px;
+    font-size: 16px;
+    text-align:center;
+    padding: 5px;
+    border: 1px solid black;
+    border-radius: 10px;  
+    transition: 2s;
+}
+#addButton:hover{
+    background-color: rgba(142, 217, 234, 0.95);
+    cursor: pointer;
+    transition: 2S;
+}
+img{
+    width: 40px;
+    height: 40px;
+    border-radius:50%;
+}
+.productBody table{
+    /* border: 1px solid black; */
+    border-collapse: collapse;
+    margin:auto;
+    text-align: center;
+}
+table{
+    width: 100%;
+}
+table .heading{
+    background-color: rgba(142, 191, 234, 0.95);
+}
+table tr th , table tr td{
+    padding: 4px 15px;
+} 
+table tr td{
+    border-bottom: 1px solid rgba(142, 193, 234, 0.95);
+    transition: .5s;
+}
+table tr:nth-child(even){
+    background-color:white;
+    transition: .5s;
+}
+
+table td button{
+    border-style: none;
+    margin: 0px 3px;
+    width: 35px;
+    background: transparent;
+    font-size: 16px;
+    cursor: pointer;
+    pointer-events: auto;
+}
+table tr>th{
+    pointer-events: none;
+}
+table td button:hover{
+    background-color: rgba(142, 191, 234, 0.95);
+    cursor: pointer;
+    border-radius: 10px;
+    transition: .5s;
+}
+
+.empty{
+    padding: 10px;
+}
+
+/* ==============================popUp========================= */
+
+.popUp{
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    visibility: hidden;
+}
+ .formPopUp{
+    border: 2px solid rgba(142, 187, 234, 0.95);
+    box-shadow: 3px 3px 20px  rgba(142, 177, 234, 0.95);
+    border-radius:10px ;
+    transition: .4s;
+    background-color: white;
+    user-select: none;
+    transform: scale(.7);
+    opacity: 0;
+    visibility: hidden;
+    transition: .3s;
+}
+.formPopUp header{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid rgba(142, 205, 234, 0.95);
+    padding: 10px 20px;   
+}
+.formPopUp header .closeBtn{
+    font-size: 30px;
+    font-weight: 300;
+    background-color: #e4ebf0;
+    border: 1px solid  rgba(142, 193, 234, 0.95);
+    padding: 0px 10px;
+    cursor: pointer;
+    outline: none;
+}
+
+.formPopUp footer .submtBtn{
+    background-color: #e4ebf0;
+    position: relative;
+    margin-top: 10px; 
+    margin-left: 80%; 
+    width: 70px;
+    font-size: 16px;
+    text-align:center;
+    padding: 5px;
+    border: 1px solid black;
+    border-radius: 10px;  
+    transition: 2s;
+}
+
+.formPopUp header .closeBtn:hover , .formPopUp footer .submtBtn:hover{
+    background-color:  rgba(142, 177, 234, 0.95);
+    cursor: pointer;
+}
+
+.formPopUp footer{
+    border-top: 1px solid  rgba(142, 177, 234, 0.95);
+    padding: 12px 20px;
+    text-align: right;
+}
+
+.popUp form{
+    padding: 10px 20px;
+    display: flex;
+    align-items: flex-start;
+
+}
+.popUp .uploadImg{
+    width: 150px;
+    height: 150px;
+    border-radius: 8px;
+    box-shadow: 0px 0px 5px  rgba(142, 177, 234, 0.95);
+    overflow: hidden;
+    position: relative;
+    margin-right: 50px;
+    margin-top: 15px;
+    background-color: gray;
+
+}
+.popUp .uploadImg .upload{
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 80px;
+    background-color:  rgba(142, 177, 234, 0.95);
+    /* display: flex; */
+    justify-content: center;
+    align-items: center;
+    z-index: 1;
+    cursor: pointer;
+    display: none;
+}
+
+.uploadImg:hover .upload{
+    display: flex;
+}
+.uploadImg .upload input{
+    display: none;
+
+}
+.uploadImg .upload i{
+    font-size: 35px;
+    font-weight: 300; 
+}
+
+.uploadImg .img{
+    width: 100%;
+    height: 100%;
+    border-radius: 0px;
+}
+
+form .inputFeild .productCode,
+form .inputFeild .productName,
+form .inputFeild .productPrice,
+form .inputFeild .productQuantity{
+    padding-top: 10px;
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+}
+
+form .inputFeild .productCode input,
+form .inputFeild .productName input,
+form .inputFeild .productPrice input,
+form .inputFeild .productQuantity input{
+    width: 200px;
+    margin-bottom: 5px;
+}
+.formController label{
+    display: block;
+    margin-bottom: 5px;
+}
+
+.formController input{
+    padding: 10px;
+    border: 1px solid  rgba(142, 177, 234, 0.95);
+    border-radius: 5px;
+    outline: none;
+    transition: .3s;
+}
+input::-webkit-inner-spin-button,
+input::-webkit-outer-spin-button{
+    display: none;
+}
+.visible{
+    transform: scale(1);
+    opacity: 1;
+    visibility: visible;
+    transition: .3s;    
+}
+
+
+/* =======================responsive====================== */
+/* @media (max-width: 1024px) {
+    .productBody {
+        padding: 10px;
+    }
+
+    table {
+        width: 100%;
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+
+    table tr td, table tr th {
+        font-size: 0.9rem;
+        padding: 6px;
+    }
+}
+
+@media (max-width: 768px) {
+    .productBody {
+        padding: 10px;
+    }
+
+    table {
+        width: 100%;
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+
+    table tr td, table tr th {
+        font-size: 0.9rem;
+        padding: 6px;
+    }
+}
+
+@media (max-width: 480px) {
+    td, th {
+        display: block;
+        width: 100%;
+        text-align: left;
+    }
+
+    tr {
+        display: block;
+        margin-bottom: 10px;
+    }
+
+    th {
+        display: none;
+    }
+
+    td {
+        display: flex;
+        justify-content: space-between;
+        padding: 8px 10px;
+        border: 1px solid #ddd;
+    }
+
+    td::before {
+        content: attr(data-label);
+        font-weight: bold;
+        margin-right: 10px;
+        color: #555;
+    }
+}
+ */

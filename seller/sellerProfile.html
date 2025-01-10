@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../styles/customer.css" />
+      <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <title>Document</title>
+  </head>
+
+  <body>
+ 
+    <div class="container my-5">
+      <div class="userProfile">
+        <div class="profileHeader">
+          <div class="p-1 position-relative">
+            <input
+              type="file"
+              id="imageInput"
+              accept="image/*"
+              style="display: none"
+            />
+            <label for="imageInput"
+              ><img id="userImg" alt=" profile Image"
+            /></label>
+          </div>
+          <h3 id="headerName"></h3>
+          <p id="emailHeader"></p>
+        </div>
+        <div
+          class="profile-body border rounded-2 border-3 p-1 position-relative"
+        >
+          <div class="border rounded-2 border-3 p-2 m-2 position-relative">
+            <h5>Personal Information</h5>
+            <p>
+              <b>First Name:</b>
+              <span id="firstName"></span>
+            </p>
+            <p>
+              <b>Last Name:</b>
+
+              <span id="lastName"></span>
+            </p>
+            <p>
+              <b> Email: </b>
+
+              <span id="email"></span>
+            </p>
+            <p>
+              <b>Phone:</b>
+              <span id="phone"></span>
+            </p>
+            <button
+              class="edit-btn position-absolute m-2 top-0 end-0"
+              id="editPersonal"
+            >
+              Edit
+            </button>
+          </div>
+
+          <div
+            class="Address border rounded-2 border-3 p-2 m-2 position-relative"
+          >
+            <h5>Address</h5>
+
+           
+            <p>
+              <b>City:</b>
+              <span id="City"></span>
+            </p>
+
+            <p>
+              <b>Country:</b>
+              <span id="Country" class=""></span>
+            </p>
+
+            <button
+              class="edit-btn position-absolute m-2 top-0 end-0"
+              id="editAddress"
+            >
+              Edit
+            </button>
+          </div>
+
+          <div class="password p-2 m-2 position-relative">
+            <!-- <button
+              class="edit-btn position-absolute m-2 top-0 end-0"
+              onclick="editFields('password')"
+            >
+              Change Password
+            </button> -->
+          </div>
+                       <button class="btn btn-primary">
+                         <a class="nav-link" href="#" id="logoutBtn">Logout</a></button>
+
+        </div>
+      </div>
+    </div>
+
+    <!--  modal  -->
+    <!-- Modal for changing password -->
+    <div
+      class="modal"
+      id="editModal"
+      tabindex="-1"
+      aria-labelledby="editModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="editModalLabel">Change Password</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body" id="modalForm">
+            <!-- Current Password -->
+            <div class="mb-3">
+              <label for="modal-currentpassword" class="form-label"
+                >Current Password</label
+              >
+              <input
+                type="password"
+                class="form-control"
+                id="modal-currentpassword"
+                required
+              />
+            </div>
+            <!-- New Password -->
+            <div class="mb-3">
+              <label for="modal-newPassword" class="form-label"
+                >New Password</label
+              >
+              <input
+                type="password"
+                class="form-control"
+                id="modal-newPassword"
+                required
+              />
+            </div>
+            <!-- Confirm New Password -->
+            <div class="mb-3">
+              <label for="modal-confirmPassword" class="form-label"
+                >Confirm New Password</label
+              >
+              <input
+                type="password"
+                class="form-control"
+                id="modal-confirmPassword"
+                required
+              />
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Close
+            </button>
+            <button type="button" class="btn btn-primary" id="saveBtn">
+              Save Changes
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../script/seller/sellerProfile.js"></script>
+  </body>
+</html>
