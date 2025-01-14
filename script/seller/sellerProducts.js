@@ -21,9 +21,9 @@ var popUpFooter = document.querySelector(".formPopUpFooter");
 var formInputFeild =document.querySelectorAll(".inputFeild");
 
 var isEdit = false , editId;
-const sellerId = JSON.parse(localStorage.getItem('currentUser')).id;
-var currentSellerId = sellerId ? sellerId : 2;
-
+//const sellerId = JSON.parse(localStorage.getItem('currentUser')).id;
+//var currentSellerId = sellerId ? sellerId : 2;
+var currentSellerId =  2;
 
 var originalData = localStorage.getItem('products') ? JSON.parse(localStorage.getItem('products')):[]
 var getData = [...originalData]
@@ -52,6 +52,8 @@ colseButton.addEventListener('click',()=>{
     popUpFooter.style.display = "block"
 });//end close button
 
+
+const errorMasge0 = document.getElementById("errorMasge0");
 uploadImage.onchange = ()=>{
     if(uploadImage.files[0].size<1000000){
         var fileReader= new FileReader();
@@ -71,57 +73,80 @@ uploadImage.onchange = ()=>{
 
 
 function validateForm(name, category, description, price ,stock) {
-    const nameRegex = /^[a-zA-Z0-9\s\-_.,'&]{2,100}$/; // At least 3 characters, letters, numbers, and spaces allowed
-    const descriptionMinLength = 10;
-    const descriptionRegex = /^[a-zA-Z0-9\s\-_.,'&!?()@#%$*]{10,1000}$/;
+    const nameRegex = /^[a-zA-Z0-9\s\-_.,'&]{3,100}$/; // At least 3 characters, letters, numbers, and spaces allowed
+    //const descriptionMinLength = 10;
+    const descriptionRegex = /^[a-zA-Z0-9\s\-_.,'&!?()@#%$*]{3,1000}$/;
 
+    const errorMasge1 = document.getElementById("errorMasge1");
+    const errorMasge2 = document.getElementById("errorMasge2");
+    const errorMasge3 = document.getElementById("errorMasge3");
+    const errorMasge4 = document.getElementById("errorMasge4");
+    const errorMasge5 = document.getElementById("errorMasge5");
+
+
+    errorMasge1.innerHTML = "";
+    errorMasge2.innerHTML = "";
+    errorMasge3.innerHTML = "";
+    errorMasge4.innerHTML = "";
+    errorMasge5.innerHTML = "";
+    
     // Validate Product Name
     if (!name) {
-        alert("Product name cannot be empty.");
+        //alert("Product name cannot be empty.");
+        errorMasge1.innerHTML += `<p style="margin:0; padding: 0; color: red; font-size: 12px; font-family: Arial, sans-serif;">Product name cannot be empty</p>`;
         ProductName.focus();
         return false;
     }
     if (!nameRegex.test(name)) {
-        alert("Product name must be at least 3 characters.");
+        //alert("Product name must be at least 3 characters.");
+        errorMasge1.innerHTML += `<p style="margin:0; padding: 0; color: red; font-size: 12px; font-family: Arial, sans-serif;">Product name must be at least 3 characters</p>`;
         ProductName.focus();
         return false;
     }
 
     // Validate Product Category
     if (!category) {
-        alert("Please select a product category.");
+        //alert("Please select a product category.");
+        errorMasge2.innerHTML += `<p style="margin:0; padding: 0; color: red; font-size: 12px; font-family: Arial, sans-serif;">Please select a product category</p>`;
         ProductCategory.focus();
         return false;
     }
+
     if (!nameRegex.test(category)) {
-        alert("Product Catogry must be at least 3 characters.");
+        //alert("Product Catogry must be at least 3 characters.");
+        errorMasge2.innerHTML += `<p style="margin:0; padding: 0; color: red; font-size: 12px; font-family: Arial, sans-serif;">Product Catogry must be at least 3 characters</p>`;
         ProductCategory.focus();
         return false;
     }
 
     // Validate Product Description
     if (!description) {
-        alert("Product description cannot be empty.");
+        //alert("Product description cannot be empty.");
+        errorMasge3.innerHTML += `<p style="margin:0; padding: 0; color: red; font-size: 12px; font-family: Arial, sans-serif;">Product description cannot be empty</p>`;
         ProductDescription.focus();
         return false;
     }
     if (!descriptionRegex.test(description)) {
-        alert("Product Description must be at least 3 characters.");
+        //alert("Product Description must be at least 3 characters.");
+        errorMasge3.innerHTML += `<p style="margin:0; padding: 0; color: red; font-size: 12px; font-family: Arial, sans-serif;">Product Description must be at least 3 characters</p>`;
         ProductDescription.focus();
         return false;
     }
     if (!price || price==0) {
-        alert("Product price cannot be empty and can't be 0.");
+        //alert("Product price cannot be empty and can't be 0.");
+        errorMasge4.innerHTML += `<p style="margin:0; padding: 0; color: red; font-size: 12px; font-family: Arial, sans-serif;">Product price cannot be empty and can't be 0</p>`;
         ProductPrice.focus();
         return false;
+    }else{
+        errorMasge4.innerHTML +="";
     }
     if (!stock || stock==0) {
-        alert("Product stock cannot be empty and can't be 0.");
+        //alert("Product stock cannot be empty and can't be 0.");
+        errorMasge5.innerHTML += `<p style="margin:0; padding: 0; color: red; font-size: 12px; font-family: Arial, sans-serif;">Product stock cannot be empty and can't be 0.</p>`;
         ProductStock.focus();
         return false;
     }
 
-    // All validations passed
     return true;
 }
 
@@ -134,7 +159,7 @@ submtionButton.addEventListener('click', (e)=>{
     e.preventDefault();
 
 
-     // Perform Validation
+     
     var name = ProductName.value.trim();
     var category = ProductCategory.value.trim();
     var description = ProductDescription.value.trim();
@@ -148,7 +173,7 @@ submtionButton.addEventListener('click', (e)=>{
 
     const information = {  
         id:isEdit ? editId : Date.now(),
-        sellerId: sellerId,
+        sellerId: 2,
         name: ProductName.value,
         description: ProductDescription.value,
         price: ProductPrice.value,
@@ -245,7 +270,7 @@ function editInfo(_id,_img,_name,_cat,_price,_desc,_stock){
     let originalIndex = originalData.findIndex(item => item.id === _id)
     originalData[originalIndex]={
         id: _id,
-        sellerId: sellerId,
+        sellerId: 2,
         name: _name,
         description: _desc,
         price: _price,
@@ -400,5 +425,4 @@ function deleteProduct(d) {
 //     // console.log("Data initialized in local storage.");
 //   }
 //    initializeLocalStorage()
-  
 
