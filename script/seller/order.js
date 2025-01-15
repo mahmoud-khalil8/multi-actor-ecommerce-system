@@ -7,13 +7,13 @@ var currentSellerId2 = 2;
 
 var originalData2 = localStorage.getItem('orders') ? JSON.parse(localStorage.getItem('orders')):[]
 var getData2 = [...originalData2]
-// var sellerOrders2 = getData2.filter(order => order.sellerId === currentSellerId2); 
-var sellerOrders2 = getData2; 
+var sellerOrders2 = getData2.filter(order => order.sellerId === currentSellerId2); 
+
 
 
 
 function showInfo() {
-  orderInfo2.innerHTML = ""; // Clear existing content
+  orderInfo2.innerHTML = ""; 
 
   if (sellerOrders2.length > 0) {
     for (var i = 0; i < sellerOrders2.length; i++) {

@@ -4,7 +4,7 @@
     font-family: "Ubuntu", serif;
     margin:0;
     padding:0;
-    box-sizing: borderbox;
+    box-sizing: border-box;
 }
 body{
     min-height: 100vh;
@@ -15,7 +15,7 @@ body{
 }
 
 .mainwrapper{
-    position:absolute;
+    position:relative;
     width: 100%;
     min-height:100vh ;
     background-color: white;
@@ -137,6 +137,9 @@ table td button:hover{
     opacity: 0;
     visibility: hidden;
     transition: .3s;
+    margin-top: 50px; 
+     height:80%; 
+    overflow: auto;
 }
 .formPopUp header{
     display: flex;
@@ -245,8 +248,10 @@ form .inputFeild .productCode input,
 form .inputFeild .productName input,
 form .inputFeild .productPrice input,
 form .inputFeild .productQuantity input{
-    width: 200px;
+    width: 240px;
     margin-bottom: 5px;
+    box-sizing: border-box;
+    
 }
 .formController label{
     display: block;
