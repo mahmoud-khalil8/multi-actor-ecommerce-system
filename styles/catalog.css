@@ -3,6 +3,7 @@
     margin: 0;
     box-sizing: border-box;
     font-family: "League Spartan", serif;
+    user-select: none;
   }
   body {
     overflow-x: hidden;
@@ -37,6 +38,9 @@
   @media (max-width: 992px) {
     .navbar-nav .nav-item:not(:last-child) {
       border-bottom: 2px solid #FFFFFF !important;
+    }
+    #searchForm{
+      margin-top:5px;
     }
   
   
