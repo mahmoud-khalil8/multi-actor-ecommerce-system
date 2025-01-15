@@ -1,5 +1,4 @@
-
-
+// display new release
 function getProductsFromLocalStorage() {
   const products = JSON.parse(localStorage.getItem('products')) || [];
   return products;
@@ -21,6 +20,7 @@ function displayNewReleases() {
 }
 displayNewReleases();
 
+// function for best seller and keep shopping for 
 function fetchAndDisplayProducts(url, containerId, isRandom = false) {
   fetch(url)
     .then((response) => {
@@ -52,25 +52,37 @@ function fetchAndDisplayProducts(url, containerId, isRandom = false) {
     .catch((error) => console.error(`Error fetching products:`, error));
 }
 
+// create product items to push in container 
 function createProductElement(product) {
   const productDiv = document.createElement("div");
   productDiv.className = "product-item";
 
-  productDiv.addEventListener("click", () => {
-    window.location.href = `product.html?id=${product.id}`;
-  });
+ // check if stock=0
+ function checkstock(){
+  if (product.stock==0){
+      productDiv.addEventListener("click", () => {
+        const underReviewModal = new bootstrap.Modal(document.getElementById("outOfStockModal"));
+        underReviewModal.show();
+        });
+}else{
+  productDiv.addEventListener("click",()=>{
+    window.location.href=`product.html?id=${product.id}`
+  })
+}
+}
+checkstock();
 
-  
+  // img
   const img = document.createElement("img");
   img.src = product.thumbnail;
   img.alt = product.title;
   productDiv.appendChild(img);
-
+  // title
   const title = document.createElement("h5");
   title.innerText = product.title;
   title.style.marginTop = "20px";
   productDiv.appendChild(title);
-
+  // rating
   const stars = document.createElement("div");
   stars.className = "star";
   for (let i = 0; i < Math.round(product.rating); i++) {
@@ -79,7 +91,7 @@ function createProductElement(product) {
     stars.appendChild(star);
   }
   productDiv.appendChild(stars);
-
+  // price
   const priceAndCart = document.createElement("div");
   priceAndCart.style.display = "flex";
   priceAndCart.style.justifyContent = "space-evenly";

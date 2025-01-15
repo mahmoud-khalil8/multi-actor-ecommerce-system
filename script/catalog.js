@@ -1,10 +1,8 @@
-
-
 let currentPage = 1; 
 const totalPages = 3; 
 let categories = {};  
 
-
+// function fetch and display
 function fetchAndDisplayProducts(apiUrl) {
   fetch(apiUrl)
     .then((response) => response.json())  
@@ -17,20 +15,22 @@ function fetchAndDisplayProducts(apiUrl) {
     .catch((error) => console.error("Error fetching products:", error));
 }
 
+// function to group category
 function groupByCategory(products) {
   return products.reduce((acc, product) => {
     acc[product.category] = acc[product.category] || [];
     acc[product.category].push(product);
     return acc;
-  }, {});
+  }, {}); //initial {}
 }
 
+// display items in categories 
 function displayPage(page) {
     currentPage = page;   
   
     const container = document.getElementById("products-container");
     container.innerHTML = "";  
-  
+  // how many catergory in page
     const categoryKeys = Object.keys(categories);
     const categoriesPerPage = Math.ceil(categoryKeys.length / totalPages);
     const startIndex = (page - 1) * categoriesPerPage;
@@ -55,10 +55,24 @@ function displayPage(page) {
         const productDiv = document.createElement("div");
         productDiv.className = "product-item";
 
-        productDiv.addEventListener("click",()=>{
-          window.location.href=`product.html?id=${product.id}`
-        })
+        
+
+         // check if stock=0
+         function checkstock(){
+            if (product.stock==0){
+                productDiv.addEventListener("click", () => {
+                  const underReviewModal = new bootstrap.Modal(document.getElementById("outOfStockModal"));
+                  underReviewModal.show();
+                  });
+          }else{
+            productDiv.addEventListener("click",()=>{
+              window.location.href=`product.html?id=${product.id}`
+            })
+          }
+        }
   
+        checkstock()
+
         const img = document.createElement("img");
         img.src = product.thumbnail;
         img.alt = product.title;
@@ -67,6 +81,8 @@ function displayPage(page) {
         const title = document.createElement("h5");
         title.innerText = product.title;
         productDiv.appendChild(title);
+
+       
   
         const stars = document.createElement("div");
         stars.className = "star";
@@ -114,7 +130,7 @@ function displayPage(page) {
     createPaginationButtons();  
   }
   
-
+// pagination buttons
 function createPaginationButtons() {
   const paginationContainer = document.getElementById("pagination-container");
   paginationContainer.innerHTML = ""; 
@@ -132,10 +148,10 @@ function createPaginationButtons() {
     paginationContainer.appendChild(button);
   }
 }
-
+//fetch from json file
 fetchAndDisplayProducts(`script/api.json`);
 
-
+// search 
 document.getElementById('searchForm').addEventListener('submit', async function (event) {
   event.preventDefault();
 
@@ -168,9 +184,9 @@ document.getElementById('searchForm').addEventListener('submit', async function 
 
     filteredProducts.forEach(product => {
       const productHTML = `
- <div class="card mb-3 shadow-lg rounded-lg text-center " style=" border-radius: 10px; transition: transform 0.3s ease, box-shadow 0.3s ease;">
-  <div class="row g-0">
-    <div class="col-12 col-md-4 text-center">
+ <div class="card  mb-3 shadow-lg rounded-lg text-center " style=" border-radius: 10px; transition: transform 0.3s ease, box-shadow 0.3s ease;">
+  <div class="row g-0 ">
+    <div class="col-12 col-md-4 text-center ">
       <img src="${product.thumbnail}" class="img-fluid rounded-start" alt="${product.title}" style="object-fit: cover; height: 200px; border-radius: 10px;">
     </div>
     <div class="col-12 col-md-8">
@@ -180,10 +196,10 @@ document.getElementById('searchForm').addEventListener('submit', async function 
       </div>
       <div class="add text-center" style="padding: 10px 15px; background-color: white;">
       <div class="add text-center" style="padding: 10px 15px; background-color: white;">
-           <a class="btn btn-warning btn-sm w-100 rounded-3 addtocartsympol" 
+           <a class="btn btn-warning btn-sm w-100 rounded-3 addtocartsympol "  data-product-id="${product.id}" data-product-stock="${product.stock}"
             style="font-size: 1rem; padding: 10px; transition: background-color 0.3s ease; color: white; text-decoration: none;" 
-             href="#">
-              Add to Cart
+             >
+              Go to product 
              </a>
       </div>
 
@@ -192,11 +208,33 @@ document.getElementById('searchForm').addEventListener('submit', async function 
   </div>
 </div>
       `;
-      resultsContainer.innerHTML += productHTML;
 
+      
+      resultsContainer.innerHTML += productHTML;
+      
+
+     
+// hiding items of page while searching
       const pro = document.getElementById("products-container");
       pro.style.display = "none";
     });
+    // if product out of stock
+    document.querySelectorAll('.addtocartsympol').forEach(button => {
+      button.addEventListener('click', (event) => {
+        const stock = parseInt(event.target.getAttribute('data-product-stock'));
+        const productId = event.target.getAttribute('data-product-id');
+
+        if (stock === 0) {
+          // Show "Out of Stock" modal
+          const outOfStockModal = new bootstrap.Modal(document.getElementById('outOfStockModal'));
+          outOfStockModal.show();
+        } else {
+          // Redirect to product page
+          window.location.href = `product.html?id=${productId}`;
+        }
+      });
+    });
+
     checkLoginBeforeCart()
   } catch (error) {
     console.error('Error fetching data:', error);
@@ -205,7 +243,7 @@ document.getElementById('searchForm').addEventListener('submit', async function 
 });
 
 
-
+// deleting in search 
 document.getElementById('searchInput').addEventListener('input', function () {
   const resultsContainer = document.getElementById('results');
   
@@ -244,7 +282,7 @@ this.style.boxShadow = '0 0 8px rgba(0, 123, 255, 0.6)';
 
 
 
-
+// check if login before go to cart
     function checkLoginBeforeCart(){
       if (!(localStorage.getItem("currentUser"))) {
         const cartSymbols = document.getElementsByClassName("addtocartsympol");
@@ -253,6 +291,7 @@ this.style.boxShadow = '0 0 8px rgba(0, 123, 255, 0.6)';
         }
       }
     }
+
 
 
 
