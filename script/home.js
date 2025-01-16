@@ -136,10 +136,17 @@ function createProductElementLocalStorage(product) {
             });
     }else{
       productDiv.addEventListener("click",()=>{
+        let productStatus = product.status?product.status:"";
+
         if(product.stock==0){
           const underReviewModal = new bootstrap.Modal(document.getElementById("outOfStockModal"));
           underReviewModal.show();
-        }else{
+        }else if(productStatus=="Rejected"){
+          const underReviewModal = new bootstrap.Modal(document.getElementById("underReviewModal"));
+          underReviewModal.show();
+          
+        }
+        else{
 
           window.location.href=`product.html?id=${product.id}`
         }

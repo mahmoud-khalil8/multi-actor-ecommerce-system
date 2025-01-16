@@ -16,7 +16,7 @@ import { initializeEarningsChart, initializePolarAreaChart } from './utils/chart
 
 
 function displayTopSellingProducts() {
-  const products = JSON.parse(localStorage.getItem('products')).products || [];
+  const products = JSON.parse(localStorage.getItem('products')) || [];
   const sales = JSON.parse(localStorage.getItem('sales')) || [];
   const topSellingProductsTable = document.getElementById('topSellingProductsTable').getElementsByTagName('tbody')[0];
 
@@ -44,10 +44,11 @@ function displayRecentOrders() {
   orders.slice(0, 5).forEach(order => {
     const listItem = document.createElement('li');
     listItem.className = 'list-group-item';
-    listItem.textContent = `Order #${order.id} - Total: $${order.total}`;
+    listItem.textContent = `Order #${order.id} - Total: $${order.totalPrice}`;
     recentOrdersList.appendChild(listItem);
   });
 }
+
 
 function displayUsers() {
   const users = JSON.parse(localStorage.getItem('users')) || [];
@@ -66,25 +67,39 @@ function displayUsers() {
 
     const actionsCell = row.insertCell(6);
     const editButton = document.createElement('button');
-    editButton.className = 'btn btn-warning btn-sm me-2';
+    editButton.className = 'btn btn-warning btn-sm me-2 my-2';
     editButton.textContent = 'Edit';
     editButton.addEventListener('click', () => {
       editUser(user);
     });
 
     const deleteButton = document.createElement('button');
-    deleteButton.className = 'btn btn-danger btn-sm';
+    deleteButton.className = 'btn btn-danger btn-sm me-2 my-2';
     deleteButton.textContent = 'Delete';
     deleteButton.addEventListener('click', () => {
       deleteUser(user.id);
     });
+const addUserButton = document.createElement('button');
+addUserButton.className = 'btn btn-primary btn-sm';
+addUserButton.textContent = 'Add User';
+addUserButton.addEventListener('click', addUser);
+
+
+    
 
     actionsCell.appendChild(editButton);
     actionsCell.appendChild(deleteButton);
+    actionsCell.appendChild(addUserButton);
   });
 }
 
 let currentUser = null;
+function addUser(){
+
+  const addUserModal = new bootstrap.Modal(document.getElementById('addUserModal'));
+  addUserModal.show();
+
+}
 
 function editUser(user) {
   currentUser = user;
@@ -95,7 +110,33 @@ function editUser(user) {
   const editUserModal = new bootstrap.Modal(document.getElementById('editUserModal'));
   editUserModal.show();
 }
+document.getElementById('saveNewUser').addEventListener('click', () => {
+  const name = document.getElementById('addUserName').value;
+  const email = document.getElementById('addUserEmail').value;
+  const role = document.getElementById('addUserRole').value;
+  const address = document.getElementById('addUserAddress').value;
+  const phoneNumber = document.getElementById('addUserPhone').value;
 
+  if (name && email && role) {
+    const users = JSON.parse(localStorage.getItem('users')) || [];
+    const newUser = {
+      id: users.length + 1,
+      name,
+      email,
+      role,
+      address,
+      phoneNumber,
+    };
+    users.push(newUser);
+    localStorage.setItem('users', JSON.stringify(users));
+    displayUsers(); 
+    alert('User added successfully!');
+
+    const addUserModal = bootstrap.Modal.getInstance(document.getElementById('addUserModal'));
+    addUserModal.hide();
+  }
+}
+);
 document.getElementById('saveUserChanges').addEventListener('click', () => {
   const newName = document.getElementById('userName').value;
   const newRole = document.getElementById('userRole').value;
@@ -195,6 +236,42 @@ document.getElementById('confirmDeleteUser')?.addEventListener('click', () => {
     deleteUserModal.hide();
   }
 });
+function displayOrders() {
+  const orders = localStorage.getItem('orders') ? JSON.parse(localStorage.getItem('orders'))  : [];
+
+  const ordersTable = document.getElementById('ordersTable').getElementsByTagName('tbody')[0];
+
+  ordersTable.innerHTML = '';
+
+  orders.forEach(order => {
+    const row = ordersTable.insertRow();
+    row.insertCell(0).textContent = order.id;
+    row.insertCell(1).textContent = order.user;
+    row.insertCell(2).textContent = `$${order.totalPrice}`;
+    row.insertCell(3).textContent = order.address ? `${order.address.street}, ${order.address.city}, ${order.address.country}, ${order.address.zipCode}` : 'N/A';
+    row.insertCell(4).textContent = order.paymentMethod;
+    row.insertCell(5).textContent = order.status || 'Pending';
+
+    const actionsCell = row.insertCell(6);
+    const cancelOrder = document.createElement('button');
+    cancelOrder.className = 'btn btn-danger btn-sm';
+    cancelOrder.textContent = 'Cancel';
+    cancelOrder.addEventListener('click', () => {
+      deleteOrder(order.id);
+    });
+
+    actionsCell.appendChild(cancelOrder);
+
+  });
+}
+
+function deleteOrder (orderId) {
+  const orders = JSON.parse(localStorage.getItem('orders')) || [];
+  const updatedOrders = orders.filter(order => order.id !== orderId);
+  localStorage.setItem('orders', JSON.stringify(updatedOrders));
+  displayOrders();
+  alert('Order deleted successfully!');
+}
 
 function displayProducts() {
   const products = localStorage.getItem('products') ? JSON.parse(localStorage.getItem('products'))  : [];
@@ -222,14 +299,14 @@ function displayProducts() {
 
     const approveButton = document.createElement('button');
     approveButton.className = 'btn btn-success btn-sm me-2';
-    approveButton.textContent = 'Approve';
+    approveButton.textContent = 'activate';
     approveButton.addEventListener('click', () => {
       updateProductStatus(product.id, 'Approved');
     });
 
     const rejectButton = document.createElement('button');
     rejectButton.className = 'btn btn-danger btn-sm me-2';
-    rejectButton.textContent = 'Reject';
+    rejectButton.textContent = 'deactivate';
     rejectButton.addEventListener('click', () => {
       updateProductStatus(product.id, 'Rejected');
     });
@@ -252,6 +329,19 @@ let productIdToUpdate = null;
 
 function updateProductStatus(productId, status) {
   productIdToUpdate = productId;
+  //get product from local storage and add activate field to it true or false based on status
+
+  const product = JSON.parse(localStorage.getItem('products')).find(p => p.id === productId);
+  const activate = status === 'Approved' ? true : false;
+  product.activate = activate;
+
+  //update product in local storage
+  const products = JSON.parse(localStorage.getItem('products')) || [];
+  const updatedProducts = products.map(p =>
+    p.id === productId ? { ...p, status, activate } : p
+  );
+  localStorage.setItem('products', JSON.stringify(updatedProducts));
+  displayProducts();
 
   
   document.getElementById('productStatus').value = status;
@@ -307,6 +397,8 @@ document.addEventListener('DOMContentLoaded', () => {
           displayUsers();  
         } else if (page === 'products') {
           displayProducts();  
+        }else if(page ==='orders'){
+          displayOrders();
         }
       }
 
