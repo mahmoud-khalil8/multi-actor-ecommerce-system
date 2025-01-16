@@ -47,7 +47,12 @@ window.addEventListener('load', function () {
       hideMessage(input);
     });
   });
+  //get the cart with same userId as the current user
+  let cart = JSON.parse(localStorage.getItem('cart')) || { products: [] };
+  let userCart = cart.products.filter((product) => product.userId === user.id);
 
+  //subtract from stock 
+  
   check.addEventListener('click', function (e) {
     e.preventDefault();
     if (validateInputs()) {
@@ -68,13 +73,18 @@ window.addEventListener('load', function () {
         paymentMethod: radio1.checked ? "Credit Card" : "Cash on Delivery",
         totalPrice: parseFloat(cachedTotalPrice),
         date: new Date().toISOString(),
+        products: userCart,
+
       };
 
       const orders = JSON.parse(localStorage.getItem('orders')) || [];
       orders.push(order);
       localStorage.setItem('orders', JSON.stringify(orders));
 
-      localStorage.removeItem('cart');
+      //remove only the cart with that userid 
+      cart.products = cart.products.filter((product) => product.userId !== user.id);
+      localStorage.setItem('cart', JSON.stringify(cart));
+
       localStorage.removeItem('Total price');
 
       successModal.show();

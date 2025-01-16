@@ -16,7 +16,7 @@ import { initializeEarningsChart, initializePolarAreaChart } from './utils/chart
 
 
 function displayTopSellingProducts() {
-  const products = JSON.parse(localStorage.getItem('products')) || [];
+  const products = JSON.parse(localStorage.getItem('products')).products || [];
   const sales = JSON.parse(localStorage.getItem('sales')) || [];
   const topSellingProductsTable = document.getElementById('topSellingProductsTable').getElementsByTagName('tbody')[0];
 
@@ -197,7 +197,7 @@ document.getElementById('confirmDeleteUser')?.addEventListener('click', () => {
 });
 
 function displayProducts() {
-  const products = JSON.parse(localStorage.getItem('products')) || [];
+  const products = localStorage.getItem('products') ? JSON.parse(localStorage.getItem('products'))  : [];
   const productsTable = document.getElementById('productsTable').getElementsByTagName('tbody')[0];
 
   productsTable.innerHTML = '';
@@ -276,125 +276,13 @@ document.getElementById('saveProductStatus')?.addEventListener('click', () => {
     updateProductStatusModal.hide();
   }
 });
-function initializeLocalStorage() {
-  if (!localStorage.getItem('products')) {
-    const sampleProducts = [
-      {
-        id: 1,
-        name: "Essence Mascara Lash Princess",
-        category: "beauty",
-        price: 9.99,
-        stock: 50,
-        status: "Pending"
-      },
-      {
-        id: 2,
-        name: "Wireless Bluetooth Earbuds",
-        category: "electronics",
-        price: 29.99,
-        stock: 100,
-        status: "Approved"
-      },
-      {
-        id: 3,
-        name: "Organic Green Tea",
-        category: "food",
-        price: 5.99,
-        stock: 200,
-        status: "Rejected"
-      }
-    ];
 
-    localStorage.setItem('products', JSON.stringify(sampleProducts));
-  }
-
-  if (!localStorage.getItem('users')) {
-    const sampleUsers = [
-      {
-        id: 1,
-        name: "John Doe",
-        email: "john@example.com",
-        role: "Admin",
-        address: "123 Main St, City",
-        phoneNumber: "01018714720"
-      },
-      {
-        id: 2,
-        name: "Jane Smith",
-        email: "jane@example.com",
-        role: "User",
-        address: "456 Elm St, Town",
-        phoneNumber: "01023456770"
-      },
-      {
-        id: 3,
-        name: "Alice Johnson",
-        email: "alice@example.com",
-        role: "User",
-        address: "789 Oak St, Village",
-        phoneNumber: "0104695678"
-      }
-    ];
-
-    localStorage.setItem('users', JSON.stringify(sampleUsers));
-  }
-
-  if (!localStorage.getItem('sales')) {
-    const sampleSales = [
-      {
-        id: 1,
-        productsSold: [
-          { productId: 1, quantitySold: 10 },
-          { productId: 2, quantitySold: 5 }
-        ]
-      },
-      {
-        id: 2,
-        productsSold: [
-          { productId: 1, quantitySold: 15 },
-          { productId: 3, quantitySold: 20 }
-        ]
-      }
-    ];
-
-    localStorage.setItem('sales', JSON.stringify(sampleSales));
-  }
-
-  if (!localStorage.getItem('orders')) {
-    const sampleOrders = [
-      {
-        id: 1,
-        customerName: "John Doe",
-        total: 120.50,
-        status: "Pending",
-        date: "2023-10-01"
-      },
-      {
-        id: 2,
-        customerName: "Jane Smith",
-        total: 89.99,
-        status: "Shipped",
-        date: "2023-10-02"
-      },
-      {
-        id: 3,
-        customerName: "Alice Johnson",
-        total: 45.00,
-        status: "Delivered",
-        date: "2023-10-03"
-      }
-    ];
-
-    localStorage.setItem('orders', JSON.stringify(sampleOrders));
-  }
-}
 document.addEventListener('DOMContentLoaded', () => {
+ 
   const contentContainer = document.getElementById('contentContainer');
-  initializeLocalStorage(); 
   
   if (contentContainer && contentTemplates.dashboard) {
     contentContainer.innerHTML = contentTemplates.dashboard;
-    
     initializeEarningsChart(); 
     initializePolarAreaChart();
     displayTopSellingProducts();
@@ -432,7 +320,11 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }
   });
+
+  
 });
+
+
  document.getElementById("logoutBtn").addEventListener("click", function () {
    localStorage.removeItem("currentUser");
 

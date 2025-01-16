@@ -110,6 +110,13 @@ export function setupLogin() {
          window.location.href = "admin-dashboard.html";
         return;
       }
+      const users = localStorage.getItem("users")? JSON.parse(localStorage.getItem("users")) : [];
+      const existingUser = users.find((u) => u.email === email && u.role !== "admin");
+      if(!existingUser){
+        showMessage("loginMessage", "User not found", "danger");
+        return;
+      }
+      
 
        try {
         const userCredential = await signInWithEmailAndPassword(auth, email, password);
@@ -135,23 +142,7 @@ export function setupLogin() {
               console.error("Invalid user role:", existingUser.role);
               window.location.href = "login.html";
           }
-        } else {
-          const newUser = {
-            id: user.uid,
-            role: "customer", // Default role
-            name: "",  
-            email: email,
-            address: "", 
-            phoneNumber: "", 
-          };
-
-          users.push(newUser);
-          localStorage.setItem("users", JSON.stringify(users));
-
-          localStorage.setItem("currentUser", JSON.stringify(newUser));
-
-          window.location.href = "home.html";
-        }
+        } 
       } catch (error) {
         showMessage("loginMessage", error.message, "danger");
       }

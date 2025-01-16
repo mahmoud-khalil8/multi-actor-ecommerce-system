@@ -235,8 +235,8 @@ const fields = {
 
  document.getElementById("logoutBtn").addEventListener("click", function () {
    localStorage.removeItem("currentUser");
-  localStorage.removeItem("cart");
-  localStorage.removeItem("orders");
+  //localStorage.removeItem("cart");
+  //localStorage.removeItem("orders");
 
    window.location.href = "../login.html"; 
 });

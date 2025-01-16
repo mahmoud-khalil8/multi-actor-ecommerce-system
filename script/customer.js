@@ -232,8 +232,7 @@ document.getElementById("saveBtn").addEventListener("click", function () {
 document.getElementById("logoutBtn").addEventListener("click", function () {
 
   localStorage.removeItem("currentUser");
-  localStorage.removeItem("cart");
-  localStorage.removeItem("orders");
+  //localStorage.removeItem("cart");
 
 
   window.location.href = "login.html";  

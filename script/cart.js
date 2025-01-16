@@ -14,12 +14,30 @@ document.body.innerHTML = `
   throw new Error('Not Authorized');}
 
 document.addEventListener("DOMContentLoaded", function () {
+    
     let cart = JSON.parse(localStorage.getItem("cart")) || { products: [] };
+    
     if (cart.products?.length === 0) {
+        
+        
+        let checkoutButton = document.getElementById("checkout");
+        checkoutButton.disabled=true;
+        checkoutButton.style.backgroundColor="grey";
+        checkoutButton.style.cursor="not-allowed";
+        checkoutButton.style.border="none";
+
+
         cart.products = [
             ];
-
         localStorage.setItem("cart", JSON.stringify(cart));
+    }else{
+        let checkoutButton = document.getElementById("checkout");
+        checkoutButton.disabled=false;
+        checkoutButton.style.cursor="pointer";
+        checkoutButton.style.border="none";
+        checkoutButton.addEventListener("click", function () {
+            window.location.href = "checkout.html";
+        });
     }
 
     const shopSection = document.querySelector(".shop");
@@ -30,6 +48,8 @@ document.addEventListener("DOMContentLoaded", function () {
     shopSection.innerHTML = "";
 
     cart.products.forEach((product) => {
+        console.log(product.price)
+        if(product.userId === user.id){
         const productTotal = product.price * product.quantity;
         subtotal += productTotal;
 
@@ -38,7 +58,7 @@ document.addEventListener("DOMContentLoaded", function () {
             <img src="${product.image || "products/2.jpg"}" alt="${product.name}">
             <div class="content">
                 <h3>${product.name}</h3>
-                <h4>Price: $${product.price.toFixed(2)}</h4>
+                <h4>Price: $${product.price}</h4>
                 <h5 class="unit">Quantity: ${product.quantity} </h5>
                 <!-- Use the SVG as the delete icon with class "size-6" -->
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="delete-icon size-6" style="cursor: pointer; color: darkred;">
@@ -48,6 +68,7 @@ document.addEventListener("DOMContentLoaded", function () {
         </div>
     `;
         shopSection.insertAdjacentHTML("beforeend", productHTML);
+        }
     });
 
     const shipping = 10;

@@ -1,6 +1,13 @@
-// display new release
+
+  // display new release
+  const newRelease = document.getElementById('new-releases-container');
+  if(!localStorage.getItem('products')){
+    newRelease.style.display = 'none';
+  }else{
+    newRelease.style.display = 'block';
+  }
 function getProductsFromLocalStorage() {
-  const products = JSON.parse(localStorage.getItem('products')) || [];
+  const products = localStorage.getItem('products') ? JSON.parse(localStorage.getItem('products')) : [];
   return products;
 }
 
@@ -116,8 +123,31 @@ checkstock();
   return productDiv;
 }
 function createProductElementLocalStorage(product) {
+
   const productDiv = document.createElement("div");
   productDiv.className = "product-item";
+
+
+    function checkstock(){
+      if (product.stock==0){
+          productDiv.addEventListener("click", () => {
+            const underReviewModal = new bootstrap.Modal(document.getElementById("outOfStockModal"));
+            underReviewModal.show();
+            });
+    }else{
+      productDiv.addEventListener("click",()=>{
+        if(product.stock==0){
+          const underReviewModal = new bootstrap.Modal(document.getElementById("outOfStockModal"));
+          underReviewModal.show();
+        }else{
+
+          window.location.href=`product.html?id=${product.id}`
+        }
+      })
+    }
+    }
+    checkstock();
+
 
   productDiv.addEventListener("click", () => {
     const underReviewModal = new bootstrap.Modal(document.getElementById("underReviewModal"));
@@ -182,7 +212,7 @@ if (loginButton && !localStorage.getItem("currentUser")) {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-  fetchAndDisplayProducts("script/api.json", "product-container");
-  fetchAndDisplayProducts("script/api.json", "secondproduct-container", true);
+  fetchAndDisplayProducts("data/api.json", "product-container");
+  fetchAndDisplayProducts("data/api.json", "secondproduct-container", true);
   displayNewReleases();
 });

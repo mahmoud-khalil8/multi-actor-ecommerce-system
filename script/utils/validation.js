@@ -41,4 +41,3 @@ export function validatePhoneNumber(phoneNumber) {
   const regex = /^010\d{8}$/; // Starts with 010 and has exactly 11 digits
   return regex.test(phoneNumber);
 }
-

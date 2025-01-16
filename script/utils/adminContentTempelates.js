@@ -1,3 +1,20 @@
+const productsLength = 100 + (localStorage.getItem('products') ? JSON.parse(localStorage.getItem('products')).length : 0);
+const usersLength = localStorage.getItem('users') ? JSON.parse(localStorage.getItem('users')).length : 0;
+const ordersLength = localStorage.getItem('orders') ? JSON.parse(localStorage.getItem('orders')).length : 0;
+
+function getTopRatedProducts(){
+  let products = JSON.parse(localStorage.getItem('products'));
+  let topRatedProducts = products.sort((a,b) => b.rating - a.rating).slice(0, 3);
+  return topRatedProducts;
+}
+const topRatedProducts = getTopRatedProducts();
+
+function getLatestOrders(){
+  let orders = localStorage.getItem('orders') ? JSON.parse(localStorage.getItem('orders')) : [];
+  let latestOrders = orders.slice(0, ordersLength > 3 ? 3 : ordersLength);
+  return latestOrders;
+}
+
 export const contentTemplates = {
   dashboard: `
     <div class="container py-4">
@@ -6,8 +23,8 @@ export const contentTemplates = {
         <div class="col-md-4">
           <div class="card text-center">
             <div class="card-body card1">
-              <h5 class="card-title">Total Customers</h5>
-              <h2>307.48K</h2>
+              <h5 class="card-title">number of users </h5>
+              <h2 class="usersCount">${usersLength}</h2>
               <p class="text-success">+30% this month</p>
             </div>
           </div>
@@ -15,8 +32,8 @@ export const contentTemplates = {
         <div class="col-md-4">
           <div class="card text-center">
             <div class="card-body card2">
-              <h5 class="card-title">Total Revenue</h5>
-              <h2>$30.58K</h2>
+              <h5 class="card-title ">Number of products</h5>
+              <h2 class="productsCount">${productsLength}</h2>
               <p class="text-danger">-15% this month</p>
             </div>
           </div>
@@ -24,8 +41,8 @@ export const contentTemplates = {
         <div class="col-md-4">
           <div class="card text-center">
             <div class="card-body card3">
-              <h5 class="card-title">Total Deals</h5>
-              <h2>2.48K</h2>
+              <h5 class="card-title">number of orders</h5>
+              <h2 class="ordersCount">${ordersLength}</h2>
               <p class="text-success">+23% this month</p>
             </div>
           </div>
@@ -53,16 +70,27 @@ export const contentTemplates = {
             </div>
           </div>
 
-          <!-- Top Countries by Sales and Recent Orders -->
+          <!-- Top rated products -->
           <div class="col-lg-4 col-md-12">
-            <!-- Top Countries -->
             <div class="card mb-4">
-              <div class="card-header">Top Countries by Sells</div>
+              <div class="card-header">Top Rated Products </div>
+              <div class="card-body">
+
               <ul class="list-group list-group-flush">
-                <li class="list-group-item">Australia <span class="float-end">7.12K</span></li>
-                <li class="list-group-item">Belgium <span class="float-end">4.15K</span></li>
-                <li class="list-group-item">Canada <span class="float-end">6.45K</span></li>
+              
+                ${topRatedProducts.map((product, index) => `
+                  <li class="list-group-item">
+                    <span class="float-start">${index + 1} &nbsp; </span>
+                    <span> ${product.title}</span>
+
+                    <span class="float-end">${product.rating}/5</span>
+                  </li>
+                `).join('')}
+
+
+
               </ul>
+              </div>
             </div>
 
             <!-- Top Customers -->
@@ -79,7 +107,15 @@ export const contentTemplates = {
             <div class="card">
               <div class="card-header">Recent Orders</div>
               <ul class="list-group list-group-flush" id="recentOrdersList">
-                <!-- Dynamically populated -->
+                
+                ${getLatestOrders().map(order => `
+                  <li class="list-group
+                  -item">
+                    <span class="float-start">${order.date}</span>
+                    <span class="float-end">$${order.total}</span>
+                  </li>
+                `).join('')}
+
               </ul>
             </div>
           </div>
@@ -102,7 +138,6 @@ export const contentTemplates = {
                 </tr>
               </thead>
               <tbody>
-                <!-- Dynamically populated -->
               </tbody>
             </table>
           </div>
@@ -127,7 +162,6 @@ export const contentTemplates = {
             </tr>
           </thead>
           <tbody>
-            <!-- Users will be dynamically populated here -->
           </tbody>
         </table>
       </div>
@@ -150,7 +184,6 @@ export const contentTemplates = {
             </tr>
           </thead>
           <tbody>
-            <!-- Products will be dynamically populated here -->
           </tbody>
         </table>
       </div>

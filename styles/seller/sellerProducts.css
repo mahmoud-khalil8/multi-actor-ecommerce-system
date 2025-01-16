@@ -1,10 +1,10 @@
-@import url('https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap');
+/* @import url('https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap'); */
 
 *{
-    font-family: "Ubuntu", serif;
+    font-family: "League Spartan", serif;
     margin:0;
     padding:0;
-    box-sizing: borderbox;
+box-sizing: border-box;
 }
 body{
     min-height: 100vh;
@@ -15,11 +15,14 @@ body{
 }
 
 .mainwrapper{
-    position:absolute;
+position:relative;
     width: 100%;
     min-height:100vh ;
     background-color: white;
-    transition: 2s;
+    transition: 0.3s;
+     margin-top: 50px; 
+     height:80%; 
+    overflow: auto;
 }
 
 /* ======================products====================== */
@@ -245,8 +248,9 @@ form .inputFeild .productCode input,
 form .inputFeild .productName input,
 form .inputFeild .productPrice input,
 form .inputFeild .productQuantity input{
-    width: 200px;
+    width: 240px;
     margin-bottom: 5px;
+    box-sizing: border-box;
 }
 .formController label{
     display: block;

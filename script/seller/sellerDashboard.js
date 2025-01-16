@@ -2,7 +2,6 @@
 // =================================
 
 document.addEventListener("DOMContentLoaded", () => {
-  // Check if orders exist in local storage
 if (!localStorage.getItem("orders")) {
   const sampleOrders = [
     {
@@ -40,7 +39,7 @@ if (!localStorage.getItem("orders")) {
     {
       orderId: 3,
       userId: 125,
-      sellerId: 3, // This order belongs to a different seller
+      sellerId: 3, 
       items: [
         {
           productId: 103,
@@ -55,14 +54,12 @@ if (!localStorage.getItem("orders")) {
     },
   ];
 
-  // Store sample orders in local storage
   localStorage.setItem("orders", JSON.stringify(sampleOrders));
 }
     var contentDiv = document.querySelector(".content");
     let navLinks = document.querySelectorAll(".nav-link");
     var navbarCollapse = document.querySelector(".navbar-collapse");
 
-    // Function to load content based on the page
     function loadPage(page) {
       fetch(`${page}.html`)
         .then(response => {
@@ -72,19 +69,16 @@ if (!localStorage.getItem("orders")) {
         .then(html => {
           contentDiv.innerHTML = html;
 
-           // Execute any script tags in the loaded HTML
       var scripts = contentDiv.querySelectorAll("script");
       scripts.forEach(script => {
         var newScript = document.createElement("script");
         if (script.src) {
-          // External script
           newScript.src = script.src;
         } else {
-          // Inline script
           newScript.textContent = script.textContent;
         }
-        document.body.appendChild(newScript); // Add to the body for execution
-        newScript.remove(); // Remove after execution (optional)
+        document.body.appendChild(newScript); 
+        newScript.remove(); 
       });
     })
         
@@ -100,7 +94,6 @@ if (!localStorage.getItem("orders")) {
         var page = event.currentTarget.getAttribute("data-page");
         loadPage(page);
         if(page === "sellerProducts"){
-          // Load the default page (products) on initial load
           window.location.reload();
         }
        
@@ -112,7 +105,6 @@ if (!localStorage.getItem("orders")) {
       });
     });
   
-    // Load the default page (products) on initial load
     loadPage("sellerProducts");
     
   });

@@ -149,7 +149,7 @@ function createPaginationButtons() {
   }
 }
 //fetch from json file
-fetchAndDisplayProducts(`script/api.json`);
+fetchAndDisplayProducts(`data/api.json`);
 
 // search 
 document.getElementById('searchForm').addEventListener('submit', async function (event) {
@@ -164,7 +164,7 @@ document.getElementById('searchForm').addEventListener('submit', async function 
   }
 
   try {
-    const response = await fetch('script/api.json');
+    const response = await fetch('data/api.json');
 
     if (!response.ok) {
       throw new Error(`Failed to fetch: ${response.statusText}`);

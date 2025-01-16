@@ -67,6 +67,7 @@ top: 75%;
 
 #landing .info-landing {
   flex: 1;
+  font-size:2rem;
   max-width: 600px;
 }
 
@@ -402,3 +403,4 @@ top: 75%;
   text-decoration: none;
   color: #333;
 }
+
