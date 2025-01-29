@@ -3,7 +3,7 @@
     margin: 0;
     box-sizing: border-box;
     font-family: "League Spartan", serif;
-    user-select: none;
+    /* user-select: none; */
   }
   body {
     overflow-x: hidden;
@@ -45,6 +45,7 @@
   
   
   }
+
   #results {
     margin-top: 20px;
   }
@@ -64,6 +65,23 @@
 }
 
  /* header */
+
+/* filter */
+.filter-section{
+  background-color: #e4ebf0;
+  padding-bottom: 5px;
+
+}
+.filter #filter{
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.filter #filter input{
+  margin-left: 15px;
+ 
+}
+/* filter */
 
   /* products-container */
   #products-container {

@@ -7,10 +7,12 @@ function fetchAndDisplayProducts(apiUrl) {
   fetch(apiUrl)
     .then((response) => response.json())  
     .then((data) => {
+
       const products = data.products;
       categories = groupByCategory(products);
       displayPage(currentPage);  
       createPaginationButtons();  
+
     })
     .catch((error) => console.error("Error fetching products:", error));
 }
@@ -122,12 +124,15 @@ function displayPage(page) {
       categoryDiv.appendChild(productsDiv);
       container.appendChild(categoryDiv);
     checkLoginBeforeCart();
+
     });
   
   
     window.scrollTo(0, 0);
+    setupCategoryFilter();
   
     createPaginationButtons();  
+   
   }
   
 // pagination buttons
@@ -295,9 +300,102 @@ this.style.boxShadow = '0 0 8px rgba(0, 123, 255, 0.6)';
 
 
 
-
-
-// filter
-
-
-
+    // filter
+    function setupCategoryFilter() {
+      const checkboxes = document.querySelectorAll('input[type="checkbox"]'); // All checkboxes
+      const container = document.getElementById("products-container"); // Container for products
+    
+      checkboxes.forEach((checkbox) => {
+        checkbox.addEventListener("change", () => {
+          // Get selected categories
+          const selectedCategories = Array.from(checkboxes)
+            .filter((cb) => cb.checked) // Only checked checkboxes
+            .map((cb) => cb.id.toLowerCase()); // Get their IDs (category names)
+    
+          // Clear the container
+          container.innerHTML = "";
+    
+          // Filter categories based on selected checkboxes
+          const filteredCategories = Object.keys(categories).filter((category) => {
+            return selectedCategories.length === 0 || selectedCategories.includes(category.toLowerCase());
+          });
+    
+          // Display filtered categories
+          filteredCategories.forEach((category) => {
+            const categoryDiv = document.createElement("div");
+            categoryDiv.className = "category-container";
+    
+            const categoryTitle = document.createElement("h2");
+            categoryTitle.innerText = category;
+            categoryTitle.className = "category-title";
+            categoryDiv.appendChild(categoryTitle);
+    
+            const productsDiv = document.createElement("div");
+            productsDiv.className = "products-grid";
+    
+            categories[category].forEach((product) => {
+              const productDiv = document.createElement("div");
+              productDiv.className = "product-item";
+    
+              // Check stock
+              if (product.stock === 0) {
+                productDiv.addEventListener("click", () => {
+                  const underReviewModal = new bootstrap.Modal(document.getElementById("outOfStockModal"));
+                  underReviewModal.show();
+                });
+              } else {
+                productDiv.addEventListener("click", () => {
+                  window.location.href = `product.html?id=${product.id}`;
+                });
+              }
+    
+              const img = document.createElement("img");
+              img.src = product.thumbnail;
+              img.alt = product.title;
+              productDiv.appendChild(img);
+    
+              const title = document.createElement("h5");
+              title.innerText = product.title;
+              productDiv.appendChild(title);
+    
+              const stars = document.createElement("div");
+              stars.className = "star";
+              const rate = Math.round(product.rating);
+              for (let i = 0; i < rate; i++) {
+                const star = document.createElement("i");
+                star.className = "fas fa-star";
+                stars.appendChild(star);
+              }
+              productDiv.appendChild(stars);
+    
+              const sympolandprice = document.createElement("div");
+              sympolandprice.style.display = "flex";
+              sympolandprice.style.justifyContent = "space-between";
+    
+              const price = document.createElement("p");
+              price.innerText = `$${product.price}`;
+              sympolandprice.appendChild(price);
+    
+              const link = document.createElement("a");
+              link.href = "#";
+              link.className = "addtocartsympol";
+    
+              const sympol = document.createElement("i");
+              sympol.className = "fa-solid fa-cart-shopping";
+              sympol.style.color = '#323232';
+    
+              link.appendChild(sympol);
+              sympolandprice.appendChild(link);
+    
+              productDiv.appendChild(sympolandprice);
+              productsDiv.appendChild(productDiv);
+            });
+    
+            categoryDiv.appendChild(productsDiv);
+            container.appendChild(categoryDiv);
+          });
+    
+          checkLoginBeforeCart();
+        });
+      });
+    }
